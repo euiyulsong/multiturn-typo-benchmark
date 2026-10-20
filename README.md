@@ -75,6 +75,8 @@ A complete run writes `results/selected_cases.json`, `results/run_config.json`, 
 
 The frozen sample contains 100 MultiDoc2Dial validation dialogues (25 each in DMV, SSA, VA, and StudentAid); all have multi-turn history. Their IDs are recorded in `results/case_ids.txt`; `results/experiment_manifest.json` records seed, run factors, model and status without publishing source dialogue text. The harness ran against gpt-6-luna, but the account has no remaining API credits and returned `429 insufficient_quota`, leaving the **current main run with 0/1,600 completed evaluations**. Existing local row-level logs are an older mixed partial run and are excluded from version control. The extended harness compiles and `python3 test_harness.py` passes synthetic structural checks; those checks are not model scores. See [`results/RUN_STATUS.md`](results/RUN_STATUS.md) for the run record.
 
+An exploratory write-up of the local legacy 973-row snapshot, including **best-subspan EM** alongside strict response EM, is in [`results/legacy_analysis.md`](results/legacy_analysis.md). Those mixed-protocol rows are not current benchmark results and must not be used to draw conclusions about the planned factorial comparisons. Raw rows, details, and downloaded source archive remain local and are not published.
+
 To run the primary 1,600-evaluation design, install dependencies and provide API access as above. Run raw-only, ReAct/no-ReAct, both architectures, and typo-awareness off/on:
 
 ```bash

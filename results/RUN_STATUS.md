@@ -21,4 +21,8 @@ The API returned `429 insufficient_quota` (`credit_balance_exhausted`) before th
 - `answer_subspan_em`: best token-F1 against annotated source support span(s), with gold-answer exact-match fallback.
 - `final_subspan_em@5`: fraction of annotated source spans exactly present in top-5 retrieved chunks.
 
+## Legacy exploratory analysis
+
+See [`legacy_analysis.md`](legacy_analysis.md) for an explicitly exploratory summary of the local 973-row legacy snapshot. Its predictions were scored with **best-subspan EM** (maximum normalized token F1 against an annotated supporting span) because strict response EM was 0/973. The legacy snapshot is mixed-protocol and is not evidence for the incomplete current main experiment; the raw JSONL files and source archive remain excluded from Git.
+
 Offline mock tests validate code paths only and are not measured benchmark results.
