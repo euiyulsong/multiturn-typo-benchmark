@@ -4,8 +4,23 @@
 
 We reused the same **100 frozen cases** (25 each from DMV, SSA, VA, and StudentAid), with each case evaluated in clean and synthetic-typo form. That gives 100 matched clean/typo pairs for each setup.
 
+- **`clean`** means the source dialogue and final question are passed unchanged, with no newly injected typo. Natural spelling/grammar errors already in the dataset can remain.
+- **`typo` in this report** means the earlier, restricted synthetic condition: one eligible word in every user turn, including the target, receives one adjacent-letter transposition. The benchmark seed makes the edits repeatable. This is narrower than realistic typing error. A later extended set with transpose/delete/insert/replace errors is reported separately in [`diverse_typo_search_100_report.md`](diverse_typo_search_100_report.md).
+
 1. **Router-only typo handling (`raw` + `direct`):** the direct router sees the whole dialogue, is explicitly told it may contain typos, and writes the search query/tool in one call. No separate correction call. Results are from [`paired_search_100_report.md`](paired_search_100_report.md).
 2. **Explicit last-turn correction (`last` + `staged`):** a dedicated correction call first fixes only the last user question; then the router (with the same typo-aware instruction) chooses the search query/tool. Search is retrieval-only; answer generation and ReAct are skipped.
+
+## Prompts
+
+The explicit correction stage uses this system prompt, with the last user question supplied for correction and the dialogue history supplied as context:
+
+> You perform only minimal spelling/typo correction in English user utterances. Preserve intent, entities, numbers, coreference, dialogue structure and wording. Never answer the question, expand references, summarize or paraphrase. Return a JSON object matching the required schema. Agent utterances are read-only. Edit ONLY the last user utterance. Output one line.
+
+The following typo-aware router prompt is used after correction:
+
+> You are a multi-tool search router. Pick one or more useful tools to answer the final user question. Use full dialogue for context. Select no more than two, deduplicate, and order by importance. Search tools: dmv = driver's license, registration, state motor vehicles; ssa = Social Security, retirement, benefits, disability; va = US Veterans Affairs and veterans benefits; studentaid = federal student aid, FAFSA, grants and loans. Write a focused standalone retrieval query resolving references only as needed. Return JSON with tools and query. Never use dataset labels. The input may contain spelling errors or typos: infer the intended words from dialogue context, and produce a corrected, focused standalone retrieval query without changing intent.
+
+In the router-only comparison, the correction-stage prompt is omitted, and the same router prompt receives the uncorrected dialogue directly.
 
 This is a same-case comparison across two pipeline configurations. “Clean vs typo” within each setup is paired. “Explicit correction vs router-only” is also case-matched on the 100 typo inputs, but changes the correction stage and routing architecture together, so it is a practical pipeline comparison—not an isolated causal estimate of spelling correction alone.
 

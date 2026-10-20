@@ -2,6 +2,7 @@
 These are NOT benchmark scores and must not be reported as such.
 """
 import tempfile
+import random
 from pathlib import Path
 import benchmark as b
 
@@ -40,6 +41,10 @@ class MockRetrieval:
 
 
 def run():
+    corrupted, edit = b.corrupt_one("application",random.Random(1),
+                                   ("transpose","delete","insert","replace"))
+    assert corrupted != "application"
+    assert edit["type"] in {"transpose","delete","insert","replace"}
     docs={domain:{} for domain in b.DOMAINS}
     dialogs={domain:[] for domain in b.DOMAINS}
     for domain in b.DOMAINS:

@@ -155,7 +155,7 @@ def build_cases(doc_data: dict, dial_data: dict, seed: int, n_per_domain: int = 
     return cases
 
 
-def corrupt_one(text: str, rng: random.Random) -> tuple[str, dict | None]:
+def corrupt_one(text: str, rng: random.Random, typo_types: tuple[str, ...] = ("transpose",)) -> tuple[str, dict | None]:
     words = [(m.start(), m.end(), m.group()) for m in re.finditer(r"[A-Za-z]{5,}", text)
              if m.group().lower() not in STOPWORDS]
     if not words:
@@ -163,16 +163,36 @@ def corrupt_one(text: str, rng: random.Random) -> tuple[str, dict | None]:
     if not words:
         return text, None
     start, end, word = rng.choice(words)
-    # One adjacent-character transposition; no label/answer/reference modification.
-    adjacent = [i for i in range(len(word)-1) if word[i].lower() != word[i+1].lower()]
-    if not adjacent:
-        return text, None
-    j = rng.choice(adjacent)
-    typo = word[:j] + word[j+1] + word[j] + word[j+2:]
-    return text[:start] + typo + text[end:], {"before": word, "after": typo, "position": start}
+    # One deterministic edit in a sampled user word; labels and references stay untouched.
+    available = [kind for kind in typo_types if kind in {"transpose", "delete", "insert", "replace"}]
+    if not available:
+        raise ValueError(f"No supported typo types in {typo_types}")
+    kind = rng.choice(available)
+    if kind == "transpose":
+        positions = [i for i in range(len(word)-1) if word[i].lower() != word[i+1].lower()]
+        if not positions:
+            return text, None
+        j = rng.choice(positions)
+        typo = word[:j] + word[j+1] + word[j] + word[j+2:]
+    elif kind == "delete":
+        j = rng.randrange(len(word))
+        typo = word[:j] + word[j+1:]
+    elif kind == "insert":
+        j = rng.randrange(len(word)+1)
+        letter = rng.choice("abcdefghijklmnopqrstuvwxyz")
+        typo = word[:j] + letter + word[j:]
+    else:  # replace
+        j = rng.randrange(len(word))
+        choices = [c for c in "abcdefghijklmnopqrstuvwxyz" if c != word[j].lower()]
+        letter = rng.choice(choices)
+        if word[j].isupper():
+            letter = letter.upper()
+        typo = word[:j] + letter + word[j+1:]
+    return text[:start] + typo + text[end:], {"before": word, "after": typo, "position": start, "type": kind}
 
 
-def input_variant(case: dict, typo: bool, seed: int) -> tuple[list[dict], str, list[dict]]:
+def input_variant(case: dict, typo: bool, seed: int,
+                  typo_types: tuple[str, ...] = ("transpose",)) -> tuple[list[dict], str, list[dict]]:
     history = [dict(m) for m in case["history"]]
     question = case["question"]
     edits = []
@@ -180,10 +200,10 @@ def input_variant(case: dict, typo: bool, seed: int) -> tuple[list[dict], str, l
         for i, message in enumerate(history):
             if message["role"] == "user":
                 rng = random.Random(stable_seed(f'{seed}|{case["id"]}|{i}'))
-                message["text"], edit = corrupt_one(message["text"], rng)
+                message["text"], edit = corrupt_one(message["text"], rng, typo_types)
                 if edit:
                     edits.append({"turn": i, **edit})
-        question, edit = corrupt_one(question, random.Random(stable_seed(f'{seed}|{case["id"]}|target')))
+        question, edit = corrupt_one(question, random.Random(stable_seed(f'{seed}|{case["id"]}|target')), typo_types)
         if edit:
             edits.append({"turn": "target", **edit})
     return history, question, edits
@@ -511,8 +531,9 @@ def rrf_across_steps(step_results: list[dict], key: str) -> list[str]:
 def evaluate_one(case: dict, input_condition: str, strategy: str, agent: str,
                  llm: JsonModel, ret: Retrieval, seed: int,
                  architecture: str = "staged", typo_aware: bool = False,
-                 retrieval_only: bool = False) -> tuple[dict, dict]:
-    history, question, edits = input_variant(case, input_condition == "typo", seed)
+                 retrieval_only: bool = False,
+                 typo_types: tuple[str, ...] = ("transpose",)) -> tuple[dict, dict]:
+    history, question, edits = input_variant(case, input_condition == "typo", seed, typo_types)
     rewrite_history = [m for m in history if m["role"] == "user"]
     corrected_history, corrected_question, prep = fix_input(llm, strategy,history,question)
     if architecture == "direct":
@@ -816,6 +837,8 @@ def main() -> None:
                    help="Batch size for offline dense-index embedding; smaller batches can reduce memory pressure")
     p.add_argument("--llm-concurrency",type=int,default=1,
                    help="Maximum simultaneous independent case evaluations")
+    p.add_argument("--typo-types",default="transpose",
+                   help="Comma-separated synthetic typo types: transpose,delete,insert,replace")
     p.add_argument("--prepare-only",action="store_true",help="Download & select cases, without API/model inference")
     p.add_argument("--limit",type=int,default=None,help="Smoke-test a few cases; omit for full 100")
     p.add_argument("--architecture",choices=("staged","direct","both"),default="both",
@@ -833,6 +856,10 @@ def main() -> None:
     p.add_argument("--retrieval-only-summary",action="store_true",
                    help="Summarize an existing retrieval-only JSONL run without calling the API")
     a=p.parse_args()
+    typo_types=tuple(dict.fromkeys(x.strip() for x in a.typo_types.split(",") if x.strip()))
+    valid_typo_types={"transpose","delete","insert","replace"}
+    if not typo_types or set(typo_types)-valid_typo_types:
+        raise SystemExit(f"--typo-types must be comma-separated values from {sorted(valid_typo_types)}")
     out=Path(a.out);out.mkdir(parents=True,exist_ok=True)
     docs,dials=get_data(out/"data",a.data_zip)
     cases=build_cases(docs,dials,a.seed,a.n_per_domain)
@@ -903,7 +930,7 @@ def main() -> None:
     def run_job(job):
         key,case,condition,strategy,agent,architecture,typo_aware=job
         result=evaluate_one(case,condition,strategy,agent,llm,ret,a.seed,architecture,typo_aware,
-                            retrieval_only=a.retrieval_only)
+                            retrieval_only=a.retrieval_only,typo_types=typo_types)
         return key,result
 
     def save_result(key,result):
