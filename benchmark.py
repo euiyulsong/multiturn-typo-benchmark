@@ -18,6 +18,7 @@ import time
 import unicodedata
 import urllib.request
 import zipfile
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from collections import Counter, defaultdict
 from dataclasses import dataclass
 from pathlib import Path
@@ -326,7 +327,7 @@ def build_chunks(doc_data: dict, size: int = 1050, overlap: int = 180) -> list[C
 
 class Retrieval:
     def __init__(self, chunks: list[Chunk], dense_model: str, cross_model: str, device: str,
-                 source_docs: dict | None = None):
+                 source_docs: dict | None = None, batch_size: int = 64):
         import numpy as np
         from rank_bm25 import BM25Okapi
         from sentence_transformers import SentenceTransformer, CrossEncoder
@@ -343,7 +344,7 @@ class Retrieval:
             self.domains[domain] = section
             self.bm25[domain] = BM25Okapi([self.tokenize(c.text) for c in section])
             arr = self.encoder.encode([c.text for c in section], normalize_embeddings=True,
-                                      convert_to_numpy=True, show_progress_bar=True, batch_size=64)
+                                      convert_to_numpy=True, show_progress_bar=True, batch_size=batch_size)
             self.embs[domain] = arr
 
     @staticmethod
@@ -811,6 +812,10 @@ def main() -> None:
     p.add_argument("--dense-model",default="sentence-transformers/multi-qa-MiniLM-L6-cos-v1")
     p.add_argument("--cross-model",default="cross-encoder/ms-marco-MiniLM-L6-v2")
     p.add_argument("--device",default="cpu")
+    p.add_argument("--batch-size",type=int,default=64,
+                   help="Batch size for offline dense-index embedding; smaller batches can reduce memory pressure")
+    p.add_argument("--llm-concurrency",type=int,default=1,
+                   help="Maximum simultaneous independent case evaluations")
     p.add_argument("--prepare-only",action="store_true",help="Download & select cases, without API/model inference")
     p.add_argument("--limit",type=int,default=None,help="Smoke-test a few cases; omit for full 100")
     p.add_argument("--architecture",choices=("staged","direct","both"),default="both",
@@ -868,12 +873,12 @@ def main() -> None:
         raise SystemExit("Set OPENAI_API_KEY and BENCH_MODEL=your API-accessible model ID; or use --prepare-only")
     if a.fresh_run and not a.model.endswith("-luna"):
         raise SystemExit("Fresh final run must record the explicitly requested gpt-6-luna model ID")
-    if a.retrieval_only and (a.agent != "direct" or a.strategy != "raw" or a.architecture != "direct"):
-        raise SystemExit("--retrieval-only requires --agent direct --strategy raw")
+    if a.retrieval_only and (a.agent != "direct" or a.strategy == "all" or a.architecture == "both"):
+        raise SystemExit("--retrieval-only requires a single correction strategy, one architecture, and --agent direct")
     cache_name="model_cache_fresh.jsonl" if a.fresh_run else "model_cache.jsonl"
     llm=JsonModel(a.model,out/cache_name)
     chunks=build_chunks(docs)
-    ret=Retrieval(chunks,a.dense_model,a.cross_model,a.device,docs)
+    ret=Retrieval(chunks,a.dense_model,a.cross_model,a.device,docs,batch_size=a.batch_size)
     print(f"Built {len(chunks)} domain-indexed document chunks")
     manifest=out/("rows_fresh.jsonl" if a.fresh_run else "rows.jsonl")
     details=out/("details_fresh.jsonl" if a.fresh_run else "details.jsonl")
@@ -889,13 +894,20 @@ def main() -> None:
             for agent in agents for architecture in architectures
             for typo_aware in typo_awareness]
     random.Random(a.seed + 91817).shuffle(jobs)  # avoid fixed arm-order/warmup bias
+    pending=[]
     for case,condition,strategy,agent,architecture,typo_aware in jobs:
         key=(case["id"],condition,strategy,agent,architecture,typo_aware)
-        if key in existing:
-            continue
-        # Fail loudly on API/data errors instead of inventing partial or zero scores.
-        row, detail=evaluate_one(case,condition,strategy,agent,llm,ret,a.seed,architecture,typo_aware,
-                                 retrieval_only=a.retrieval_only)
+        if key not in existing:
+            pending.append((key,case,condition,strategy,agent,architecture,typo_aware))
+
+    def run_job(job):
+        key,case,condition,strategy,agent,architecture,typo_aware=job
+        result=evaluate_one(case,condition,strategy,agent,llm,ret,a.seed,architecture,typo_aware,
+                            retrieval_only=a.retrieval_only)
+        return key,result
+
+    def save_result(key,result):
+        row,detail=result
         with manifest.open("a",encoding="utf-8") as f:
             f.write(json.dumps(row,ensure_ascii=False)+"\n")
         with details.open("a",encoding="utf-8") as f:
@@ -905,6 +917,18 @@ def main() -> None:
         if "answer_em" in row:
             progress+=f" answer EM={row['answer_em']:.0f} subspan EM={row['answer_subspan_em']:.2f}"
         print(f"[{len(existing)}/{comparisons_per_case*len(cases)}] {key} {progress}",flush=True)
+
+    concurrency=max(1,a.llm_concurrency)
+    if concurrency==1:
+        for job in pending:
+            key,result=run_job(job)
+            save_result(key,result)
+    else:
+        with ThreadPoolExecutor(max_workers=concurrency) as pool:
+            futures=[pool.submit(run_job,job) for job in pending]
+            for future in as_completed(futures):
+                key,result=future.result()
+                save_result(key,result)
     all_rows=[existing[(c["id"],condition,strategy,agent,architecture,typo_aware)] for c in cases
               for condition in ("clean","typo") for strategy in strategies for agent in agents
               for architecture in architectures for typo_aware in typo_awareness]

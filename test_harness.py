@@ -65,6 +65,12 @@ def run():
         assert 'answer_em' not in r
         assert 'pred_answer' not in d
         assert r['llm_calls']==1
+        r,d=b.evaluate_one(c,condition,'last','direct',llm,ret,seed=9,
+                           architecture='staged',typo_aware=True,retrieval_only=True)
+        assert r['router_em']==1.0
+        assert r['ce_doc_recall@5']==1.0
+        assert 'answer_em' not in r
+        assert r['llm_calls']==3
     rows=[]
     for condition in ['clean','typo']:
         for strategy in ['raw','last','full']:

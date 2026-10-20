@@ -79,6 +79,8 @@ An exploratory write-up of the local legacy 973-row snapshot, including **best-s
 
 A balanced retrieval-only comparison of clean vs. synthetic typos over all 100 frozen cases (200 evaluations) is summarized in [`results/paired_search_100_report.md`](results/paired_search_100_report.md). Answer generation and ReAct were skipped to reduce calls. The initial 8-case smoke pilot is retained in [`results/paired_pilot_report.md`](results/paired_pilot_report.md); both sets of raw outputs remain local and ignored by Git.
 
+The follow-up retrieval comparison with explicit last-turn typo correction (also over the same 100 cases, with clean/typo pairs) and BM25/dense/cross-encoder breakdown is in [`results/correction_search_100_report.md`](results/correction_search_100_report.md). Raw outputs remain local and ignored by Git.
+
 To run the primary 1,600-evaluation design, install dependencies and provide API access as above. Run raw-only, ReAct/no-ReAct, both architectures, and typo-awareness off/on:
 
 ```bash
