@@ -650,6 +650,7 @@ def percentile(xs: list[float], p: float) -> float:
 
 
 def summarize(rows: list[dict], out: Path) -> None:
+    out.mkdir(parents=True, exist_ok=True)
     metrics = ["router_em","router_tool_f1","bm25_doc_recall@5","dense_doc_recall@5",
                "rrf_doc_recall@5","ce_doc_recall@5","ce_span_recall@5",
                "bm25_mrr@10","dense_mrr@10","rrf_mrr@10","ce_mrr@10",
