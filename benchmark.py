@@ -468,11 +468,8 @@ def route(llm: JsonModel, history: list[dict], question: str,
            "Write a focused standalone retrieval query resolving references only as needed. "
            "Return JSON with tools and query. Never use dataset labels." + typo_instruction)
     route_question = refinement_input if refinement_input is not None else question
-    obj, latency, tokens = llm.ask(sys, format_dialogue(history, route_question), schema)
-    if refinement_input is not None:
-        # Controlled query-refinement arm: identical tool-selection prompt and
-        # search path; only the final user query presented to route() is refined.
-        obj["query"] = refinement_input
+    route_history = [m for m in history if m.get("role") in ("user","agent")]
+    obj, latency, tokens = llm.ask(sys, format_dialogue(route_history, route_question), schema)
     tools = list(dict.fromkeys(t for t in obj["tools"] if t in tool_names))[:2]
     if not tools:
         tools = ["search_dmv"]  # invalid/empty selection recorded separately as router failure
@@ -582,24 +579,17 @@ def evaluate_one(case: dict, input_condition: str, strategy: str, agent: str,
         prep = {"seconds": 0.0, "calls": 0, "tokens": 0}
         tools, query, router = route(llm, rewrite_history, corrected_question,
                                      typo_aware=typo_aware)
-    elif refine_router_input:
-        refined_question, rewrite_cost = rewrite_query(llm,history,corrected_question,
-                                                        typo_aware,one_sentence=True)
-        tools,_,router=route(llm,history,corrected_question,
-                             typo_aware=typo_aware,refinement_input=refined_question)
-        query=router["selection_query"]
-        prep={"seconds":prep["seconds"]+rewrite_cost["seconds"],
-              "calls":prep["calls"]+rewrite_cost["calls"],
-              "tokens":prep["tokens"]+rewrite_cost["tokens"]}
     else:
-        query, rewrite_cost = rewrite_query(llm, rewrite_history, corrected_question,
-                                            typo_aware, one_sentence=rewrite_only_search)
-        if rewrite_only_search:
-            tools, _, router = route(llm, rewrite_history, query, typo_aware=typo_aware)
-            router["selection_query"] = query
-            router["router_raw"]["query"] = query
+        if refine_router_input or rewrite_only_search:
+            query, rewrite_cost = rewrite_query(llm,history,corrected_question,
+                                                typo_aware,one_sentence=True)
+            tools, _, router = route(llm, history, corrected_question,
+                                     typo_aware=typo_aware,refinement_input=query)
         else:
-            tools, _, router = route(llm, rewrite_history, query, typo_aware=typo_aware)
+            query, rewrite_cost = rewrite_query(llm, rewrite_history, corrected_question,
+                                                typo_aware)
+            tools, _, router = route(llm, history, corrected_question,
+                                     typo_aware=typo_aware,refinement_input=query)
         prep = {"seconds": prep["seconds"] + rewrite_cost["seconds"],
                 "calls": prep["calls"] + rewrite_cost["calls"],
                 "tokens": prep["tokens"] + rewrite_cost["tokens"]}

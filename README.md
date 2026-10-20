@@ -93,7 +93,9 @@ The follow-up heavy-typo run with router tool selection and query rewriting befo
 
 The one-sentence-only refined-query variant (router selects tools, but retrieval uses only the refiner's sentence) is compared with the standard router-query path in [`results/heavy_typo_one_sentence_rewrite_100_report.md`](results/heavy_typo_one_sentence_rewrite_100_report.md), using the same heavy-typo cases and batch/concurrency 100.
 
-The controlled refinement ablation compares rewriting the final question without history vs. giving the rewriter full dialogue context; both then use the same router-selected-tool/router-query retrieval path. Its paired results are in [`results/heavy_typo_controlled_refinement_100_report.md`](results/heavy_typo_controlled_refinement_100_report.md).
+The controlled refinement ablation compares rewriting with final-question-only context vs. the full interleaved USER/AGENT history, while holding the downstream router/search path fixed. Corrected full-history results and an audit of the earlier partial-history attempt are in [`results/heavy_typo_controlled_refinement_100_report.md`](results/heavy_typo_controlled_refinement_100_report.md).
+
+A literature review of query rewriting and typo-robust retrieval, interpreted alongside these experiments, is in [`results/query_rewriting_literature_review.md`](results/query_rewriting_literature_review.md).
 
 ### What the completed retrieval experiments suggest
 

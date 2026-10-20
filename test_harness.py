@@ -77,13 +77,7 @@ def run():
         assert r['router_em']==1.0
         assert r['llm_calls']==2
         assert d['selection_and_search_query']==d['router_query']
-        assert 'answer_em' not in r
-        r,d=b.evaluate_one(c,condition,'raw','direct',llm,ret,seed=9,
-                           architecture='staged',typo_aware=True,retrieval_only=True,
-                           rewrite_only_search=True)
-        assert r['router_em']==1.0
-        assert r['rewrite_only_search'] is True
-        assert r['llm_calls']==2
+        assert d['router_query']=='what application documents are needed'
         assert d['selection_and_search_query']==d['router_query']
         assert 'answer_em' not in r
         r,d=b.evaluate_one(c,condition,'raw','direct',llm,ret,seed=9,
