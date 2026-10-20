@@ -83,6 +83,8 @@ The follow-up retrieval comparison with explicit last-turn typo correction (also
 
 An additional 100-pair retrieval-only stress run uses four balanced synthetic typo operations (transpose, delete, insert, replace) to test whether the earlier transposition-only inputs were too forgiving. Results, exact condition definition, and router prompt are in [`results/diverse_typo_search_100_report.md`](results/diverse_typo_search_100_report.md). Its row-level outputs are local and ignored by Git.
 
+The initial tool-call routing comparison on those same diverse-typo outputs (clean vs. typo, exact tool-set match and F1) is summarized in [`results/tool_call_index_100_report.md`](results/tool_call_index_100_report.md). No extra model calls were needed.
+
 To run the primary 1,600-evaluation design, install dependencies and provide API access as above. Run raw-only, ReAct/no-ReAct, both architectures, and typo-awareness off/on:
 
 ```bash
