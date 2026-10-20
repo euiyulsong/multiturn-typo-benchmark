@@ -1,0 +1,5852 @@
+[
+  {
+    "id": "0ce9e15705f3fd412007f7f8e6b6ff80:5",
+    "dialogue_id": "0ce9e15705f3fd412007f7f8e6b6ff80",
+    "domain": "dmv",
+    "history": [
+      {
+        "role": "user",
+        "text": "How do I provide proof of my SSI?"
+      },
+      {
+        "role": "agent",
+        "text": "Do you want to prove you receive SSI?"
+      },
+      {
+        "role": "user",
+        "text": "Yes, I need to prove I receive SSI."
+      },
+      {
+        "role": "agent",
+        "text": "Please bring in one of the original documents not photocopied to the DMV."
+      }
+    ],
+    "question": "Is it still possible to get a discounted or no-fee renewal if I want to renew online rather than via mail?",
+    "gold_answer": "No, sorry. If choose to renew online, then you lost the chance to get a reduced o no fee renewal.",
+    "gold_docs": [
+      "Renew non-driver ID card#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Renew non-driver ID card#1_0",
+        "id_sp": "60",
+        "start": 2749,
+        "end": 2791,
+        "domain": "dmv"
+      },
+      {
+        "doc_id": "Renew non-driver ID card#1_0",
+        "id_sp": "61",
+        "start": 2791,
+        "end": 2854,
+        "domain": "dmv"
+      }
+    ],
+    "gold_tools": [
+      "search_dmv"
+    ]
+  },
+  {
+    "id": "0cf32e1f74622c5b81501d36c82c57d9:11",
+    "dialogue_id": "0cf32e1f74622c5b81501d36c82c57d9",
+    "domain": "dmv",
+    "history": [
+      {
+        "role": "user",
+        "text": "I need refund information about cancelling an I-PIRP course."
+      },
+      {
+        "role": "agent",
+        "text": "Was the cancellation due to the sponsor being unable to conduct the course?"
+      },
+      {
+        "role": "user",
+        "text": "Yes, it was cancelled."
+      },
+      {
+        "role": "agent",
+        "text": "In that case, they must give you the option of a full refund of all course fees. If the course is available later on, the sponsor can also give you the option of rescheduling."
+      },
+      {
+        "role": "user",
+        "text": "How should I renew my registration before obtaining a New York State inspection?"
+      },
+      {
+        "role": "agent",
+        "text": "call 518 - 486 - 9786."
+      },
+      {
+        "role": "user",
+        "text": "and what if I moved to New York and registered my vehicle here"
+      },
+      {
+        "role": "agent",
+        "text": "If your vehicle was registered in another state that issues an inspection tag"
+      },
+      {
+        "role": "user",
+        "text": "do not"
+      },
+      {
+        "role": "agent",
+        "text": "Are you about to finish your out-of-state inspection?"
+      }
+    ],
+    "question": "Yes",
+    "gold_answer": "You must obtain a vehicle inspection from New York State.",
+    "gold_docs": [
+      "About New York State Inspections#3_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "About New York State Inspections#3_0",
+        "id_sp": "37",
+        "start": 2355,
+        "end": 2405,
+        "domain": "dmv"
+      }
+    ],
+    "gold_tools": [
+      "search_dmv"
+    ]
+  },
+  {
+    "id": "0ffb8fbae2c4a3b059ae82e87987023e:11",
+    "dialogue_id": "0ffb8fbae2c4a3b059ae82e87987023e",
+    "domain": "dmv",
+    "history": [
+      {
+        "role": "user",
+        "text": "I have an ignition interlock device on my car but want to lend my car to my Mom to drive...what can I do to allow her to borrow my car?"
+      },
+      {
+        "role": "agent",
+        "text": "Does your Mom have any driving restrictions?"
+      },
+      {
+        "role": "user",
+        "text": "No, she has a clean record."
+      },
+      {
+        "role": "agent",
+        "text": "Unfortunately, no relevant information is found."
+      },
+      {
+        "role": "user",
+        "text": "Do I have to pay extra fees to have my Mom to then drive my equipped car?"
+      },
+      {
+        "role": "agent",
+        "text": "You will need to check about interstate legislation if she might use the car out of state, as well."
+      },
+      {
+        "role": "user",
+        "text": "What are the global restrictions I face?"
+      },
+      {
+        "role": "agent",
+        "text": "I suggest you check with national and interstate legislation for this."
+      },
+      {
+        "role": "user",
+        "text": "Ihave no convictions, what can I do for my Mom to drive my car?"
+      },
+      {
+        "role": "agent",
+        "text": "You license can be revoked if you violate any terms of the prohibition."
+      }
+    ],
+    "question": "If I pay my fines can I get an early removal of my restriction?",
+    "gold_answer": "You may be able to have restrictions removed early if  you contact your State licensing Office with your circumstances.",
+    "gold_docs": [
+      "About problem driver restrictions#3_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "About problem driver restrictions#3_0",
+        "id_sp": "34",
+        "start": 2944,
+        "end": 2987,
+        "domain": "dmv"
+      }
+    ],
+    "gold_tools": [
+      "search_dmv"
+    ]
+  },
+  {
+    "id": "102928b61088a51ff84d2bb3f8e6b755:3",
+    "dialogue_id": "102928b61088a51ff84d2bb3f8e6b755",
+    "domain": "dmv",
+    "history": [
+      {
+        "role": "user",
+        "text": "Hello, I would like to know how I do the inspections if I bought a vehicle from a private seller"
+      },
+      {
+        "role": "agent",
+        "text": "buy a vehicle from someone other than a dealer?"
+      }
+    ],
+    "question": "Yes",
+    "gold_answer": "You will receive an inspection extension that will last 10 days from the date of registration.",
+    "gold_docs": [
+      "About New York State Inspections#3_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "About New York State Inspections#3_0",
+        "id_sp": "30",
+        "start": 1810,
+        "end": 1909,
+        "domain": "dmv"
+      }
+    ],
+    "gold_tools": [
+      "search_dmv"
+    ]
+  },
+  {
+    "id": "12575320927d5adc2c3535d30da1a3ab:10",
+    "dialogue_id": "12575320927d5adc2c3535d30da1a3ab",
+    "domain": "studentaid",
+    "history": [
+      {
+        "role": "user",
+        "text": "Hi, I would like to find out if I am eligible for federal student aid, could you please tell me who is eligible to get aid?"
+      },
+      {
+        "role": "agent",
+        "text": "Well most U.S. citizens or eligible non citizens are eligible for financial aid for college or career school. It is however important to understand the criteria of the programs, how to stay eligible, and how to get your eligibility back if for some reason you lose it.\n"
+      },
+      {
+        "role": "agent",
+        "text": "Are you enrolled at a college or career school and do you have a financial need?"
+      },
+      {
+        "role": "user",
+        "text": "Yes I am enrolled at a college and I am battling to pay my tuition fees."
+      },
+      {
+        "role": "agent",
+        "text": "Seeing as you have a financial need and are enrolled at a college and if you are a U.S. citizen or eligible non citizen you should be eligible to apply for assistance."
+      },
+      {
+        "role": "user",
+        "text": "In order to be eligible to apply for financial aid, is it possible for me to sign a form stating that I am not in default on a federal student loan?"
+      },
+      {
+        "role": "agent",
+        "text": "Yes you would have to sign the certification on the FAFSA form stating that you are not in default."
+      },
+      {
+        "role": "user",
+        "text": "I also have a question about general eligibility criteria; are there any additional requirements that must be met prior to applying?"
+      },
+      {
+        "role": "agent",
+        "text": "Yes there are other requirements."
+      }
+    ],
+    "question": "Are you aware of this financial assistance? Is it possible for me to go to the embassy and inquire about the subject?",
+    "gold_answer": "Sure, you can search for information in all those institutions.",
+    "gold_docs": [
+      "Eligibility for Non-U.S. Citizens | Federal Student Aid#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Eligibility for Non-U.S. Citizens | Federal Student Aid#1_0",
+        "id_sp": "74",
+        "start": 5453,
+        "end": 5606,
+        "domain": "studentaid"
+      }
+    ],
+    "gold_tools": [
+      "search_studentaid"
+    ]
+  },
+  {
+    "id": "1448c58953ef9ad41b957f6a054e6804:14",
+    "dialogue_id": "1448c58953ef9ad41b957f6a054e6804",
+    "domain": "studentaid",
+    "history": [
+      {
+        "role": "user",
+        "text": "I might be in loan trouble"
+      },
+      {
+        "role": "agent",
+        "text": "You have to repay your loans"
+      },
+      {
+        "role": "agent",
+        "text": "Are you having trouble making payments?"
+      },
+      {
+        "role": "user",
+        "text": "yes I am"
+      },
+      {
+        "role": "agent",
+        "text": "You should contact the organization that handles billing for your loan and discuss option with them."
+      },
+      {
+        "role": "user",
+        "text": "Perfect I will contact them but would you be so kind to give me a number or website to communicate with? . What are the important documents that I should have in an organized file?"
+      },
+      {
+        "role": "agent",
+        "text": "it is important that you keep your promissory note, among others"
+      },
+      {
+        "role": "user",
+        "text": "who do I contact for the direct loan program I'm in?"
+      },
+      {
+        "role": "agent",
+        "text": "You can contact the loan servicer"
+      },
+      {
+        "role": "user",
+        "text": "when do I become delinquent?"
+      },
+      {
+        "role": "agent",
+        "text": "Your loan becomes delinquent the first day after you miss a student loan payment,"
+      },
+      {
+        "role": "user",
+        "text": "what if I've missed payments for about 3 months?"
+      },
+      {
+        "role": "agent",
+        "text": "Your loan servicer will report the delinquency to the three major national credit bureaus"
+      }
+    ],
+    "question": "what if I still can't pay everything I owe?",
+    "gold_answer": "Your loan can risk going into default and it can have serious consequences",
+    "gold_docs": [
+      "Understanding Delinquency and Default | Federal Student Aid#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Understanding Delinquency and Default | Federal Student Aid#1_0",
+        "id_sp": "31",
+        "start": 2148,
+        "end": 2187,
+        "domain": "studentaid"
+      },
+      {
+        "doc_id": "Understanding Delinquency and Default | Federal Student Aid#1_0",
+        "id_sp": "32",
+        "start": 2187,
+        "end": 2282,
+        "domain": "studentaid"
+      },
+      {
+        "doc_id": "Understanding Delinquency and Default | Federal Student Aid#1_0",
+        "id_sp": "33",
+        "start": 2282,
+        "end": 2318,
+        "domain": "studentaid"
+      }
+    ],
+    "gold_tools": [
+      "search_studentaid"
+    ]
+  },
+  {
+    "id": "177b2eb91222ebde398db5c5c5aad80d:3",
+    "dialogue_id": "177b2eb91222ebde398db5c5c5aad80d",
+    "domain": "studentaid",
+    "history": [
+      {
+        "role": "user",
+        "text": "I need help using the loan simulator."
+      },
+      {
+        "role": "agent",
+        "text": "I'll be happy to assist you with that. The loan simulator is a tool that helps you make decisions about student loans."
+      }
+    ],
+    "question": "How can I get the most realistic results from the loan simulator?",
+    "gold_answer": "It's always important to know that the simulator is not 100% accurate, but for the best results, be sure to provide complete and accurate information.",
+    "gold_docs": [
+      "Loan Simulator | Federal Student Aid#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Loan Simulator | Federal Student Aid#1_0",
+        "id_sp": "31",
+        "start": 1412,
+        "end": 1481,
+        "domain": "studentaid"
+      },
+      {
+        "doc_id": "Loan Simulator | Federal Student Aid#1_0",
+        "id_sp": "32",
+        "start": 1481,
+        "end": 1496,
+        "domain": "studentaid"
+      },
+      {
+        "doc_id": "Loan Simulator | Federal Student Aid#1_0",
+        "id_sp": "33",
+        "start": 1496,
+        "end": 1561,
+        "domain": "studentaid"
+      }
+    ],
+    "gold_tools": [
+      "search_studentaid"
+    ]
+  },
+  {
+    "id": "17fed87112a4632a9f53502cd360bb19:7",
+    "dialogue_id": "17fed87112a4632a9f53502cd360bb19",
+    "domain": "va",
+    "history": [
+      {
+        "role": "user",
+        "text": "hello i need help on how VA education benefits for survivors and dependents"
+      },
+      {
+        "role": "agent",
+        "text": "Of course, you need to find out if you are eligible for VA education benefits for dependents and survivors, also called Chapter 35 benefits."
+      },
+      {
+        "role": "user",
+        "text": "Can I qualify if I am the spouse of a veteran?"
+      },
+      {
+        "role": "agent",
+        "text": "Of course you can qualify for Chapter 35 benefits or job training through a GI Bill program."
+      },
+      {
+        "role": "user",
+        "text": "so am i eligible to receive educational benefits?"
+      },
+      {
+        "role": "agent",
+        "text": "You may qualify for VA education benefits under Chapter 35 benefits if you are the spouse of a service member, but you must meet certain requirements"
+      }
+    ],
+    "question": "I just remember to ask about VA benefits and health care, can I access records?",
+    "gold_answer": "You can apply for a printed Veteran ID card, get your VA benefit letters and medical records.",
+    "gold_docs": [
+      "VA.gov Home | Veterans Affairs#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "VA.gov Home | Veterans Affairs#1_0",
+        "id_sp": "47",
+        "start": 2156,
+        "end": 2290,
+        "domain": "va"
+      }
+    ],
+    "gold_tools": [
+      "search_va"
+    ]
+  },
+  {
+    "id": "1a119a3e73d6f46def211fe00153bb7d:13",
+    "dialogue_id": "1a119a3e73d6f46def211fe00153bb7d",
+    "domain": "va",
+    "history": [
+      {
+        "role": "user",
+        "text": "VR&E Reemployment track"
+      },
+      {
+        "role": "agent",
+        "text": "are you a veteran?"
+      },
+      {
+        "role": "user",
+        "text": "yes"
+      },
+      {
+        "role": "agent",
+        "text": "If you re a Veteran with a service - connected disability"
+      },
+      {
+        "role": "user",
+        "text": "yes i am"
+      },
+      {
+        "role": "agent",
+        "text": "the Vocational Rehabilitation and Employment VR&E Reemployment track can help your employer accommodate your needs . Your Vocational Rehabilitation Counselor VRC can provide a full range of rehabilitation services , and can refer you directly to the Department of Labor to begin the process ."
+      },
+      {
+        "role": "user",
+        "text": "Another question about VA benefits and health care,  how can I access my medical records?"
+      },
+      {
+        "role": "agent",
+        "text": "You can apply for a printed Veteran ID card, get your VA benefit letters and medical records."
+      },
+      {
+        "role": "user",
+        "text": "What other resources are available?"
+      },
+      {
+        "role": "agent",
+        "text": "VA has an official podcast.  Borne the Battle spotlights inspiring Veteran stories , important resources , offices , and VA benefits ."
+      },
+      {
+        "role": "user",
+        "text": "What about health care?"
+      },
+      {
+        "role": "agent",
+        "text": "you can refill and track prescriptions, send secure messages to your health care team and schedule and view your appointments."
+      }
+    ],
+    "question": "What else can I do?",
+    "gold_answer": "Apply for VA health care, find out how to access services and manage your health and benefits online",
+    "gold_docs": [
+      "VA.gov Home | Veterans Affairs#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "VA.gov Home | Veterans Affairs#1_0",
+        "id_sp": "49",
+        "start": 2305,
+        "end": 2408,
+        "domain": "va"
+      }
+    ],
+    "gold_tools": [
+      "search_va"
+    ]
+  },
+  {
+    "id": "1e5ccb63f0b838637cf5c7efd1dc2d53:10",
+    "dialogue_id": "1e5ccb63f0b838637cf5c7efd1dc2d53",
+    "domain": "ssa",
+    "history": [
+      {
+        "role": "user",
+        "text": "Can I apply for benefits on line?"
+      },
+      {
+        "role": "agent",
+        "text": "You are asking to apply online, correct?"
+      },
+      {
+        "role": "user",
+        "text": "yes"
+      },
+      {
+        "role": "agent",
+        "text": "Do you have medicare?"
+      },
+      {
+        "role": "user",
+        "text": "yes"
+      },
+      {
+        "role": "agent",
+        "text": " Please be ready to supply the information we need to approve your application for these benefits"
+      },
+      {
+        "role": "user",
+        "text": "I also have a concern about receiving benefits while working. Will it boost my pay when I'm working?"
+      },
+      {
+        "role": "agent",
+        "text": "Yes, it will increase your future benefits."
+      },
+      {
+        "role": "agent",
+        "text": "Will your earnings be higher than one of the previous years?"
+      }
+    ],
+    "question": "Yes, they will be higher than the previous years earnings.",
+    "gold_answer": "We will recalculate your benefit amount and pay the increase retroactive to January the year after you earned the money.",
+    "gold_docs": [
+      "Benefits Planner: Retirement | Getting Benefits While Working | Social Security Administration#2_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Benefits Planner: Retirement | Getting Benefits While Working | Social Security Administration#2_0",
+        "id_sp": "7",
+        "start": 373,
+        "end": 414,
+        "domain": "ssa"
+      },
+      {
+        "doc_id": "Benefits Planner: Retirement | Getting Benefits While Working | Social Security Administration#2_0",
+        "id_sp": "8",
+        "start": 414,
+        "end": 494,
+        "domain": "ssa"
+      }
+    ],
+    "gold_tools": [
+      "search_ssa"
+    ]
+  },
+  {
+    "id": "1fed70f82e9da87bccf34c82d5686aad:4",
+    "dialogue_id": "1fed70f82e9da87bccf34c82d5686aad",
+    "domain": "ssa",
+    "history": [
+      {
+        "role": "user",
+        "text": "How do you Check the Status of Your Reconsideration"
+      },
+      {
+        "role": "agent",
+        "text": "Sure!  you can check the status of your disability and SSI Reconsideration using your personal my Social Security account "
+      },
+      {
+        "role": "agent",
+        "text": "Do you have a social security account?"
+      }
+    ],
+    "question": "yes i do",
+    "gold_answer": "ok great",
+    "gold_docs": [
+      "Appeal A Decision | Social Security Administration#2_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Appeal A Decision | Social Security Administration#2_0",
+        "id_sp": "31",
+        "start": 2095,
+        "end": 2121,
+        "domain": "ssa"
+      }
+    ],
+    "gold_tools": [
+      "search_ssa"
+    ]
+  },
+  {
+    "id": "206f3f728e3720de27e26efb80705699:3",
+    "dialogue_id": "206f3f728e3720de27e26efb80705699",
+    "domain": "dmv",
+    "history": [
+      {
+        "role": "user",
+        "text": "Tell me about how to replace or transfer personalized plates"
+      },
+      {
+        "role": "agent",
+        "text": "Do you have to replace personalized plates?"
+      }
+    ],
+    "question": "Not now, I just need info about it.",
+    "gold_answer": "Are your personalized plates old or damaged?",
+    "gold_docs": [
+      "Replace or transfer personalized plates#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Replace or transfer personalized plates#1_0",
+        "id_sp": "4",
+        "start": 194,
+        "end": 256,
+        "domain": "dmv"
+      }
+    ],
+    "gold_tools": [
+      "search_dmv"
+    ]
+  },
+  {
+    "id": "20a9a609d0be877cd62a4649ef8cc91a:16",
+    "dialogue_id": "20a9a609d0be877cd62a4649ef8cc91a",
+    "domain": "dmv",
+    "history": [
+      {
+        "role": "user",
+        "text": "How can I find out about transferring a vehicle?"
+      },
+      {
+        "role": "agent",
+        "text": "You can look at Buy or sell a vehicle transfer ownership."
+      },
+      {
+        "role": "agent",
+        "text": "Do you not have the proof we need?"
+      },
+      {
+        "role": "user",
+        "text": "Yes, I do not have the proof you need."
+      },
+      {
+        "role": "agent",
+        "text": "Then you would need to look at the other kinds of proof you can use on our guides."
+      },
+      {
+        "role": "user",
+        "text": "Another thing with proof of ownership. Is there something else I should know about Proof of Ownership?"
+      },
+      {
+        "role": "agent",
+        "text": "As I said, the proofs of ownership needed to register and title a vehicle in New York are different for different types of vehicles, for example, cars, trailers, boats, snowmobiles, manufactured homes"
+      },
+      {
+        "role": "user",
+        "text": "Could you tell me on what proof of identity should I provide if I'm going to transfer the ownership of my vehicle?"
+      },
+      {
+        "role": "agent",
+        "text": "You can use a NY State driver license or learner permit."
+      },
+      {
+        "role": "user",
+        "text": "On a somewhat related note to completing the PD-7 by mail.  Would it instead be possible for you to send me a form online to be able to accomplish this before I get into a branch?"
+      },
+      {
+        "role": "agent",
+        "text": "I can only send you one via mail to the address on the plate registration, but I would be happy to do that."
+      },
+      {
+        "role": "user",
+        "text": "Good to know. Another thing for my proof of identity, can I use an expired driver ID card?"
+      },
+      {
+        "role": "agent",
+        "text": "Yes, you can use a expired less than 2 years driver ID card as proof of identity and age."
+      },
+      {
+        "role": "user",
+        "text": "Can more than one vehicle have the same registration?"
+      },
+      {
+        "role": "agent",
+        "text": "Yes, two vehicles can if you have the same type of registration."
+      }
+    ],
+    "question": "My car is model year 1972 what do I do?",
+    "gold_answer": "You would have to have a NY State Transferable Registration original or certified copy and not a photocopy, and bill of sale.",
+    "gold_docs": [
+      "How to transfer a registration to another vehicle#3_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "How to transfer a registration to another vehicle#3_0",
+        "id_sp": "31",
+        "start": 1330,
+        "end": 1357,
+        "domain": "dmv"
+      },
+      {
+        "doc_id": "How to transfer a registration to another vehicle#3_0",
+        "id_sp": "32",
+        "start": 1357,
+        "end": 1364,
+        "domain": "dmv"
+      },
+      {
+        "doc_id": "How to transfer a registration to another vehicle#3_0",
+        "id_sp": "33",
+        "start": 1364,
+        "end": 1467,
+        "domain": "dmv"
+      }
+    ],
+    "gold_tools": [
+      "search_dmv"
+    ]
+  },
+  {
+    "id": "20d1354fe0a3f4dfaebb10ee9e14dd86:3",
+    "dialogue_id": "20d1354fe0a3f4dfaebb10ee9e14dd86",
+    "domain": "studentaid",
+    "history": [
+      {
+        "role": "user",
+        "text": "I'm here to look at a good repayment plan"
+      },
+      {
+        "role": "agent",
+        "text": "Are you looking for a repayment plan with affordable payments?"
+      }
+    ],
+    "question": "no looking for information on any plan affordable or not",
+    "gold_answer": "Unfortunately, no relevant information is found.",
+    "gold_docs": [
+      "Repayment Plans | Federal Student Aid#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Repayment Plans | Federal Student Aid#1_0",
+        "id_sp": "1",
+        "start": 0,
+        "end": 71,
+        "domain": "studentaid"
+      }
+    ],
+    "gold_tools": [
+      "search_studentaid"
+    ]
+  },
+  {
+    "id": "2da4f0b0c33645336e4ab924299ed787:4",
+    "dialogue_id": "2da4f0b0c33645336e4ab924299ed787",
+    "domain": "studentaid",
+    "history": [
+      {
+        "role": "user",
+        "text": "Hello, I'd like to submit some feedback on my experience."
+      },
+      {
+        "role": "agent",
+        "text": "Yes you can submit a complaint, an issue, concern, suspicious activity, or scam, give us positive feedback, or review an already submitted case."
+      },
+      {
+        "role": "agent",
+        "text": "Have you previously submitted a complaint and Federal Student Aid gave you a response you didn't agree with?"
+      }
+    ],
+    "question": "Yes that is the case.",
+    "gold_answer": "In that case follow our procedure for resolving disputes.",
+    "gold_docs": [
+      "Feedback Center#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Feedback Center#1_0",
+        "id_sp": "5",
+        "start": 300,
+        "end": 330,
+        "domain": "studentaid"
+      },
+      {
+        "doc_id": "Feedback Center#1_0",
+        "id_sp": "6",
+        "start": 330,
+        "end": 375,
+        "domain": "studentaid"
+      },
+      {
+        "doc_id": "Feedback Center#1_0",
+        "id_sp": "7",
+        "start": 375,
+        "end": 463,
+        "domain": "studentaid"
+      }
+    ],
+    "gold_tools": [
+      "search_studentaid"
+    ]
+  },
+  {
+    "id": "2e76f32d20ed5665c0a51cb00ee7a41b:14",
+    "dialogue_id": "2e76f32d20ed5665c0a51cb00ee7a41b",
+    "domain": "ssa",
+    "history": [
+      {
+        "role": "user",
+        "text": "How much will I receive for disablilty"
+      },
+      {
+        "role": "agent",
+        "text": "he amount of your benefit is based on your lifetime average earnings covered by Social Security"
+      },
+      {
+        "role": "agent",
+        "text": "Do you already have an estimate?"
+      },
+      {
+        "role": "user",
+        "text": "I don't already have an estimate"
+      },
+      {
+        "role": "agent",
+        "text": "you can get your online with your personal my Social Security account or use our Benefit Calculators to determine "
+      },
+      {
+        "role": "user",
+        "text": "do I qualify for exrea help with medicare prescription plan"
+      },
+      {
+        "role": "agent",
+        "text": "If you receive Medicare and have limited resources and income ,"
+      },
+      {
+        "role": "user",
+        "text": "When do my benefits start?"
+      },
+      {
+        "role": "agent",
+        "text": "Social Security benefits are paid in the month following the month for which they 're due"
+      },
+      {
+        "role": "user",
+        "text": "Who do I contact for help with low income medicare nenficiaries?"
+      },
+      {
+        "role": "agent",
+        "text": " contact your state or local welfare office or Medicaid agency "
+      },
+      {
+        "role": "user",
+        "text": "What about limited resource and income for receiving medicare?"
+      },
+      {
+        "role": "agent",
+        "text": "you may be eligible for Extra Help with Medicare Prescription Drug Plan Costs"
+      }
+    ],
+    "question": "What about the other parts of medicare like parts A and B",
+    "gold_answer": "People with Medicare Parts A and Part B can choose to receive all of their health care services through plans that are offered by private companies and approved by Medicare ",
+    "gold_docs": [
+      "Benefits Planner: Disability | Approval Process | Social Security Administration#2_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Benefits Planner: Disability | Approval Process | Social Security Administration#2_0",
+        "id_sp": "37",
+        "start": 2401,
+        "end": 2428,
+        "domain": "ssa"
+      },
+      {
+        "doc_id": "Benefits Planner: Disability | Approval Process | Social Security Administration#2_0",
+        "id_sp": "38",
+        "start": 2428,
+        "end": 2602,
+        "domain": "ssa"
+      },
+      {
+        "doc_id": "Benefits Planner: Disability | Approval Process | Social Security Administration#2_0",
+        "id_sp": "40",
+        "start": 2625,
+        "end": 2659,
+        "domain": "ssa"
+      }
+    ],
+    "gold_tools": [
+      "search_ssa"
+    ]
+  },
+  {
+    "id": "2eb85da28078980a0ada851fb09f5753:10",
+    "dialogue_id": "2eb85da28078980a0ada851fb09f5753",
+    "domain": "studentaid",
+    "history": [
+      {
+        "role": "user",
+        "text": "I have some questions about what it means to be a co-signer."
+      },
+      {
+        "role": "agent",
+        "text": "I can help you with that. A co-signer will be the spouse of the applicant who initiated an Income-Driven Repayment Plan request."
+      },
+      {
+        "role": "agent",
+        "text": "Were you aware that the co-signer isn't obligated to repay the loan?"
+      },
+      {
+        "role": "user",
+        "text": "No, I didn't know that."
+      },
+      {
+        "role": "agent",
+        "text": "Unfortunately, no relevant information is found."
+      },
+      {
+        "role": "user",
+        "text": "How long does it usually take to go through the co-sign process?"
+      },
+      {
+        "role": "agent",
+        "text": "The majority of people complete the process in just 10 minutes. "
+      },
+      {
+        "role": "user",
+        "text": "I see. let me ask another question. to Appeal a demo credit decision ?. Can you explain what the bad credit is?"
+      },
+      {
+        "role": "agent",
+        "text": "It can make credit approval difficult."
+      }
+    ],
+    "question": "What is the lender's deed?",
+    "gold_answer": "Its purpose is the credit release.",
+    "gold_docs": [
+      "Appeal a Credit Decision Demo | Extenuating Circumstances | Federal Student Aid#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Appeal a Credit Decision Demo | Extenuating Circumstances | Federal Student Aid#1_0",
+        "id_sp": "103",
+        "start": 6130,
+        "end": 6163,
+        "domain": "studentaid"
+      }
+    ],
+    "gold_tools": [
+      "search_studentaid"
+    ]
+  },
+  {
+    "id": "2ff641798d691f06d7767a644394438c:8",
+    "dialogue_id": "2ff641798d691f06d7767a644394438c",
+    "domain": "va",
+    "history": [
+      {
+        "role": "user",
+        "text": "What does S-DVI provide?"
+      },
+      {
+        "role": "agent",
+        "text": "It provides service-disabled veterans low-cost life insurance."
+      },
+      {
+        "role": "agent",
+        "text": "Do you have a service-connected disability?"
+      },
+      {
+        "role": "user",
+        "text": "Yes, I was severly disabled during my military duty."
+      },
+      {
+        "role": "agent",
+        "text": "Based on that information you can apply for S-DVI either online or by mail."
+      },
+      {
+        "role": "user",
+        "text": "Can you tell me the requirements on how I can qualify for the Veterans Mortgage Life Insurance?"
+      },
+      {
+        "role": "agent",
+        "text": "You may only be able to get VMLI if you meet all the requirements"
+      }
+    ],
+    "question": "By the way, do you know about Veterans Mortgage Life Insurance (VMLI)? And if I receive a grant from SAH, who can help me continue with the process?",
+    "gold_answer": "Your Loan Guaranty Agent will help you throughout the process.",
+    "gold_docs": [
+      "Service-Disabled Veterans Life Insurance (S-DVI) | Veterans Affairs#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Service-Disabled Veterans Life Insurance (S-DVI) | Veterans Affairs#1_0",
+        "id_sp": "89",
+        "start": 4601,
+        "end": 4689,
+        "domain": "va"
+      },
+      {
+        "doc_id": "Service-Disabled Veterans Life Insurance (S-DVI) | Veterans Affairs#1_0",
+        "id_sp": "90",
+        "start": 4689,
+        "end": 4797,
+        "domain": "va"
+      }
+    ],
+    "gold_tools": [
+      "search_va"
+    ]
+  },
+  {
+    "id": "3319b4c1020ef853f5f8b5bd61c21645:3",
+    "dialogue_id": "3319b4c1020ef853f5f8b5bd61c21645",
+    "domain": "va",
+    "history": [
+      {
+        "role": "user",
+        "text": "I want to know about the survivor and dependent program Educational assistance"
+      },
+      {
+        "role": "agent",
+        "text": "DEA Educational Assistance for Survivors and Dependents is a program where if you are the child or spouse of a deceased veteran or service member, captured, disappeared, or disabled, you can get help paying for school or job training"
+      }
+    ],
+    "question": "What benefit can I get if I am the child or spouse of a veteran or service member who died, is captured or disappeared?",
+    "gold_answer": "ok i inform you that you can get help to pay for school or job training through the DEA program",
+    "gold_docs": [
+      "Survivors’ And Dependents’ Educational Assistance | Veterans Affairs#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Survivors’ And Dependents’ Educational Assistance | Veterans Affairs#1_0",
+        "id_sp": "4",
+        "start": 249,
+        "end": 359,
+        "domain": "va"
+      },
+      {
+        "doc_id": "Survivors’ And Dependents’ Educational Assistance | Veterans Affairs#1_0",
+        "id_sp": "5",
+        "start": 359,
+        "end": 405,
+        "domain": "va"
+      }
+    ],
+    "gold_tools": [
+      "search_va"
+    ]
+  },
+  {
+    "id": "331f95dd2b0b528be28106fae928695b:3",
+    "dialogue_id": "331f95dd2b0b528be28106fae928695b",
+    "domain": "ssa",
+    "history": [
+      {
+        "role": "user",
+        "text": "Is it possible to work while receiving benefits?"
+      },
+      {
+        "role": "agent",
+        "text": "Yes it is possible to work while receiving Social Security retirement or survivors benefits and it could mean higher benefits in the future."
+      }
+    ],
+    "question": "What happens when I do work?",
+    "gold_answer": "It could mean a higher benefit for you in the future when receiving benefits.",
+    "gold_docs": [
+      "Benefits Planner: Retirement | Getting Benefits While Working | Social Security Administration#2_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Benefits Planner: Retirement | Getting Benefits While Working | Social Security Administration#2_0",
+        "id_sp": "4",
+        "start": 129,
+        "end": 183,
+        "domain": "ssa"
+      }
+    ],
+    "gold_tools": [
+      "search_ssa"
+    ]
+  },
+  {
+    "id": "379d39f8cd00f06678512db3f5a64964:10",
+    "dialogue_id": "379d39f8cd00f06678512db3f5a64964",
+    "domain": "ssa",
+    "history": [
+      {
+        "role": "user",
+        "text": "Hello, I would like to know what happens if I am already receiving benefits?"
+      },
+      {
+        "role": "agent",
+        "text": "Are you already receiving Social Security or SSI benefits?"
+      },
+      {
+        "role": "user",
+        "text": "yes"
+      },
+      {
+        "role": "agent",
+        "text": "to changing Social Security benefits online direct deposit?"
+      },
+      {
+        "role": "user",
+        "text": "yes"
+      },
+      {
+        "role": "user",
+        "text": "What if someone doesn't have an account?"
+      },
+      {
+        "role": "agent",
+        "text": "You must open an account before you can sign up for Direct Deposit. You should compare prices in your area to find an account that has the features you want at a price you can afford."
+      },
+      {
+        "role": "user",
+        "text": "What do I do When I decide which account is right for me?"
+      },
+      {
+        "role": "agent",
+        "text": "Inform the representative of the financial institution that you are interested in registering to receive your benefits through Direct Deposit."
+      }
+    ],
+    "question": "What should I do if I am currently not receiving benefits?",
+    "gold_answer": "tell the Social Security representative when you apply for the benefits you want to enroll in Direct Deposit.",
+    "gold_docs": [
+      "Social Security Direct Deposit | Social Security Administration#2_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Social Security Direct Deposit | Social Security Administration#2_0",
+        "id_sp": "27",
+        "start": 1535,
+        "end": 1648,
+        "domain": "ssa"
+      }
+    ],
+    "gold_tools": [
+      "search_ssa"
+    ]
+  },
+  {
+    "id": "390412d2dd95fc237cb5ef28b05724ea:3",
+    "dialogue_id": "390412d2dd95fc237cb5ef28b05724ea",
+    "domain": "ssa",
+    "history": [
+      {
+        "role": "user",
+        "text": "Will I be eligible for spouse's benefits and have access to my spouse's benefits?"
+      },
+      {
+        "role": "agent",
+        "text": "Do you want to find the estimated amount of the retirement benefit you spouse would get at full retirement?"
+      }
+    ],
+    "question": "Yes, that is what I would like to know.",
+    "gold_answer": "Then the  estimated monthly amount of you Social Security amount as a spouse, widow, or widower before the effect of GPO is what you need to look at.",
+    "gold_docs": [
+      "Benefits Planner: Retirement | Government Pension Offset (GPO) Calculator | Social Security Administration#2_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Benefits Planner: Retirement | Government Pension Offset (GPO) Calculator | Social Security Administration#2_0",
+        "id_sp": "13",
+        "start": 829,
+        "end": 947,
+        "domain": "ssa"
+      }
+    ],
+    "gold_tools": [
+      "search_ssa"
+    ]
+  },
+  {
+    "id": "3bef9c1a7833449d880a32f56cd57fd7:5",
+    "dialogue_id": "3bef9c1a7833449d880a32f56cd57fd7",
+    "domain": "ssa",
+    "history": [
+      {
+        "role": "user",
+        "text": "Could you please give me some information about survivors' benefits? "
+      },
+      {
+        "role": "agent",
+        "text": "We do have a survivors planner that you can use to see what best suits your particular situation. "
+      },
+      {
+        "role": "user",
+        "text": "What can I do if I do not have enough Social Security credits to qualify for benefits? "
+      },
+      {
+        "role": "agent",
+        "text": "You can use one of our benefit calculators to estimate your future retirement, disability, and survivors benefits if you want an estimate. "
+      }
+    ],
+    "question": "If I have never worked, can I still qualify for spousal benefits? ",
+    "gold_answer": "You may still qualify for benefits if you are the spouse or divorced spouse of a retired worker even if you have never worked. ",
+    "gold_docs": [
+      "Benefits Planner | Social Security Administration#2_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Benefits Planner | Social Security Administration#2_0",
+        "id_sp": "43",
+        "start": 2346,
+        "end": 2394,
+        "domain": "ssa"
+      }
+    ],
+    "gold_tools": [
+      "search_ssa"
+    ]
+  },
+  {
+    "id": "3c87373bebab00cb05e89d842bf92fc6:5",
+    "dialogue_id": "3c87373bebab00cb05e89d842bf92fc6",
+    "domain": "va",
+    "history": [
+      {
+        "role": "user",
+        "text": "I need to manage my VA health benefits."
+      },
+      {
+        "role": "agent",
+        "text": "Is this in regards to your health care?"
+      },
+      {
+        "role": "user",
+        "text": "Yes thanks I do need help with my health care."
+      },
+      {
+        "role": "agent",
+        "text": "I would be happy to help you. I can assist you with refilling your prescriptions, I can help you contact your health team, and make appointments."
+      }
+    ],
+    "question": "I want to know about other financial assistance that I can get aside from VA health benefits. Where can I get information regarding this?",
+    "gold_answer": "All you need to do is contact your school's financial office to find that out.",
+    "gold_docs": [
+      "Work Study | Veterans Affairs#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Work Study | Veterans Affairs#1_0",
+        "id_sp": "33",
+        "start": 1786,
+        "end": 1830,
+        "domain": "va"
+      }
+    ],
+    "gold_tools": [
+      "search_va"
+    ]
+  },
+  {
+    "id": "3d62e8c50a11cbec48af68871b494461:3",
+    "dialogue_id": "3d62e8c50a11cbec48af68871b494461",
+    "domain": "ssa",
+    "history": [
+      {
+        "role": "user",
+        "text": "Can you tell me something about the benefit letter for social security?"
+      },
+      {
+        "role": "agent",
+        "text": "Gladly. Do you want to get your Social Security Benefit Verification Letter online?"
+      }
+    ],
+    "question": "No, thanks. I need to know something else.",
+    "gold_answer": "Do you want me to explain what a Social Security Benefit Verification Letter is?",
+    "gold_docs": [
+      "Benefit Verification Letter  | Social Security Administration#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Benefit Verification Letter  | Social Security Administration#1_0",
+        "id_sp": "5",
+        "start": 309,
+        "end": 367,
+        "domain": "ssa"
+      }
+    ],
+    "gold_tools": [
+      "search_ssa"
+    ]
+  },
+  {
+    "id": "3e3074889950f32b15c371f3f84cdf3a:11",
+    "dialogue_id": "3e3074889950f32b15c371f3f84cdf3a",
+    "domain": "ssa",
+    "history": [
+      {
+        "role": "user",
+        "text": "Are other family members eligible for survivor benefits?"
+      },
+      {
+        "role": "agent",
+        "text": "Do you need to know what family members are eligible?"
+      },
+      {
+        "role": "user",
+        "text": "Yes, I would like to know if they are eligible."
+      },
+      {
+        "role": "agent",
+        "text": "Do you have a stepchild, grandchild, step grandchild, or adopted child?"
+      },
+      {
+        "role": "user",
+        "text": "No, I do not."
+      },
+      {
+        "role": "agent",
+        "text": "Then you do not have family members that are eligible."
+      },
+      {
+        "role": "user",
+        "text": "Are there any special situations I should know about survivor benefits?"
+      },
+      {
+        "role": "agent",
+        "text": "Have you all ready received benefits as a spouse?"
+      },
+      {
+        "role": "user",
+        "text": "Yes, I receive benefits as a spouse."
+      },
+      {
+        "role": "agent",
+        "text": "Then it will be easy and your benefits will automatically switch over to survivors benefits once we receive the report of death."
+      }
+    ],
+    "question": "I'm still hoping to learn more about Survivors Benefits. What happens to those who survive me if I am financially reliant on Social Security?",
+    "gold_answer": "You can use our Survivors Planner to learn how your family members will be protected in the event of your passing. ",
+    "gold_docs": [
+      "Benefits Planner | Social Security Administration#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Benefits Planner | Social Security Administration#1_0",
+        "id_sp": "36",
+        "start": 1931,
+        "end": 1972,
+        "domain": "ssa"
+      }
+    ],
+    "gold_tools": [
+      "search_ssa"
+    ]
+  },
+  {
+    "id": "40107169d41d0bb3405db6963cd7a3ef:8",
+    "dialogue_id": "40107169d41d0bb3405db6963cd7a3ef",
+    "domain": "studentaid",
+    "history": [
+      {
+        "role": "user",
+        "text": "Hello there, hope you're doing well in these times. I was wondering what the FSAA can do for me as a student."
+      },
+      {
+        "role": "agent",
+        "text": "Of course. Well, Federal Student Aid Acquisitions plays an integral role supporting Federal Students Aid's needs and program objectives. Federal Student Aid Acquisitions is responsible for ensuring the efficient and economic acquisition of products and services for Federal Student Aid while reducing cost and maintaining compliance with applicable laws, regulations, and Executive Orders."
+      },
+      {
+        "role": "user",
+        "text": "That was very informative, thank you! So what is this acquisition forecast I've read about?"
+      },
+      {
+        "role": "agent",
+        "text": "Federal Student Aid prepares an annual forecast, with periodic updates, of expected contract opportunities in excess of the simplified acquisition threshold for each fiscal year. Information on Federal Student Aid's forecast, as well as other U.S. Department of Education acquisitions, can be found at Forecast of ED Contract Opportunities."
+      },
+      {
+        "role": "user",
+        "text": "I also hope to find out the IT Standards Library, Do the Specific Resources have to be followed in an IT project?"
+      },
+      {
+        "role": "agent",
+        "text": "Yes all projects may be required to comply with the resources dependent on the projects specific contract."
+      },
+      {
+        "role": "agent",
+        "text": "Do you have a IT project at the moment?"
+      }
+    ],
+    "question": "No not at the moment.",
+    "gold_answer": "What is your involvement with Data Management?",
+    "gold_docs": [
+      "IT Standards Library | Federal Student Aid#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "IT Standards Library | Federal Student Aid#1_0",
+        "id_sp": "52",
+        "start": 4358,
+        "end": 4377,
+        "domain": "studentaid"
+      }
+    ],
+    "gold_tools": [
+      "search_studentaid"
+    ]
+  },
+  {
+    "id": "47ed1d2ddce2ab50c4bc587e592a5900:5",
+    "dialogue_id": "47ed1d2ddce2ab50c4bc587e592a5900",
+    "domain": "studentaid",
+    "history": [
+      {
+        "role": "user",
+        "text": "I cannot provide parent info due to a special circumstance, what can I do?"
+      },
+      {
+        "role": "agent",
+        "text": "Did you submit your FAFSA form without parent info?."
+      },
+      {
+        "role": "user",
+        "text": "Yes, that is what I had to do."
+      },
+      {
+        "role": "agent",
+        "text": "Are your parents in jail?"
+      }
+    ],
+    "question": "yes, my parents are in jail.",
+    "gold_answer": "Then you would be able to submit your FAFSA form without your parent info on it.",
+    "gold_docs": [
+      "Reporting Parent Information | Federal Student Aid#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Reporting Parent Information | Federal Student Aid#1_0",
+        "id_sp": "61",
+        "start": 5221,
+        "end": 5337,
+        "domain": "studentaid"
+      }
+    ],
+    "gold_tools": [
+      "search_studentaid"
+    ]
+  },
+  {
+    "id": "4898baf139625663986f2fc20535188c:11",
+    "dialogue_id": "4898baf139625663986f2fc20535188c",
+    "domain": "ssa",
+    "history": [
+      {
+        "role": "user",
+        "text": "Is there any additional information for delayed retirement credits?"
+      },
+      {
+        "role": "agent",
+        "text": "yes read  What 's the best time to start your retirement benefits ?"
+      },
+      {
+        "role": "user",
+        "text": "what other addition information is there?"
+      },
+      {
+        "role": "agent",
+        "text": "We 're not recommending that you start at age 62 , your full retirement age , age 70 , or any age in between ."
+      },
+      {
+        "role": "user",
+        "text": "What is the maximum amount I can get in my benefit payments while still receiving retirement benefits?"
+      },
+      {
+        "role": "agent",
+        "text": "that limit is $ 17,640 "
+      },
+      {
+        "role": "user",
+        "text": "what is the deduction?"
+      },
+      {
+        "role": "agent",
+        "text": " we deduct $ 1 from your benefit payments for every $ 2 you earn above the annual limit ."
+      },
+      {
+        "role": "user",
+        "text": "what if my earnings are high?"
+      },
+      {
+        "role": "agent",
+        "text": "we will recalculate your benefit amount  We pay the increase retroactive to January the year after you earned the money ."
+      }
+    ],
+    "question": "How Much Can I Earn And Still Get Benefits?",
+    "gold_answer": "You are asking how much you cna earn while still working, correct?",
+    "gold_docs": [
+      "Benefits Planner: Retirement | Getting Benefits While Working | Social Security Administration#2_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Benefits Planner: Retirement | Getting Benefits While Working | Social Security Administration#2_0",
+        "id_sp": "11",
+        "start": 681,
+        "end": 772,
+        "domain": "ssa"
+      }
+    ],
+    "gold_tools": [
+      "search_ssa"
+    ]
+  },
+  {
+    "id": "4a403522e324e52c28566baca95e59e8:16",
+    "dialogue_id": "4a403522e324e52c28566baca95e59e8",
+    "domain": "dmv",
+    "history": [
+      {
+        "role": "user",
+        "text": "I had an accident in which the plate on my van was completely destroyed. Can you help me figure out what to do?"
+      },
+      {
+        "role": "agent",
+        "text": "Of course. First, you must surrender the vehicle registration to the DMV."
+      },
+      {
+        "role": "agent",
+        "text": "Were two vehicle plates are lost, stolen or destroyed?"
+      },
+      {
+        "role": "user",
+        "text": "Yes. Well, this is a bit awkward, but the crash happened between two of my registered vehicles, which I use for my company. A van and a car. None of the plates can be read anymore."
+      },
+      {
+        "role": "agent",
+        "text": "Then you need to notify the police, and ask the police to complete a police report. Bring the police report to a DMV office to surrender the vehicle registration."
+      },
+      {
+        "role": "user",
+        "text": "OK fine. Now, regarding More than 2 names in a record. How many names can be included in the registration of a vehicle?"
+      },
+      {
+        "role": "agent",
+        "text": "There can only be 1 or 2 names on a registration registrants"
+      },
+      {
+        "role": "user",
+        "text": "It is good to know, also, I have another problem, is that the accident occurred outside of New York, it was a collision of the two vehicles against the yard of a contractor, in that case should I obtain a report from a police agency as well?"
+      },
+      {
+        "role": "agent",
+        "text": "You should get a report printed on the letterhead of a police agency in the state where the incident happened."
+      },
+      {
+        "role": "user",
+        "text": "Another question about reclaimed cars. Will I have to surrender my old plates if my plates are recovered after I fill out a form?"
+      },
+      {
+        "role": "agent",
+        "text": "Yes, the old plates will have to be surrendered and you will have to register for new ones."
+      },
+      {
+        "role": "user",
+        "text": "I'm still looking for more information on vehicle plates. What if I'm unable to obtain a police report? So, what do I do now?"
+      },
+      {
+        "role": "agent",
+        "text": "In that case you must write a statement that includes your plate number and explains why you can not surrender your NY State plates."
+      },
+      {
+        "role": "user",
+        "text": "Alright, but if I DO get a report I can bring it to the DMV office, right?"
+      },
+      {
+        "role": "agent",
+        "text": "Yes. Bring the police report to a DMV office to surrender the vehicle registration."
+      }
+    ],
+    "question": "That's what I wanted to do. I also wanted to request new plates while I'm there, is that possible?",
+    "gold_answer": "Yes, the DMV will issue you a new registration and replacement plates.",
+    "gold_docs": [
+      "Lost, stolen, or destroyed plates#3_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Lost, stolen, or destroyed plates#3_0",
+        "id_sp": "25",
+        "start": 1645,
+        "end": 1711,
+        "domain": "dmv"
+      }
+    ],
+    "gold_tools": [
+      "search_dmv"
+    ]
+  },
+  {
+    "id": "4a98eec2bdd7ccdbaac041e3b952161e:5",
+    "dialogue_id": "4a98eec2bdd7ccdbaac041e3b952161e",
+    "domain": "ssa",
+    "history": [
+      {
+        "role": "user",
+        "text": "Can I get benefits while working?"
+      },
+      {
+        "role": "agent",
+        "text": "You can work while you receive Social Security retirement or survivors benefits ."
+      },
+      {
+        "role": "user",
+        "text": "Will it lower my amount?"
+      },
+      {
+        "role": "agent",
+        "text": "it could mean a higher benefit for you in the future"
+      }
+    ],
+    "question": "Is there a TTY number that I can use to find out about benefits due to the fact that I do not hear well?",
+    "gold_answer": "you can call us at TTY\n1-800-325-0778.",
+    "gold_docs": [
+      "Benefits Planner: Retirement | You Can Apply For Retirement Benefits Or Medicare | Social Security Administration#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Benefits Planner: Retirement | You Can Apply For Retirement Benefits Or Medicare | Social Security Administration#1_0",
+        "id_sp": "8",
+        "start": 281,
+        "end": 304,
+        "domain": "ssa"
+      }
+    ],
+    "gold_tools": [
+      "search_ssa"
+    ]
+  },
+  {
+    "id": "4b1d421288e0bb591155cb83af25fcf2:12",
+    "dialogue_id": "4b1d421288e0bb591155cb83af25fcf2",
+    "domain": "studentaid",
+    "history": [
+      {
+        "role": "user",
+        "text": "I want to look into consolidating my student loans"
+      },
+      {
+        "role": "agent",
+        "text": "We can help you learn about consolidation so you can decide whether a Direct Consolidation Loan is right for you "
+      },
+      {
+        "role": "user",
+        "text": "are there certain conditions for when we can consolidate loans?"
+      },
+      {
+        "role": "agent",
+        "text": "We have eligibility requirements for receiving a Direct Consolidation Loan"
+      },
+      {
+        "role": "agent",
+        "text": "Did you want to consolidate a defaulted loan?"
+      },
+      {
+        "role": "user",
+        "text": "no"
+      },
+      {
+        "role": "agent",
+        "text": "Did you want to consolidate a defaulted loan that is being collected through garnishment of your wages , or that is being collected in accordance with a court order after a judgment was obtained against you?"
+      },
+      {
+        "role": "user",
+        "text": "no, no defaults yet and I have other questions"
+      },
+      {
+        "role": "agent",
+        "text": "Unfortunately, no relevant information is found."
+      },
+      {
+        "role": "user",
+        "text": "what's good about consolidating?"
+      },
+      {
+        "role": "agent",
+        "text": "It will allow you to combine multiple federal education loans into one loan, so you will have a single monthly payment instead of multiple payments. Loan consolidation can also give you access to additional loan repayment plans and forgiveness programs. "
+      }
+    ],
+    "question": "I would be super happy if it is done as you say. This is great news. Is there a time that I must have taught before I am eligible?",
+    "gold_answer": "Yes. Your eligibility for the loan cancellation and the amount of your loan that will be cancelled depends on the length of time that you have taught.",
+    "gold_docs": [
+      "Perkins Loan Cancellation and Discharge | Federal Student Aid#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Perkins Loan Cancellation and Discharge | Federal Student Aid#1_0",
+        "id_sp": "3",
+        "start": 237,
+        "end": 390,
+        "domain": "studentaid"
+      },
+      {
+        "doc_id": "Perkins Loan Cancellation and Discharge | Federal Student Aid#1_0",
+        "id_sp": "4",
+        "start": 390,
+        "end": 460,
+        "domain": "studentaid"
+      }
+    ],
+    "gold_tools": [
+      "search_studentaid"
+    ]
+  },
+  {
+    "id": "4e4f5eec99d28d7fd68b67f294944218:16",
+    "dialogue_id": "4e4f5eec99d28d7fd68b67f294944218",
+    "domain": "dmv",
+    "history": [
+      {
+        "role": "user",
+        "text": "What is an insurance lapse in New York State?"
+      },
+      {
+        "role": "agent",
+        "text": " An insurance lapse means that there is no liability insurance coverage for a vehicle registered in New York State for a period of time"
+      },
+      {
+        "role": "agent",
+        "text": "Do you have an insurance expiration for your registered vehicle?"
+      },
+      {
+        "role": "user",
+        "text": "yes"
+      },
+      {
+        "role": "agent",
+        "text": "the DMV can suspend your registration and driver license"
+      },
+      {
+        "role": "user",
+        "text": "If I received a letter that states my license is suspended. What should I do if I have insurance?"
+      },
+      {
+        "role": "agent",
+        "text": "If you have insurance, follow the instructions in the letter and contact your company or agent about the problem. Ask your company to file a coverage notice with the DMV electronically."
+      },
+      {
+        "role": "user",
+        "text": "Very well. the coverage notice with the dmv is efficient? . What can cause an insurance failure?"
+      },
+      {
+        "role": "agent",
+        "text": " Any amount of time that your vehicle is registered but not insured can cause a lapse in your insurance coverage . An insurance lapse can occur between the date your insurance is cancelled and the date"
+      },
+      {
+        "role": "user",
+        "text": "What if the plates are lost, destroyed or stolen? Does the DMV will issue me new registration and plates?"
+      },
+      {
+        "role": "agent",
+        "text": "Were the plates lost/stolen or destroyed?"
+      },
+      {
+        "role": "user",
+        "text": "What will happen if I surrender my vehicle plates will it reinstate my insurance coverage?"
+      },
+      {
+        "role": "agent",
+        "text": "your new insurance begins"
+      },
+      {
+        "role": "user",
+        "text": "If my vehicle does not have insurance and is involved in a traffic accident?"
+      },
+      {
+        "role": "agent",
+        "text": "the DMV will revoke your driver license and vehicle registration for at least one year"
+      }
+    ],
+    "question": " What happens if my insurance is cancelled or reinstated, or I get new insurance?",
+    "gold_answer": "Your insurance company must notify the DMV electronically if",
+    "gold_docs": [
+      "Insurance lapses#3_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Insurance lapses#3_0",
+        "id_sp": "34",
+        "start": 2423,
+        "end": 2484,
+        "domain": "dmv"
+      }
+    ],
+    "gold_tools": [
+      "search_dmv"
+    ]
+  },
+  {
+    "id": "4ee42de0c4a3fd13e4109856ae662451:13",
+    "dialogue_id": "4ee42de0c4a3fd13e4109856ae662451",
+    "domain": "va",
+    "history": [
+      {
+        "role": "user",
+        "text": "can you give me details of Eligibility requirements for VA home loan program"
+      },
+      {
+        "role": "agent",
+        "text": "Learn about VA home loan eligibility requirements for a VA direct or VA - backed loan. Find out how to apply for a Certificate of Eligibility COE to show your lender that you qualify based on your service history and duty status"
+      },
+      {
+        "role": "user",
+        "text": "Can I get a COE in any other situations?"
+      },
+      {
+        "role": "agent",
+        "text": "You may be able to get a COE if you meet at least one of the requirements listed below"
+      },
+      {
+        "role": "user",
+        "text": "tell me the questions i must answer "
+      },
+      {
+        "role": "agent",
+        "text": "You ve sold the home you bought with the prior loan and have paid that loan in full "
+      },
+      {
+        "role": "user",
+        "text": "not"
+      },
+      {
+        "role": "agent",
+        "text": "A qualified Veteran - transferee agrees to assume your loan and substitute their entitlement for the same amount of entitlement you used originally"
+      },
+      {
+        "role": "user",
+        "text": "yes"
+      },
+      {
+        "role": "agent",
+        "text": "You qualify for the program"
+      },
+      {
+        "role": "user",
+        "text": "Can I use a COE I used before?"
+      },
+      {
+        "role": "agent",
+        "text": " You may be able to restore an entitlement you used in the past to buy another home with a VA direct or VA - backed loan if you meet at least one of the requirements listed below "
+      }
+    ],
+    "question": "Can I get a COE in any other situations?",
+    "gold_answer": "At least one of these must be true  You:\nAre a U.S. citizen who served in the Armed Forces of a government allied with the United States in World War II ,",
+    "gold_docs": [
+      "Eligibility Requirements For VA Home Loan Programs | Veterans Affairs#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Eligibility Requirements For VA Home Loan Programs | Veterans Affairs#1_0",
+        "id_sp": "33",
+        "start": 1934,
+        "end": 1970,
+        "domain": "va"
+      },
+      {
+        "doc_id": "Eligibility Requirements For VA Home Loan Programs | Veterans Affairs#1_0",
+        "id_sp": "34",
+        "start": 1970,
+        "end": 1975,
+        "domain": "va"
+      },
+      {
+        "doc_id": "Eligibility Requirements For VA Home Loan Programs | Veterans Affairs#1_0",
+        "id_sp": "35",
+        "start": 1975,
+        "end": 2089,
+        "domain": "va"
+      }
+    ],
+    "gold_tools": [
+      "search_va"
+    ]
+  },
+  {
+    "id": "4ff0ac19d0cc7c2a5dc1a504ad636326:6",
+    "dialogue_id": "4ff0ac19d0cc7c2a5dc1a504ad636326",
+    "domain": "studentaid",
+    "history": [
+      {
+        "role": "user",
+        "text": "I came here hoping you could explain how the income-sensitive repayment plan works. Can you tell me more about this plan?"
+      },
+      {
+        "role": "agent",
+        "text": "Of course. The payments under this plan increase or decrease based on your annual income."
+      },
+      {
+        "role": "agent",
+        "text": "Do you need to make lower payments on your FFEL Program loans?"
+      },
+      {
+        "role": "user",
+        "text": "No, I don't."
+      },
+      {
+        "role": "agent",
+        "text": "Unfortunately, no relevant information is found."
+      }
+    ],
+    "question": "What can you tell me about monthly payments?",
+    "gold_answer": "Under this plan, you'll have monthly payments.",
+    "gold_docs": [
+      "Income-Sensitive Plan | Federal Student Aid#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Income-Sensitive Plan | Federal Student Aid#1_0",
+        "id_sp": "15",
+        "start": 631,
+        "end": 653,
+        "domain": "studentaid"
+      }
+    ],
+    "gold_tools": [
+      "search_studentaid"
+    ]
+  },
+  {
+    "id": "5081d34a722a44fbd56759a7cff75aea:11",
+    "dialogue_id": "5081d34a722a44fbd56759a7cff75aea",
+    "domain": "va",
+    "history": [
+      {
+        "role": "user",
+        "text": "please show me information about Work study"
+      },
+      {
+        "role": "agent",
+        "text": "Find out how our Veterans work - study program can help you earn money while you re enrolled in a college , a vocational school , or professional training program ."
+      },
+      {
+        "role": "user",
+        "text": "Can I take part in the Veterans work-study program?"
+      },
+      {
+        "role": "agent",
+        "text": "You can take part in our work - study program if you meet all of the requirements listed"
+      },
+      {
+        "role": "user",
+        "text": "I see. What can you do for careers and employment?"
+      },
+      {
+        "role": "agent",
+        "text": "You can apply for vocational rehabilitation services, get support for your Veteran-owned small business, and access other career resources."
+      },
+      {
+        "role": "user",
+        "text": "Seems awfully useful, ok. What about family member benefits?"
+      },
+      {
+        "role": "agent",
+        "text": "On our page you can learn about the benefits you may qualify for as a spouse, dependent, or survivor. You can also find out what you're eligible for as a family member caring for a Veteran with disabilities."
+      },
+      {
+        "role": "user",
+        "text": "Alright. Which brings me to service member benefits. What benefits can a service member expect?"
+      },
+      {
+        "role": "agent",
+        "text": "On our page you can find out what benefits you may be eligible for during service and which time-sensitive benefits to consider when separating or retiring."
+      }
+    ],
+    "question": "Ok, and since I'm not the youngest anymore, can you tell me something about burials for Veterans?",
+    "gold_answer": "Of course. You can get help planning a burial in a VA national cemetery, order a headstone or other memorial item to honor a Veteran's service, and apply for survivor and dependent benefits.",
+    "gold_docs": [
+      "VA.gov Home | Veterans Affairs#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "VA.gov Home | Veterans Affairs#1_0",
+        "id_sp": "32",
+        "start": 1146,
+        "end": 1318,
+        "domain": "va"
+      }
+    ],
+    "gold_tools": [
+      "search_va"
+    ]
+  },
+  {
+    "id": "531e4217ce2f7cb6e3c780d038afe790:13",
+    "dialogue_id": "531e4217ce2f7cb6e3c780d038afe790",
+    "domain": "ssa",
+    "history": [
+      {
+        "role": "user",
+        "text": "what can you tell me about\nDisability Benefits | Apply For A Child (Under Age 18)"
+      },
+      {
+        "role": "agent",
+        "text": "To apply for a child?"
+      },
+      {
+        "role": "user",
+        "text": "yes"
+      },
+      {
+        "role": "agent",
+        "text": "You will need to complete an Application for Supplemental Security Income SSI AND a Child Disability Report . The report collects information about the child 's disabling condition and how it affects his / her ability to function"
+      },
+      {
+        "role": "user",
+        "text": "I see. May I ask another question regarding the documents that I need to provide for the Disability Benefits for my child?"
+      },
+      {
+        "role": "agent",
+        "text": "First you will need to provide your birth certificate. Do you have one? "
+      },
+      {
+        "role": "user",
+        "text": "Yes. I do."
+      },
+      {
+        "role": "agent",
+        "text": "Excellent. Were you born in the United States?"
+      },
+      {
+        "role": "user",
+        "text": "No, but I have proof of U.S. citizenship."
+      },
+      {
+        "role": "agent",
+        "text": "Okay. Since you already have proof of U.S. citizenship, you won't need any further proofs of identity. "
+      },
+      {
+        "role": "user",
+        "text": "What's next after I apply?"
+      },
+      {
+        "role": "agent",
+        "text": "Will you be completing the online application?"
+      }
+    ],
+    "question": "Yes. I think that will be the most convenient method.",
+    "gold_answer": "Great. Once you complete the application, we will contact you with our decision.",
+    "gold_docs": [
+      "Disability Benefits | Social Security Administration#2_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Disability Benefits | Social Security Administration#2_0",
+        "id_sp": "119",
+        "start": 7394,
+        "end": 7404,
+        "domain": "ssa"
+      }
+    ],
+    "gold_tools": [
+      "search_ssa"
+    ]
+  },
+  {
+    "id": "5c1c3c6a47d0193987bc89846589348b:9",
+    "dialogue_id": "5c1c3c6a47d0193987bc89846589348b",
+    "domain": "studentaid",
+    "history": [
+      {
+        "role": "user",
+        "text": "hello i would like to get information about new applicants"
+      },
+      {
+        "role": "agent",
+        "text": "You are not currently on an income-based plan and want to apply?"
+      },
+      {
+        "role": "user",
+        "text": "yes"
+      },
+      {
+        "role": "agent",
+        "text": "You can request an income-based payment plan that limits your payments to a percentage of your income."
+      },
+      {
+        "role": "user",
+        "text": "and what can I do if my income has changed?"
+      },
+      {
+        "role": "agent",
+        "text": "In that case, you can request that your income-based payment be recalculated to reduce your current monthly payment."
+      },
+      {
+        "role": "user",
+        "text": "Also, I need to find out Loan Application. Wait, can you describe the Direct PLUS loan application again?"
+      },
+      {
+        "role": "agent",
+        "text": "Of course. This is a request for supplemental information in connection with your application for a Federal Direct PLUS Loan Direct PLUS Loan through the William D. Ford Federal Direct Loan Direct Loan Program. Some schools may have a different process for obtaining the additional information needed to process your Direct PLUS Loan application."
+      }
+    ],
+    "question": "What if I have placed a security freeze on my credit?",
+    "gold_answer": "Then you must lift or remove the freeze at each credit bureau before you continue. Your application will not be processed if you have a security freeze.",
+    "gold_docs": [
+      "PLUS Loan Application for Graduate Students | Federal Student Aid#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "PLUS Loan Application for Graduate Students | Federal Student Aid#1_0",
+        "id_sp": "14",
+        "start": 1567,
+        "end": 1645,
+        "domain": "studentaid"
+      },
+      {
+        "doc_id": "PLUS Loan Application for Graduate Students | Federal Student Aid#1_0",
+        "id_sp": "15",
+        "start": 1645,
+        "end": 1715,
+        "domain": "studentaid"
+      }
+    ],
+    "gold_tools": [
+      "search_studentaid"
+    ]
+  },
+  {
+    "id": "5e3b19f83b8b5f97e6354fbee94ee520:5",
+    "dialogue_id": "5e3b19f83b8b5f97e6354fbee94ee520",
+    "domain": "studentaid",
+    "history": [
+      {
+        "role": "user",
+        "text": "Do all schools cost the same or do they differ from school to school?"
+      },
+      {
+        "role": "agent",
+        "text": "Yes, all schools are different but we can give you tips on how to lower costs when you go to school."
+      },
+      {
+        "role": "user",
+        "text": "Are there discounts that colleges could offer?"
+      },
+      {
+        "role": "agent",
+        "text": "Are you going to the same school as one of your parents did or are you considered an alumnus?."
+      }
+    ],
+    "question": "No, i am not attending a school one of my parents attended.",
+    "gold_answer": "Will there be more than you or another child from your family attending the college?",
+    "gold_docs": [
+      "Understanding College Costs | Federal Student Aid#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Understanding College Costs | Federal Student Aid#1_0",
+        "id_sp": "35",
+        "start": 2378,
+        "end": 2434,
+        "domain": "studentaid"
+      }
+    ],
+    "gold_tools": [
+      "search_studentaid"
+    ]
+  },
+  {
+    "id": "5f0164902465a37044261c2b701de9d0:5",
+    "dialogue_id": "5f0164902465a37044261c2b701de9d0",
+    "domain": "studentaid",
+    "history": [
+      {
+        "role": "user",
+        "text": "I have reason to believe that I could be eligible for loan forgiveness in relation to my school, can you give me more information on this regard?"
+      },
+      {
+        "role": "agent",
+        "text": "This loan forgiveness is known as borrower defense to repayment, or can be known as borrower defense for short. We have extensive information on our website about this"
+      },
+      {
+        "role": "user",
+        "text": "If my program earnings exceed those of the comparison earnings that are carried out by the ED, what happens?"
+      },
+      {
+        "role": "agent",
+        "text": "In this case, even if you have filed an approved claim, you will not receive any discharge of your loan until it is associated with Corinthian Colleges, Inc. (CCI)"
+      }
+    ],
+    "question": "ok thanks also I would like to find out about the association with Corinthian Colleges, Inc. (CCI) and the Requirements to be a highly qualified teacher?",
+    "gold_answer": "Do you have at least a bachelor's degree?",
+    "gold_docs": [
+      "Teacher Loan Forgiveness | Federal Student Aid#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Teacher Loan Forgiveness | Federal Student Aid#1_0",
+        "id_sp": "35",
+        "start": 3125,
+        "end": 3165,
+        "domain": "studentaid"
+      }
+    ],
+    "gold_tools": [
+      "search_studentaid"
+    ]
+  },
+  {
+    "id": "641523c105eecabac7186824f0ca77a4:14",
+    "dialogue_id": "641523c105eecabac7186824f0ca77a4",
+    "domain": "dmv",
+    "history": [
+      {
+        "role": "user",
+        "text": "Do I need to bring the title when I transfer a registration from one car to another car?"
+      },
+      {
+        "role": "agent",
+        "text": "You will need the original title or other proof of ownership."
+      },
+      {
+        "role": "agent",
+        "text": "Did you want to get through your DMV visit quickly?"
+      },
+      {
+        "role": "user",
+        "text": "yes, who doesn't"
+      },
+      {
+        "role": "agent",
+        "text": "For quicker service you can make a reservation online before visiting offices in New York City, Westchester, Nassau, Suffolk, Rockland, Onondaga, Monroe or Albany Counties."
+      },
+      {
+        "role": "user",
+        "text": "I need more additional details about the refunds. Can you send me an estimate of how much money I'll get back?"
+      },
+      {
+        "role": "agent",
+        "text": "I sure can!  Here is an example to show how your refund amount is determined .\n    You paid $ 137.50 to register your vehicle for two years"
+      },
+      {
+        "role": "user",
+        "text": "OK thanks. I'd also want to find out the Transfer of a vehicle. can I bring a printer copy for my title?"
+      },
+      {
+        "role": "agent",
+        "text": "You will need the original or certified copy"
+      },
+      {
+        "role": "user",
+        "text": "I'd like to ask if it is possible for me to surrender my plates temporarily?"
+      },
+      {
+        "role": "agent",
+        "text": "Yes, you can do that.  You can look under special procedures to surrender plates for a season or temporary surrender of plates."
+      },
+      {
+        "role": "user",
+        "text": "Do you have any additional information that I can use to learn more about transferring titles of my vehicle?"
+      },
+      {
+        "role": "agent",
+        "text": "Yes, I can give you a link so you can find out more on how to transfer the ownership of a vehicle."
+      }
+    ],
+    "question": "can I still do a transfer if I don't have an ID?",
+    "gold_answer": "yes, there are other kinds of proof you can use.",
+    "gold_docs": [
+      "How to transfer a registration to another vehicle#3_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "How to transfer a registration to another vehicle#3_0",
+        "id_sp": "55",
+        "start": 2825,
+        "end": 2868,
+        "domain": "dmv"
+      }
+    ],
+    "gold_tools": [
+      "search_dmv"
+    ]
+  },
+  {
+    "id": "659bba29e47e5933ebc2e08bdff478f7:8",
+    "dialogue_id": "659bba29e47e5933ebc2e08bdff478f7",
+    "domain": "dmv",
+    "history": [
+      {
+        "role": "user",
+        "text": "I received a Letter that states my insurance lapsed. What can I do?"
+      },
+      {
+        "role": "agent",
+        "text": " The letter means your insurance company notified the DMV that your insurance coverage ended , and that no other company notified the DMV about new coverage"
+      },
+      {
+        "role": "agent",
+        "text": "If i have insurance?"
+      },
+      {
+        "role": "user",
+        "text": "yes"
+      },
+      {
+        "role": "agent",
+        "text": "follow the instructions in the letter and contact your company or agent about the problem. Ask your company to file a notice of coverage with the DMV electronically "
+      },
+      {
+        "role": "user",
+        "text": "On the subject of suspensions of a similar nature. What does it mean if my driver's license is revoked?"
+      },
+      {
+        "role": "agent",
+        "text": "There are two different types of suspensions. "
+      }
+    ],
+    "question": "What are the different types of suspensions? I received a letter stating that my license is suspended. What I can do?",
+    "gold_answer": " The letter means your insurance company notified the DMV that your insurance coverage ended , and that no other company notified the DMV about new coverage",
+    "gold_docs": [
+      "Respond to DMV insurance letters and orders#3_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Respond to DMV insurance letters and orders#3_0",
+        "id_sp": "31",
+        "start": 1785,
+        "end": 1941,
+        "domain": "dmv"
+      }
+    ],
+    "gold_tools": [
+      "search_dmv"
+    ]
+  },
+  {
+    "id": "66070e0a18e0e5161e96f9134bfefff6:5",
+    "dialogue_id": "66070e0a18e0e5161e96f9134bfefff6",
+    "domain": "dmv",
+    "history": [
+      {
+        "role": "user",
+        "text": "I have a restricted use license issued in NJ and need information about driving in NY."
+      },
+      {
+        "role": "agent",
+        "text": "Do you meet NY requirements for obtaining a restricted license?"
+      },
+      {
+        "role": "user",
+        "text": "Yes, I do."
+      },
+      {
+        "role": "agent",
+        "text": "Great. You can receive a restricted license to drive in NY. The restrictions will be the same as the same as the restrictions for a driver with a NY driver license."
+      }
+    ],
+    "question": "Where can I apply for the restricted driver license?",
+    "gold_answer": "You have to apply in person at a DMV office. Most DMV offices have this service, but you should contact your nearest office to make sure you can apply there.",
+    "gold_docs": [
+      "Conditional and restricted use licenses#3_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Conditional and restricted use licenses#3_0",
+        "id_sp": "1",
+        "start": 0,
+        "end": 86,
+        "domain": "dmv"
+      },
+      {
+        "doc_id": "Conditional and restricted use licenses#3_0",
+        "id_sp": "2",
+        "start": 86,
+        "end": 148,
+        "domain": "dmv"
+      },
+      {
+        "doc_id": "Conditional and restricted use licenses#3_0",
+        "id_sp": "3",
+        "start": 148,
+        "end": 213,
+        "domain": "dmv"
+      }
+    ],
+    "gold_tools": [
+      "search_dmv"
+    ]
+  },
+  {
+    "id": "6c8ba7b5cdffa1f6f29a2f00a68f4a9e:9",
+    "dialogue_id": "6c8ba7b5cdffa1f6f29a2f00a68f4a9e",
+    "domain": "ssa",
+    "history": [
+      {
+        "role": "user",
+        "text": "Can I use the Retirement Estimator?"
+      },
+      {
+        "role": "agent",
+        "text": "Yes, if you have enough credits to qualify."
+      },
+      {
+        "role": "user",
+        "text": "What if I only have Medicare right now?"
+      },
+      {
+        "role": "agent",
+        "text": "You can absolutely still get an estimate."
+      },
+      {
+        "role": "user",
+        "text": "Do you also know What if I only have Medicare right now?  There are also various services available, right?"
+      },
+      {
+        "role": "agent",
+        "text": "Correct. We continue to expand the services available online. Visit our online services page to see a complete list, including the newest services to help you manage your information. You can also search our comprehensive FAQs section for help with specific retirement issues."
+      },
+      {
+        "role": "user",
+        "text": "That's good to know. And what can I do to keep my information safe?"
+      },
+      {
+        "role": "agent",
+        "text": "Identity theft affects millions of people each year and can cause serious financial and identity-related problems. Protect yourself by securing your personal information, taking the time to understand the threat of identity theft, and exercising caution."
+      }
+    ],
+    "question": "Sounds great. How do I report suspicious activity then?",
+    "gold_answer": "Did you receive a suspicious call from someone claiming to be from Social Security?",
+    "gold_docs": [
+      "Manage Your Retirement Benefits | SSA#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Manage Your Retirement Benefits | SSA#1_0",
+        "id_sp": "83",
+        "start": 4995,
+        "end": 5079,
+        "domain": "ssa"
+      }
+    ],
+    "gold_tools": [
+      "search_ssa"
+    ]
+  },
+  {
+    "id": "6dd63542d1b12b70a9e90f796755ef64:5",
+    "dialogue_id": "6dd63542d1b12b70a9e90f796755ef64",
+    "domain": "studentaid",
+    "history": [
+      {
+        "role": "user",
+        "text": "I would like to know if I can get my federal student loans forgiven for their service as a teacher?"
+      },
+      {
+        "role": "agent",
+        "text": "You must learn about the forgiveness program to see if you qualify."
+      },
+      {
+        "role": "user",
+        "text": "If I already teach full-time for five full academic years in a row at a low-income school, do I qualify?"
+      },
+      {
+        "role": "agent",
+        "text": "in view of your history you may be eligible for forgiveness of up to $ 17,500 on your Subsidized and Unsubsidized Direct Loans and your Subsidized and Unsubsidized Federal Stafford Loans."
+      }
+    ],
+    "question": "Also, How do I apply for a loan cancellation? What is the purpose of the loan application?",
+    "gold_answer": "It is important that you complete the application.",
+    "gold_docs": [
+      "False Certification Discharge | Federal Student Aid#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "False Certification Discharge | Federal Student Aid#1_0",
+        "id_sp": "17",
+        "start": 1847,
+        "end": 1932,
+        "domain": "studentaid"
+      }
+    ],
+    "gold_tools": [
+      "search_studentaid"
+    ]
+  },
+  {
+    "id": "72bd90b458e0e654a8d86ff996c9f5a9:3",
+    "dialogue_id": "72bd90b458e0e654a8d86ff996c9f5a9",
+    "domain": "studentaid",
+    "history": [
+      {
+        "role": "user",
+        "text": "Does consolidating my federal educational loans help?"
+      },
+      {
+        "role": "agent",
+        "text": "Their are pros and cons when consolidating your educational loans."
+      }
+    ],
+    "question": "Can I reconsolidate an existing FFEL Consolidation Loan?",
+    "gold_answer": "You might be able to reconsolidate an existing FFEL Consolidation Loan without including any additional loans.",
+    "gold_docs": [
+      "Student Loan Consolidation | Federal Student Aid#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Student Loan Consolidation | Federal Student Aid#1_0",
+        "id_sp": "80",
+        "start": 5845,
+        "end": 5943,
+        "domain": "studentaid"
+      }
+    ],
+    "gold_tools": [
+      "search_studentaid"
+    ]
+  },
+  {
+    "id": "72dbf6c5eb89a0ff4a8a7b04a186169e:7",
+    "dialogue_id": "72dbf6c5eb89a0ff4a8a7b04a186169e",
+    "domain": "dmv",
+    "history": [
+      {
+        "role": "user",
+        "text": "I don't have the proofs of name identification that I need to bring to DMV. "
+      },
+      {
+        "role": "agent",
+        "text": "I can assist you with this issue. Most people have more proof documents already available than they think. "
+      },
+      {
+        "role": "user",
+        "text": "Can I use a proof of residence document that is in my wife's name?"
+      },
+      {
+        "role": "agent",
+        "text": "Do you and your wife have the same last name?"
+      },
+      {
+        "role": "user",
+        "text": "Yes, we do."
+      },
+      {
+        "role": "agent",
+        "text": "Great. You can use your wife's proof of residence documents."
+      }
+    ],
+    "question": "One more reason for allowing the insurance to expire. Would I have to turn in something, or will I be able to retain it while I renew my insurance?",
+    "gold_answer": "If you show proof of insurance and you go ahead with the address change than everything should be fine",
+    "gold_docs": [
+      "Top 5 DMV Mistakes and How to Avoid Them#3_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Top 5 DMV Mistakes and How to Avoid Them#3_0",
+        "id_sp": "35",
+        "start": 2520,
+        "end": 2573,
+        "domain": "dmv"
+      },
+      {
+        "doc_id": "Top 5 DMV Mistakes and How to Avoid Them#3_0",
+        "id_sp": "36",
+        "start": 2573,
+        "end": 2624,
+        "domain": "dmv"
+      },
+      {
+        "doc_id": "Top 5 DMV Mistakes and How to Avoid Them#3_0",
+        "id_sp": "37",
+        "start": 2624,
+        "end": 2724,
+        "domain": "dmv"
+      }
+    ],
+    "gold_tools": [
+      "search_dmv"
+    ]
+  },
+  {
+    "id": "7360d7a76454a4ac229625282a1c16ed:3",
+    "dialogue_id": "7360d7a76454a4ac229625282a1c16ed",
+    "domain": "ssa",
+    "history": [
+      {
+        "role": "user",
+        "text": "I received a security freeze fraud alert on my credit report"
+      },
+      {
+        "role": "agent",
+        "text": "read If you have a security freeze , fraud alert , or both on your credit report "
+      }
+    ],
+    "question": "Can you help me ?",
+    "gold_answer": "ou can still open a my Social Security account by temporarily lifting it ",
+    "gold_docs": [
+      "my Social Security | Create an Account | Social Security Administratio#2_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "my Social Security | Create an Account | Social Security Administratio#2_0",
+        "id_sp": "8",
+        "start": 577,
+        "end": 652,
+        "domain": "ssa"
+      },
+      {
+        "doc_id": "my Social Security | Create an Account | Social Security Administratio#2_0",
+        "id_sp": "9",
+        "start": 652,
+        "end": 766,
+        "domain": "ssa"
+      },
+      {
+        "doc_id": "my Social Security | Create an Account | Social Security Administratio#2_0",
+        "id_sp": "10",
+        "start": 766,
+        "end": 859,
+        "domain": "ssa"
+      }
+    ],
+    "gold_tools": [
+      "search_ssa"
+    ]
+  },
+  {
+    "id": "744c01ff83d1467a44919df8aab3459c:7",
+    "dialogue_id": "744c01ff83d1467a44919df8aab3459c",
+    "domain": "studentaid",
+    "history": [
+      {
+        "role": "user",
+        "text": "i need help i would like to know if your school closes while you enroll or soon after you retire, you may be eligible for discharge from your federal student loan"
+      },
+      {
+        "role": "agent",
+        "text": "in this case you need to know the eligibility requirements for discharge and how you can apply."
+      },
+      {
+        "role": "user",
+        "text": "ok but in this case I would like to know if I am eligible since if I attended a school that closed less than three years ago"
+      },
+      {
+        "role": "agent",
+        "text": "In addition to that point if you meet the eligibility requirements for closed school discharge, and want your loans to be canceled, please contact your loan administrator to apply for closed school discharge now instead of waiting three years to receive a closed high school automatic."
+      },
+      {
+        "role": "user",
+        "text": "By the way, regarding common questions and answers regarding borrower defense decision notifications, where can I contact to reconsider a decision on this?"
+      },
+      {
+        "role": "agent",
+        "text": "We have a dedicated borrower defense hotline at 1-855-279-6207 from 8am to 8pm"
+      }
+    ],
+    "question": "I have applied for borrower defense by way of email but now have found further information that I want to send, can I do this?",
+    "gold_answer": "You can send them by way of email and scan any PDF document attachments ",
+    "gold_docs": [
+      "Borrower Defense to Repayment | Federal Student Aid#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Borrower Defense to Repayment | Federal Student Aid#1_0",
+        "id_sp": "39",
+        "start": 3066,
+        "end": 3160,
+        "domain": "studentaid"
+      }
+    ],
+    "gold_tools": [
+      "search_studentaid"
+    ]
+  },
+  {
+    "id": "75337dd5a2e027bdca1106eb762ff41e:7",
+    "dialogue_id": "75337dd5a2e027bdca1106eb762ff41e",
+    "domain": "dmv",
+    "history": [
+      {
+        "role": "user",
+        "text": "Hello, good morning. I'm going to visit NYS pretty soon and i would like to know if i can get a driving permit there."
+      },
+      {
+        "role": "agent",
+        "text": "Do you have a driver license issued by other state?"
+      },
+      {
+        "role": "user",
+        "text": "No, i don't have such license."
+      },
+      {
+        "role": "agent",
+        "text": "Unfortunately, no relevant information is found."
+      },
+      {
+        "role": "user",
+        "text": "Look, If somebody anyone wants to get a driving permit there, what should be done?"
+      },
+      {
+        "role": "agent",
+        "text": "Well, you should apply for a conditional or restricted use license in person at a DMV Office. You can do this at almost any DMV Office."
+      }
+    ],
+    "question": "This restricted license can be issued to those whose license has been suspended or revoked because alcohol or drug?",
+    "gold_answer": "In fact, yes, they can get a restricted license. In any case, the driver must attend a Impaired Driver Program approved by the DMV.",
+    "gold_docs": [
+      "Conditional and restricted use licenses#3_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Conditional and restricted use licenses#3_0",
+        "id_sp": "5",
+        "start": 228,
+        "end": 394,
+        "domain": "dmv"
+      },
+      {
+        "doc_id": "Conditional and restricted use licenses#3_0",
+        "id_sp": "6",
+        "start": 394,
+        "end": 521,
+        "domain": "dmv"
+      }
+    ],
+    "gold_tools": [
+      "search_dmv"
+    ]
+  },
+  {
+    "id": "7bed8e7bc5c47b4dae07242b355cddb6:12",
+    "dialogue_id": "7bed8e7bc5c47b4dae07242b355cddb6",
+    "domain": "dmv",
+    "history": [
+      {
+        "role": "user",
+        "text": "Please, tell me a bout the meaning of 'TEMPORARY VISITOR'"
+      },
+      {
+        "role": "agent",
+        "text": "That's is defined as anyone who is not immigrating to or not residing living in the USA. These visitors have US Department of Homeland Security DHS documentation that supports their legal status in this country"
+      },
+      {
+        "role": "user",
+        "text": "What if I have the DHS documents that identify me as a Temporary Visitor?"
+      },
+      {
+        "role": "agent",
+        "text": "In that case.your New York State driver license, permit or non-driver ID card will have 'TEMPORARY VISITOR' on it"
+      },
+      {
+        "role": "user",
+        "text": "And what if I have a driver license from another country and I have a NY State learner permit? Can I drive without a supervising driver?"
+      },
+      {
+        "role": "agent",
+        "text": "Of course you can. Your valid foreign driver license allows you to drive without a supervising driver and you can drive anywhere except in a DMV road test area"
+      },
+      {
+        "role": "agent",
+        "text": "Is your driver's license printed in any language except English?"
+      },
+      {
+        "role": "user",
+        "text": "No, it's in english"
+      },
+      {
+        "role": "agent",
+        "text": "Unfortunately, no relevant information is found."
+      },
+      {
+        "role": "user",
+        "text": "What if my temporary visitor status gets extended?"
+      },
+      {
+        "role": "agent",
+        "text": "In that case, you have to bring to a DMV office a completed Application for Permit, Driver License or Non-Driver ID Card "
+      }
+    ],
+    "question": "What should I bring to become an escort vehicle driver?",
+    "gold_answer": "You need your driver's license and additional ID.  The DMV Document Guide shows the whole list of acceptablr ID.",
+    "gold_docs": [
+      "Escort driver certification#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Escort driver certification#1_0",
+        "id_sp": "28",
+        "start": 1434,
+        "end": 1529,
+        "domain": "dmv"
+      },
+      {
+        "doc_id": "Escort driver certification#1_0",
+        "id_sp": "29",
+        "start": 1529,
+        "end": 1625,
+        "domain": "dmv"
+      }
+    ],
+    "gold_tools": [
+      "search_dmv"
+    ]
+  },
+  {
+    "id": "820cbb03b88b027352c70f5b91cd6a70:4",
+    "dialogue_id": "820cbb03b88b027352c70f5b91cd6a70",
+    "domain": "va",
+    "history": [
+      {
+        "role": "user",
+        "text": "Hello there. Please, do you have any educational benefits for veterans?"
+      },
+      {
+        "role": "agent",
+        "text": "Yes, we have. We offer you the VA educational benefits which help veterans and their qualified family members with needs like paying college tuition, finding the right school or training program and getting career counseling."
+      },
+      {
+        "role": "agent",
+        "text": "Would you like me to explain more about what do you have in this section?"
+      }
+    ],
+    "question": "Yes please.",
+    "gold_answer": "Aside the VA education benefits. We can help you on getting GI Bill and other education benefits, plus managing your veterans education benefits and getting more information and resources.",
+    "gold_docs": [
+      "VA Education Benefits | Veterans Affairs#2_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "VA Education Benefits | Veterans Affairs#2_0",
+        "id_sp": "5",
+        "start": 345,
+        "end": 386,
+        "domain": "va"
+      },
+      {
+        "doc_id": "VA Education Benefits | Veterans Affairs#2_0",
+        "id_sp": "6",
+        "start": 386,
+        "end": 426,
+        "domain": "va"
+      },
+      {
+        "doc_id": "VA Education Benefits | Veterans Affairs#2_0",
+        "id_sp": "7",
+        "start": 426,
+        "end": 457,
+        "domain": "va"
+      }
+    ],
+    "gold_tools": [
+      "search_va"
+    ]
+  },
+  {
+    "id": "8678fbefdfe4bf13233a65ca933f226a:12",
+    "dialogue_id": "8678fbefdfe4bf13233a65ca933f226a",
+    "domain": "ssa",
+    "history": [
+      {
+        "role": "user",
+        "text": "hi"
+      },
+      {
+        "role": "agent",
+        "text": "hi"
+      },
+      {
+        "role": "user",
+        "text": "hi"
+      },
+      {
+        "role": "agent",
+        "text": "hi"
+      },
+      {
+        "role": "user",
+        "text": "In relation to retirement benefits when I reach the normal retirement age. What if I plan to continue to work?"
+      },
+      {
+        "role": "agent",
+        "text": "Even if you plan to continue workingyou may still be able to receive some benefits"
+      },
+      {
+        "role": "agent",
+        "text": "Are you under the full retirement age?"
+      },
+      {
+        "role": "user",
+        "text": "yes"
+      },
+      {
+        "role": "agent",
+        "text": " we will deduct the excess earnings from your benefits "
+      },
+      {
+        "role": "user",
+        "text": "Can I apply before the age?"
+      },
+      {
+        "role": "agent",
+        "text": " You can start your retirement benefit at any point from age 62 up until age 70 . "
+      }
+    ],
+    "question": "If I do not enroll in both parts a and B can I do so later?",
+    "gold_answer": "yes",
+    "gold_docs": [
+      "Benefits Planner: Retirement | Applying for Medicare Only | Social Security Administration#2_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Benefits Planner: Retirement | Applying for Medicare Only | Social Security Administration#2_0",
+        "id_sp": "48",
+        "start": 3242,
+        "end": 3383,
+        "domain": "ssa"
+      }
+    ],
+    "gold_tools": [
+      "search_ssa"
+    ]
+  },
+  {
+    "id": "8a1d4a671e36d9de27c07de3f69e9057:3",
+    "dialogue_id": "8a1d4a671e36d9de27c07de3f69e9057",
+    "domain": "ssa",
+    "history": [
+      {
+        "role": "user",
+        "text": "What if a person has a security freeze on their credit report?"
+      },
+      {
+        "role": "agent",
+        "text": "does that apply to you"
+      }
+    ],
+    "question": "yes",
+    "gold_answer": "If you have a security freeze , fraud alert , or both on your credit repor",
+    "gold_docs": [
+      "my Social Security | Create an Account | Social Security Administratio#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "my Social Security | Create an Account | Social Security Administratio#1_0",
+        "id_sp": "9",
+        "start": 619,
+        "end": 694,
+        "domain": "ssa"
+      },
+      {
+        "doc_id": "my Social Security | Create an Account | Social Security Administratio#1_0",
+        "id_sp": "10",
+        "start": 694,
+        "end": 808,
+        "domain": "ssa"
+      },
+      {
+        "doc_id": "my Social Security | Create an Account | Social Security Administratio#1_0",
+        "id_sp": "11",
+        "start": 808,
+        "end": 901,
+        "domain": "ssa"
+      }
+    ],
+    "gold_tools": [
+      "search_ssa"
+    ]
+  },
+  {
+    "id": "8b4f28969ef5bcc4e34ab3394f7dc8a8:9",
+    "dialogue_id": "8b4f28969ef5bcc4e34ab3394f7dc8a8",
+    "domain": "ssa",
+    "history": [
+      {
+        "role": "user",
+        "text": "Hello, I would like to obtain information about Social Security Credits"
+      },
+      {
+        "role": "agent",
+        "text": "Of course You must earn at least 40 Social Security credits to qualify for Social Security benefits. You earn Social Security credits when you work and pay Social Security taxes."
+      },
+      {
+        "role": "user",
+        "text": "can you please tell me the number of credits needed for retirement benefits"
+      },
+      {
+        "role": "agent",
+        "text": "were you born after 1928?"
+      },
+      {
+        "role": "user",
+        "text": "no"
+      },
+      {
+        "role": "agent",
+        "text": "Unfortunately, no relevant information is found."
+      },
+      {
+        "role": "user",
+        "text": "What happens when it comes to legal blindness?"
+      },
+      {
+        "role": "agent",
+        "text": "in that case there is no recent proof of work requirement."
+      }
+    ],
+    "question": "I'd like to ask you another question about the retirement. How old do you have to be to retire early?",
+    "gold_answer": " You can get Social Security retirement benefits as early as age 62",
+    "gold_docs": [
+      "Learn About Retirement Benefits | SSA#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Learn About Retirement Benefits | SSA#1_0",
+        "id_sp": "90",
+        "start": 5638,
+        "end": 5706,
+        "domain": "ssa"
+      },
+      {
+        "doc_id": "Learn About Retirement Benefits | SSA#1_0",
+        "id_sp": "92",
+        "start": 5716,
+        "end": 5805,
+        "domain": "ssa"
+      },
+      {
+        "doc_id": "Learn About Retirement Benefits | SSA#1_0",
+        "id_sp": "93",
+        "start": 5805,
+        "end": 5888,
+        "domain": "ssa"
+      }
+    ],
+    "gold_tools": [
+      "search_ssa"
+    ]
+  },
+  {
+    "id": "8c272b00a28c9412a1baa948a4dec9ea:13",
+    "dialogue_id": "8c272b00a28c9412a1baa948a4dec9ea",
+    "domain": "dmv",
+    "history": [
+      {
+        "role": "user",
+        "text": "Hello, i'm trying to find proof of my ID for some procedures with you. I don't find any at the moment, but my spouse have some, Can those be useful?"
+      },
+      {
+        "role": "agent",
+        "text": "Both you and your spouse share the same last name?"
+      },
+      {
+        "role": "user",
+        "text": "Yeah, we have that."
+      },
+      {
+        "role": "agent",
+        "text": "Then you don't have to worry. You can use those documents without any problem."
+      },
+      {
+        "role": "user",
+        "text": "And, just by curiosity, what other documents could i use instead?"
+      },
+      {
+        "role": "agent",
+        "text": "Well, you can use many other documents, such a bank debit card with your name, or bills or even divorce papers."
+      },
+      {
+        "role": "user",
+        "text": "Can you please tell me on what are the process if I forgot to update my address?"
+      },
+      {
+        "role": "agent",
+        "text": "You must change it immediately."
+      },
+      {
+        "role": "user",
+        "text": "What if I don't change it?"
+      },
+      {
+        "role": "agent",
+        "text": "Your license will be suspended."
+      },
+      {
+        "role": "user",
+        "text": "What if I move to another state?"
+      },
+      {
+        "role": "agent",
+        "text": "You must resolve any issues before you leave."
+      }
+    ],
+    "question": "How will they know if I have insurance?",
+    "gold_answer": "DMV works with insurance companies.",
+    "gold_docs": [
+      "Top 5 DMV Mistakes and How to Avoid Them#3_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Top 5 DMV Mistakes and How to Avoid Them#3_0",
+        "id_sp": "24",
+        "start": 1796,
+        "end": 1870,
+        "domain": "dmv"
+      },
+      {
+        "doc_id": "Top 5 DMV Mistakes and How to Avoid Them#3_0",
+        "id_sp": "25",
+        "start": 1870,
+        "end": 1978,
+        "domain": "dmv"
+      },
+      {
+        "doc_id": "Top 5 DMV Mistakes and How to Avoid Them#3_0",
+        "id_sp": "26",
+        "start": 1978,
+        "end": 2065,
+        "domain": "dmv"
+      }
+    ],
+    "gold_tools": [
+      "search_dmv"
+    ]
+  },
+  {
+    "id": "920163772b1a97b1578ec5f5864bdba4:8",
+    "dialogue_id": "920163772b1a97b1578ec5f5864bdba4",
+    "domain": "ssa",
+    "history": [
+      {
+        "role": "user",
+        "text": "how do I apply?"
+      },
+      {
+        "role": "agent",
+        "text": "you can apply online, keep in mind Please be ready to supply the information we need to approve your application for these benefits"
+      },
+      {
+        "role": "agent",
+        "text": "do you have a birth certificate?"
+      },
+      {
+        "role": "user",
+        "text": "yes"
+      },
+      {
+        "role": "agent",
+        "text": "ok great!"
+      },
+      {
+        "role": "user",
+        "text": "what info will you need?"
+      },
+      {
+        "role": "agent",
+        "text": "They will let you know. "
+      }
+    ],
+    "question": "what should I doif i do not have a birth certificate?",
+    "gold_answer": "If you do not have a birth certificate , you may request one from the state where you were born",
+    "gold_docs": [
+      "Benefits Planner: Retirement | You Can Apply For Retirement Benefits Or Medicare | Social Security Administration#2_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Benefits Planner: Retirement | You Can Apply For Retirement Benefits Or Medicare | Social Security Administration#2_0",
+        "id_sp": "33",
+        "start": 1742,
+        "end": 1749,
+        "domain": "ssa"
+      }
+    ],
+    "gold_tools": [
+      "search_ssa"
+    ]
+  },
+  {
+    "id": "9560ba3e4176d51d70c24ffbc7f00ce8:5",
+    "dialogue_id": "9560ba3e4176d51d70c24ffbc7f00ce8",
+    "domain": "studentaid",
+    "history": [
+      {
+        "role": "user",
+        "text": "Can I get help for the military service of a relative or myself?"
+      },
+      {
+        "role": "agent",
+        "text": "If you can choose for reimbursement and it is noteworthy that they are available from various sources."
+      },
+      {
+        "role": "user",
+        "text": "Can you tell me more about it?"
+      },
+      {
+        "role": "agent",
+        "text": "It is noteworthy that the postponement will extend for an additional 180 days."
+      }
+    ],
+    "question": "I'd like to know if the information on Loan Simulator will be beneficial to me when I apply for the loan?",
+    "gold_answer": "The result of the loan simulator is just for informational purposes.",
+    "gold_docs": [
+      "Loan Simulator | Federal Student Aid#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Loan Simulator | Federal Student Aid#1_0",
+        "id_sp": "37",
+        "start": 1694,
+        "end": 1803,
+        "domain": "studentaid"
+      },
+      {
+        "doc_id": "Loan Simulator | Federal Student Aid#1_0",
+        "id_sp": "38",
+        "start": 1803,
+        "end": 1942,
+        "domain": "studentaid"
+      }
+    ],
+    "gold_tools": [
+      "search_studentaid"
+    ]
+  },
+  {
+    "id": "95a469061b9a4e73d543984f942fcbe3:15",
+    "dialogue_id": "95a469061b9a4e73d543984f942fcbe3",
+    "domain": "studentaid",
+    "history": [
+      {
+        "role": "user",
+        "text": "Can you tell me who can qualify for federal student aid?"
+      },
+      {
+        "role": "agent",
+        "text": "Most U.S citizens or eligible noncitizens can qualify to get financial aid for college or career school. But there are some criteria for each program that those interested need to meet."
+      },
+      {
+        "role": "agent",
+        "text": "Do you want to know the eligibility requirements?"
+      },
+      {
+        "role": "user",
+        "text": "Not right now."
+      },
+      {
+        "role": "agent",
+        "text": "Students with a parent killed in Iraq or Afghanistan can qualify for another aid program. Is this your case?"
+      },
+      {
+        "role": "user",
+        "text": "Actually, yes. Tell me more about it, please."
+      },
+      {
+        "role": "agent",
+        "text": "Sure"
+      },
+      {
+        "role": "agent",
+        "text": "Did your parent die during military service in any of those two countries after the events of 9/11?"
+      },
+      {
+        "role": "user",
+        "text": "Not after 9/11."
+      },
+      {
+        "role": "agent",
+        "text": "Unfortunately, no relevant information is found."
+      },
+      {
+        "role": "user",
+        "text": "Is there any income cut-off to qualify for federal student aid?"
+      },
+      {
+        "role": "agent",
+        "text": "No, no income cut-off. But factors as the size of your family and your year in school are taken into consideration."
+      },
+      {
+        "role": "user",
+        "text": "If I want to get funds from the Direct Loan Program, what enrollment amount should I be in?"
+      },
+      {
+        "role": "agent",
+        "text": " To get Direct Loan Program funds, you must be enrolled at least half-time."
+      }
+    ],
+    "question": "Can I go to the embassy and ask for information on the subject?",
+    "gold_answer": "Sure, you can search for information in all those institutions.",
+    "gold_docs": [
+      "Eligibility for Non-U.S. Citizens | Federal Student Aid#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Eligibility for Non-U.S. Citizens | Federal Student Aid#1_0",
+        "id_sp": "74",
+        "start": 5453,
+        "end": 5606,
+        "domain": "studentaid"
+      }
+    ],
+    "gold_tools": [
+      "search_studentaid"
+    ]
+  },
+  {
+    "id": "95eff78754f9539188bd5c4ee063570b:5",
+    "dialogue_id": "95eff78754f9539188bd5c4ee063570b",
+    "domain": "ssa",
+    "history": [
+      {
+        "role": "user",
+        "text": "Hello, I would like to obtain information about disability benefits for a child under 18 "
+      },
+      {
+        "role": "agent",
+        "text": "do you want to apply for a child? "
+      },
+      {
+        "role": "user",
+        "text": "yes"
+      },
+      {
+        "role": "agent",
+        "text": "You will need to complete an SSI Supplemental Security Income Application AND a Child Disability Report. The report collects information on the child's disabling condition and how it affects their ability to function."
+      }
+    ],
+    "question": "Another question regarding Social Security. Is my Social Security account accessible to others?",
+    "gold_answer": "No it is for your use only.",
+    "gold_docs": [
+      "my Social Security | Create an Account | Social Security Administratio#2_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "my Social Security | Create an Account | Social Security Administratio#2_0",
+        "id_sp": "19",
+        "start": 1453,
+        "end": 1595,
+        "domain": "ssa"
+      },
+      {
+        "doc_id": "my Social Security | Create an Account | Social Security Administratio#2_0",
+        "id_sp": "21",
+        "start": 1617,
+        "end": 1721,
+        "domain": "ssa"
+      },
+      {
+        "doc_id": "my Social Security | Create an Account | Social Security Administratio#2_0",
+        "id_sp": "22",
+        "start": 1721,
+        "end": 1803,
+        "domain": "ssa"
+      }
+    ],
+    "gold_tools": [
+      "search_ssa"
+    ]
+  },
+  {
+    "id": "95fe740e45db7646026f6cb0aeeeb951:11",
+    "dialogue_id": "95fe740e45db7646026f6cb0aeeeb951",
+    "domain": "va",
+    "history": [
+      {
+        "role": "user",
+        "text": "I need to make a doctor appointment but I don't know where to go."
+      },
+      {
+        "role": "agent",
+        "text": "Do you have VA health care?"
+      },
+      {
+        "role": "user",
+        "text": "Yes, that's right."
+      },
+      {
+        "role": "agent",
+        "text": "We have over 1,200 locations. Are you asking which one you will be able to go to?"
+      },
+      {
+        "role": "user",
+        "text": "Yeah. There are a few within driving distance but I was wondering if I have to go to a certain one or what. "
+      },
+      {
+        "role": "agent",
+        "text": "You will get choose one VA location to receive regular care at."
+      },
+      {
+        "role": "user",
+        "text": "What if I get sick and have to see special doctors?"
+      },
+      {
+        "role": "agent",
+        "text": "If that is the case, you may be referred to other locations as necessary."
+      },
+      {
+        "role": "user",
+        "text": "Ok, that's good to know. I just moved into a new town and I wasn't sure how to find a place. They have my old address in my records though. How do I change it?"
+      },
+      {
+        "role": "agent",
+        "text": "To change your address, just call 877-222-VETS. It is open from Monday through Friday, 8 a.m. to 8 p.m."
+      }
+    ],
+    "question": "Thanks. Next question. I have to travel to Europe in six months. Does that affect my coverage at all?",
+    "gold_answer": "To make sure you are covered, you will need to sign up for our Foreign Medical Program.",
+    "gold_docs": [
+      "Where You'll Go For Care | Veterans Affairs#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Where You'll Go For Care | Veterans Affairs#1_0",
+        "id_sp": "77",
+        "start": 4774,
+        "end": 4830,
+        "domain": "va"
+      },
+      {
+        "doc_id": "Where You'll Go For Care | Veterans Affairs#1_0",
+        "id_sp": "78",
+        "start": 4830,
+        "end": 4875,
+        "domain": "va"
+      }
+    ],
+    "gold_tools": [
+      "search_va"
+    ]
+  },
+  {
+    "id": "97b89d77600b3661ce5a2942127643cb:16",
+    "dialogue_id": "97b89d77600b3661ce5a2942127643cb",
+    "domain": "dmv",
+    "history": [
+      {
+        "role": "user",
+        "text": "Hey, i need some guidance with certain letter i received some days ago about insurance, Could you help me out?"
+      },
+      {
+        "role": "agent",
+        "text": "Sure. The letter you received is meant to notify you that your insurance coverage has ended, and DMV hasn't received any new insurance coverage notification from any other company."
+      },
+      {
+        "role": "agent",
+        "text": "Do you have insurance already?"
+      },
+      {
+        "role": "user",
+        "text": "Yeah, in fact, i have one."
+      },
+      {
+        "role": "agent",
+        "text": "Then, do not worry about. Just follow the proper procedure written down in the letter and contact your insurance company or agent, to talk about the problem. Most probable thing would be to ask your company to file a notice of coverage with the DMV via electronic."
+      },
+      {
+        "role": "user",
+        "text": "I have another question about the termination fee for a pay suspension. What does it mean if my driver's license has been suspended?"
+      },
+      {
+        "role": "agent",
+        "text": "There are two different types of suspensions. "
+      },
+      {
+        "role": "user",
+        "text": "That sounds easy enough, actually. I'll make sure to do it ASAP.  In any case, is there any advice you can give me?"
+      },
+      {
+        "role": "agent",
+        "text": "For starters, do go and use your vehicle while your coverage is cancelled. Besides, please keep your plates with you while your problem is resolved with your insurance company."
+      },
+      {
+        "role": "user",
+        "text": "Another question about the charges from county motor vehicle offices . Will I get a refund once I surrender the plates?"
+      },
+      {
+        "role": "agent",
+        "text": "It depends.  You need to go to registrations refunds for surrendered plates to get more information."
+      },
+      {
+        "role": "user",
+        "text": "Please another question, a friend of mine just had her driver's license revoked, but she has no idea for how long. How does she know?"
+      },
+      {
+        "role": "agent",
+        "text": "For that, she'll have to go through the DMV process, but it would imply that her registration must expire or her plates must be transferred to another vehicle by DMV or DMV must receive proof of new or reinstated insurance."
+      },
+      {
+        "role": "user",
+        "text": "Sorry but, you said earlier that about my insurance being lapsed, all i had to do is to contact my insurance agent to fix the problem, right?"
+      },
+      {
+        "role": "agent",
+        "text": "That's correct. And do not forget to ask them to file the notice of coverage with the DMV electronically."
+      }
+    ],
+    "question": "Lets say, i mean, lets guess i don't have any insurance, what would happen there?",
+    "gold_answer": "If that should be your case, then you would need to surrender your vehicle registration and plates to the DMV immediately.",
+    "gold_docs": [
+      "Respond to DMV insurance letters and orders#3_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Respond to DMV insurance letters and orders#3_0",
+        "id_sp": "29",
+        "start": 1627,
+        "end": 1710,
+        "domain": "dmv"
+      }
+    ],
+    "gold_tools": [
+      "search_dmv"
+    ]
+  },
+  {
+    "id": "98ec6904a42dfcf483e63cb46e8c0241:6",
+    "dialogue_id": "98ec6904a42dfcf483e63cb46e8c0241",
+    "domain": "va",
+    "history": [
+      {
+        "role": "user",
+        "text": "hi i need to know how much will my service member pay for dependent coverage?"
+      },
+      {
+        "role": "agent",
+        "text": "will not pay anything. We provide dependent coverage at no cost until the child is 18 years old"
+      },
+      {
+        "role": "user",
+        "text": "What must be done to continue receiving dependent coverage after 18 years?"
+      },
+      {
+        "role": "agent",
+        "text": "The child Is a full-time student?"
+      },
+      {
+        "role": "user",
+        "text": "yes"
+      }
+    ],
+    "question": "Who is covered?",
+    "gold_answer": "coverage is for Spouses of service members covered under SGLI and Dependent children of service members covered under SGLI",
+    "gold_docs": [
+      "Family Group Life Insurance (FSGLI) | Veterans Affairs#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Family Group Life Insurance (FSGLI) | Veterans Affairs#1_0",
+        "id_sp": "13",
+        "start": 832,
+        "end": 878,
+        "domain": "va"
+      },
+      {
+        "doc_id": "Family Group Life Insurance (FSGLI) | Veterans Affairs#1_0",
+        "id_sp": "14",
+        "start": 878,
+        "end": 935,
+        "domain": "va"
+      }
+    ],
+    "gold_tools": [
+      "search_va"
+    ]
+  },
+  {
+    "id": "9974f6a50b58ab8be6c97c8528afda0e:12",
+    "dialogue_id": "9974f6a50b58ab8be6c97c8528afda0e",
+    "domain": "studentaid",
+    "history": [
+      {
+        "role": "user",
+        "text": "Hello, I would like you to help me with something. I recently left the school and the school did not make the required return of the loan funds to the loan administrator."
+      },
+      {
+        "role": "agent",
+        "text": "Of course, we will help you learn more about your unpaid rebate registration to see if you can qualify."
+      },
+      {
+        "role": "agent",
+        "text": "dropped out of school after receiving a loan from the Direct Loan Program?"
+      },
+      {
+        "role": "user",
+        "text": "yes"
+      },
+      {
+        "role": "agent",
+        "text": "the school may have been required by federal regulations to return some or all of the loan money to your loan servicer."
+      },
+      {
+        "role": "user",
+        "text": "ok but in this case I would like to know if I am eligible for discharge of my loan since I attended a school that closed less than three years ago."
+      },
+      {
+        "role": "agent",
+        "text": "In addition to that point if you meet the eligibility requirements for closed school discharge, and want your loans to be canceled, please contact your loan administrator to apply for closed school discharge now instead of waiting three years to receive a closed high school automatic."
+      },
+      {
+        "role": "user",
+        "text": "I would like to know if I'm eligible for a discharge of the portion of my loan that the school failed to return?"
+      },
+      {
+        "role": "agent",
+        "text": "Of course you may be eligible for a discharge of the part of your loan that the school was unable to repay."
+      },
+      {
+        "role": "user",
+        "text": "I am ready to request the download of the refund without paying, what do I do?"
+      },
+      {
+        "role": "agent",
+        "text": "You must complete the Loan Download Application - Unpaid Repayment and submit the completed form to your Loan Manager."
+      }
+    ],
+    "question": "How much of my loan will be canceled if I am approved for loan cancellation?",
+    "gold_answer": "Only the part of your loan that your school should have returned will be canceled. Contact your loan servicer for more information.",
+    "gold_docs": [
+      "Unpaid Refund Discharge | Federal Student Aid#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Unpaid Refund Discharge | Federal Student Aid#1_0",
+        "id_sp": "17",
+        "start": 1472,
+        "end": 1560,
+        "domain": "studentaid"
+      },
+      {
+        "doc_id": "Unpaid Refund Discharge | Federal Student Aid#1_0",
+        "id_sp": "18",
+        "start": 1560,
+        "end": 1609,
+        "domain": "studentaid"
+      }
+    ],
+    "gold_tools": [
+      "search_studentaid"
+    ]
+  },
+  {
+    "id": "9e22e93388cd4142dd9a3ac081870614:10",
+    "dialogue_id": "9e22e93388cd4142dd9a3ac081870614",
+    "domain": "va",
+    "history": [
+      {
+        "role": "user",
+        "text": "Hi, I'd like to know how much will my service member pay for dependent coverage?"
+      },
+      {
+        "role": "agent",
+        "text": "will not pay anything. We provide dependent coverage at no cost until the child is 18 years old"
+      },
+      {
+        "role": "agent",
+        "text": "Do you want to continue receiving dependent coverage after age 18?"
+      },
+      {
+        "role": "user",
+        "text": "yes"
+      },
+      {
+        "role": "agent",
+        "text": "Are you a full time student?"
+      },
+      {
+        "role": "user",
+        "text": "do not"
+      },
+      {
+        "role": "agent",
+        "text": "Are you permanently and totally disabled before your 18th birthday and cannot support yourself?"
+      },
+      {
+        "role": "user",
+        "text": "do not"
+      },
+      {
+        "role": "agent",
+        "text": "Unfortunately, no relevant information is found."
+      }
+    ],
+    "question": "but coverage could be extended if the child becomes permanently and totally disabled before the age of 18 and can no longer support himself?",
+    "gold_answer": "if we can extend coverage in some cases indefinitely.",
+    "gold_docs": [
+      "Family Group Life Insurance (FSGLI) | Veterans Affairs#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Family Group Life Insurance (FSGLI) | Veterans Affairs#1_0",
+        "id_sp": "82",
+        "start": 4956,
+        "end": 5011,
+        "domain": "va"
+      }
+    ],
+    "gold_tools": [
+      "search_va"
+    ]
+  },
+  {
+    "id": "9f2f7cc4e076c0f20f6b5675a1609ca2:12",
+    "dialogue_id": "9f2f7cc4e076c0f20f6b5675a1609ca2",
+    "domain": "dmv",
+    "history": [
+      {
+        "role": "user",
+        "text": "Can you walk me through the procedure for requesting new plates?"
+      },
+      {
+        "role": "agent",
+        "text": "Of course. You may request a new set of plates at a DMV office, provided you have all required documents with you."
+      },
+      {
+        "role": "agent",
+        "text": "Has your plate been lost or destroyed?"
+      },
+      {
+        "role": "user",
+        "text": "Yes, my plate has been destroyed in an accident."
+      },
+      {
+        "role": "agent",
+        "text": "In that case you will need to pay for the new plates, and a fee of $ 3.75 to issue a new registration. The fee for plates are $ 25 for a set of 2 plates."
+      },
+      {
+        "role": "user",
+        "text": "I'm also hoping to find out which auto insurance provider I can contact if the vehicle I've recovered is damaged or totaled."
+      },
+      {
+        "role": "agent",
+        "text": "You would need to contact your auto insurance company."
+      },
+      {
+        "role": "user",
+        "text": "At the moment of recovering my vehicle the plates are not there, what should I do if they have been stolen? Did I notify the police?"
+      },
+      {
+        "role": "agent",
+        "text": "Then you need to notify the police, and ask the police to complete a police report. Bring the police report to a DMV office to surrender the vehicle registration."
+      },
+      {
+        "role": "user",
+        "text": "A question, does the DMV require any insurance to register my vehicle?"
+      },
+      {
+        "role": "agent",
+        "text": "Yes the DMV requires auto liability insurance to register a vehicle in New York"
+      }
+    ],
+    "question": "Okay, that's it. Now, let's talk about DMV. Okay, let's get back to registering a new license plate. What documents should I carry with me?",
+    "gold_answer": "One of the documents you'll need is a completed Vehicle Registration / Title Application (MV-82).",
+    "gold_docs": [
+      "Lost, stolen, or destroyed plates#3_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Lost, stolen, or destroyed plates#3_0",
+        "id_sp": "21",
+        "start": 1506,
+        "end": 1573,
+        "domain": "dmv"
+      }
+    ],
+    "gold_tools": [
+      "search_dmv"
+    ]
+  },
+  {
+    "id": "a9d55878b5314c1e3d166257dbb581dc:10",
+    "dialogue_id": "a9d55878b5314c1e3d166257dbb581dc",
+    "domain": "studentaid",
+    "history": [
+      {
+        "role": "user",
+        "text": "I have something to submit about false information that I was given."
+      },
+      {
+        "role": "agent",
+        "text": "This is the place to submit a complaint an issue, concern, report suspicious activity, scams, or give us positive feedback."
+      },
+      {
+        "role": "agent",
+        "text": "Have you previously submitted a complaint and Federal Student Aid gave you a response that you didn't agree with?"
+      },
+      {
+        "role": "user",
+        "text": "Yes that's the case."
+      },
+      {
+        "role": "agent",
+        "text": "In that case, we suggest that you follow our procedure for resolving disputes."
+      },
+      {
+        "role": "user",
+        "text": "Wouldn't it go faster if I contacted the Ombudsman directly?"
+      },
+      {
+        "role": "agent",
+        "text": "We encourage you to follow our procedure before you contact the Federal Student Aid Ombudsman Group."
+      },
+      {
+        "role": "user",
+        "text": "I had a relatively good overall experience, can I mention that?"
+      },
+      {
+        "role": "agent",
+        "text": "Of course, that would be beneficial to all in that department."
+      }
+    ],
+    "question": "Is there a way to see what is up with my on going cases?",
+    "gold_answer": "You can log on to your account online to view, track, or update your case.",
+    "gold_docs": [
+      "Feedback Center#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Feedback Center#1_0",
+        "id_sp": "16",
+        "start": 859,
+        "end": 919,
+        "domain": "studentaid"
+      }
+    ],
+    "gold_tools": [
+      "search_studentaid"
+    ]
+  },
+  {
+    "id": "b0b94b6e6c7fdbb561f14ebd0a05cde9:11",
+    "dialogue_id": "b0b94b6e6c7fdbb561f14ebd0a05cde9",
+    "domain": "dmv",
+    "history": [
+      {
+        "role": "user",
+        "text": "What do I need to do before my road test"
+      },
+      {
+        "role": "agent",
+        "text": "Read the manual given to you when you got your permit."
+      },
+      {
+        "role": "user",
+        "text": "Is there anything I should practice?"
+      },
+      {
+        "role": "agent",
+        "text": "I would recommend practicing and studying it all."
+      },
+      {
+        "role": "user",
+        "text": "I'd also want to find out on what are the basis for conditional license to be given to drivers?"
+      },
+      {
+        "role": "agent",
+        "text": "The DMV can issue a conditional license to a qualified driver whose NY State license has been suspended or revoked because of an alcohol or drug - related violation "
+      },
+      {
+        "role": "user",
+        "text": "what is restricted use"
+      },
+      {
+        "role": "agent",
+        "text": "The DMV can issue a restricted use license to a driver who qualifies and whose license is suspended or revoked because of violations or incidents that are not alcohol or drug - related , or because of some drug - related violations"
+      },
+      {
+        "role": "user",
+        "text": "What more details do I need to know?"
+      },
+      {
+        "role": "agent",
+        "text": "You can do this at most , but not all , Motor Vehicles offices . Contact your nearest office to find out where you can apply "
+      }
+    ],
+    "question": "ok i need to know more about restricted use",
+    "gold_answer": "all related to alcohol or drugs",
+    "gold_docs": [
+      "Conditional and restricted use licenses#3_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Conditional and restricted use licenses#3_0",
+        "id_sp": "8",
+        "start": 539,
+        "end": 771,
+        "domain": "dmv"
+      }
+    ],
+    "gold_tools": [
+      "search_dmv"
+    ]
+  },
+  {
+    "id": "b158c20f35b0bda63713259936456dee:6",
+    "dialogue_id": "b158c20f35b0bda63713259936456dee",
+    "domain": "ssa",
+    "history": [
+      {
+        "role": "user",
+        "text": "It's my first time trying to get a social security card. I'm a noncitizen adult."
+      },
+      {
+        "role": "agent",
+        "text": "You need to prove your immigration status."
+      },
+      {
+        "role": "agent",
+        "text": "Do you want to know how to do it?"
+      },
+      {
+        "role": "user",
+        "text": "Yes please, tell me."
+      },
+      {
+        "role": "agent",
+        "text": "You have to provide us with your current U.S. immigration document. The forms I-551 Lawful Permanent Resident Card, Machine Readable Immigrant Visa with your unexpired foreign passport and  I-766 Employment Authorization Document, EAD , work permit are good to show."
+      }
+    ],
+    "question": "And to prove my age if I can't find my birth certificate?",
+    "gold_answer": "We could ask you for another suitable document, like your passport or a document issued by DHS as evidence of your age.",
+    "gold_docs": [
+      "Learn what documents you will need to get a Social Security Card | Social Security Administration#9_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Learn what documents you will need to get a Social Security Card | Social Security Administration#9_0",
+        "id_sp": "79",
+        "start": 4672,
+        "end": 4780,
+        "domain": "ssa"
+      }
+    ],
+    "gold_tools": [
+      "search_ssa"
+    ]
+  },
+  {
+    "id": "ba98853b0e285afbe9248d704a650ec9:11",
+    "dialogue_id": "ba98853b0e285afbe9248d704a650ec9",
+    "domain": "ssa",
+    "history": [
+      {
+        "role": "user",
+        "text": "My income has changed and I wanted to know how that affects my Medicare."
+      },
+      {
+        "role": "agent",
+        "text": "Has your income gone down due to any of the following situations, and does the change make a difference in the income level we consider?"
+      },
+      {
+        "role": "user",
+        "text": "No, I actually earn more now."
+      },
+      {
+        "role": "agent",
+        "text": "Unfortunately, no relevant information is found."
+      },
+      {
+        "role": "user",
+        "text": "Can you give me any information or sources to learn more about my Medicare?"
+      },
+      {
+        "role": "agent",
+        "text": "Of course. Do you want more information about the income-related monthly adjustment amounts or to apply for Medicare Part A or B?"
+      },
+      {
+        "role": "user",
+        "text": "Yes."
+      },
+      {
+        "role": "agent",
+        "text": "In that case you can visit our webpage Medicare Resources."
+      },
+      {
+        "role": "user",
+        "text": "So can you tell me what will change, now that I earn more?"
+      },
+      {
+        "role": "agent",
+        "text": "You'll pay a larger percentage of the total cost of Part B based on the income you normally report to the Internal Revenue Service IRS. You'll pay monthly Part B premiums equal to 35, 50, 65, 80, or 85 percent of the total cost, depending on what you report to the IRS."
+      }
+    ],
+    "question": "What if I filed a federal income tax return for the year?",
+    "gold_answer": "Then you need to show us your signed copy of the return. Use Form Medicare Income-Related Monthly Adjustment Amount Life-Changing Event to report a major life-changing event.",
+    "gold_docs": [
+      "Benefits Planner: Retirement | Medicare Premiums | SSA#2_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Benefits Planner: Retirement | Medicare Premiums | SSA#2_0",
+        "id_sp": "83",
+        "start": 6032,
+        "end": 6084,
+        "domain": "ssa"
+      },
+      {
+        "doc_id": "Benefits Planner: Retirement | Medicare Premiums | SSA#2_0",
+        "id_sp": "84",
+        "start": 6084,
+        "end": 6208,
+        "domain": "ssa"
+      }
+    ],
+    "gold_tools": [
+      "search_ssa"
+    ]
+  },
+  {
+    "id": "bdffbd6b00f5b1c30836b6d0c974f13e:16",
+    "dialogue_id": "bdffbd6b00f5b1c30836b6d0c974f13e",
+    "domain": "va",
+    "history": [
+      {
+        "role": "user",
+        "text": "can you give me details of Get GI Bill and other education benefits\n"
+      },
+      {
+        "role": "agent",
+        "text": "About GI Bill benefitsLearn how the GI Bill works and explore your options to pay for school or training"
+      },
+      {
+        "role": "agent",
+        "text": "After submitting the application, what should I do?"
+      },
+      {
+        "role": "user",
+        "text": "it's not my case"
+      },
+      {
+        "role": "agent",
+        "text": "what other benefit should i know"
+      },
+      {
+        "role": "user",
+        "text": "How to applyLearn how to prepare and apply for the GI Bill or other VA education and training benefits"
+      },
+      {
+        "role": "agent",
+        "text": "you want to know the GI Bill eligibility"
+      },
+      {
+        "role": "user",
+        "text": "not"
+      },
+      {
+        "role": "agent",
+        "text": "About GI Bill benefitsLearn how the GI Bill works and explore your options to pay for school or training"
+      },
+      {
+        "role": "user",
+        "text": "it's not my case"
+      },
+      {
+        "role": "agent",
+        "text": "Unfortunately, no relevant information is found."
+      },
+      {
+        "role": "user",
+        "text": "what are the benefits of VA education"
+      },
+      {
+        "role": "agent",
+        "text": "VA education benefits help Veterans , service members , and their qualified family members with needs like paying college tuition , finding the right school or training"
+      },
+      {
+        "role": "user",
+        "text": "I mean, there would be some kind of alternate method in any case?"
+      },
+      {
+        "role": "agent",
+        "text": "Sure, no problem. Indeed, you have a choice. You can access benefits through Montgomery GI Bill Active Duty. That would be available if you served for at least 2 years on active duty and you meet all the proper requirements."
+      }
+    ],
+    "question": "Yes, of course, of course, I have been in active service for more than 2 months now. regarding VA Veterans Pension benefits. What other requirements must I meet?",
+    "gold_answer": "You'll need to download the VA Form 22 - 1995 for Veterans and service members PDF, and the VA Form 22 - 5495 for dependents PDF then.",
+    "gold_docs": [
+      "Change Your GI Bill School Or Program | Veterans Affairs#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Change Your GI Bill School Or Program | Veterans Affairs#1_0",
+        "id_sp": "41",
+        "start": 2072,
+        "end": 2104,
+        "domain": "va"
+      },
+      {
+        "doc_id": "Change Your GI Bill School Or Program | Veterans Affairs#1_0",
+        "id_sp": "42",
+        "start": 2104,
+        "end": 2214,
+        "domain": "va"
+      }
+    ],
+    "gold_tools": [
+      "search_va"
+    ]
+  },
+  {
+    "id": "be2fb0f758ca7f6452f1ead0eae321b2:11",
+    "dialogue_id": "be2fb0f758ca7f6452f1ead0eae321b2",
+    "domain": "dmv",
+    "history": [
+      {
+        "role": "user",
+        "text": "What follows after passing the test?"
+      },
+      {
+        "role": "agent",
+        "text": "You must first schedule and take a practical exam"
+      },
+      {
+        "role": "user",
+        "text": "If I wanted additional classes, how should I pay?"
+      },
+      {
+        "role": "agent",
+        "text": "Do you want to pay for additional tests?"
+      },
+      {
+        "role": "user",
+        "text": "No, I'm just asking at home that I want to pay later..."
+      },
+      {
+        "role": "agent",
+        "text": "Ok, of course if you want you can pay for classes adi..."
+      },
+      {
+        "role": "user",
+        "text": "No, thanks does not apply to me"
+      },
+      {
+        "role": "agent",
+        "text": "Unfortunately, no relevant information is found."
+      },
+      {
+        "role": "user",
+        "text": "What happens if my learning permit expires before the next class?"
+      },
+      {
+        "role": "agent",
+        "text": "You must obtain a new license"
+      }
+    ],
+    "question": "What if I need to canel my test",
+    "gold_answer": "Tests can be cancelled /rescheduled or relocated because of bad weather or road construction  or reschedule for other reasons",
+    "gold_docs": [
+      "Schedule and take a road test#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Schedule and take a road test#1_0",
+        "id_sp": "31",
+        "start": 1691,
+        "end": 1786,
+        "domain": "dmv"
+      },
+      {
+        "doc_id": "Schedule and take a road test#1_0",
+        "id_sp": "32",
+        "start": 1786,
+        "end": 1819,
+        "domain": "dmv"
+      },
+      {
+        "doc_id": "Schedule and take a road test#1_0",
+        "id_sp": "33",
+        "start": 1819,
+        "end": 1849,
+        "domain": "dmv"
+      }
+    ],
+    "gold_tools": [
+      "search_dmv"
+    ]
+  },
+  {
+    "id": "c2a100d374ce168a107349ca40451d20:3",
+    "dialogue_id": "c2a100d374ce168a107349ca40451d20",
+    "domain": "ssa",
+    "history": [
+      {
+        "role": "user",
+        "text": "how do I set up direct deposit?"
+      },
+      {
+        "role": "agent",
+        "text": "You are asking how to set up direct deposit correct?"
+      }
+    ],
+    "question": "no\n",
+    "gold_answer": "what if you applied for benefitsbefore that date and did not sign up for electronic payments at that time",
+    "gold_docs": [
+      "Direct Deposit | Social Security Administration#2_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Direct Deposit | Social Security Administration#2_0",
+        "id_sp": "26",
+        "start": 1680,
+        "end": 1783,
+        "domain": "ssa"
+      }
+    ],
+    "gold_tools": [
+      "search_ssa"
+    ]
+  },
+  {
+    "id": "c5aeceee9b2ddaf51e1389db6908ec54:7",
+    "dialogue_id": "c5aeceee9b2ddaf51e1389db6908ec54",
+    "domain": "ssa",
+    "history": [
+      {
+        "role": "user",
+        "text": "Hey there. Please, i,ve been searching info about retirement and want to know about estimates."
+      },
+      {
+        "role": "agent",
+        "text": "No problem. Would you like to know about the retirement estimator?"
+      },
+      {
+        "role": "user",
+        "text": "No, i already heard how that works."
+      },
+      {
+        "role": "agent",
+        "text": "All right. Would you like to know If you can use the retirement estimator, then?"
+      },
+      {
+        "role": "user",
+        "text": "No, neither that, i saw a video the other day about it."
+      },
+      {
+        "role": "agent",
+        "text": "Understood. Well, Do you need assistance with something on the online application?"
+      }
+    ],
+    "question": "Yes, that's it. I'm having certain doubts there.",
+    "gold_answer": "Perfect. Are you having security issues?",
+    "gold_docs": [
+      "Retirement Estimator | Social Security Administration#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Retirement Estimator | Social Security Administration#1_0",
+        "id_sp": "30",
+        "start": 1854,
+        "end": 1877,
+        "domain": "ssa"
+      }
+    ],
+    "gold_tools": [
+      "search_ssa"
+    ]
+  },
+  {
+    "id": "c9c3ef69d5c741f14798a542dd4dff3b:3",
+    "dialogue_id": "c9c3ef69d5c741f14798a542dd4dff3b",
+    "domain": "studentaid",
+    "history": [
+      {
+        "role": "user",
+        "text": "is this where I go to complain?"
+      },
+      {
+        "role": "agent",
+        "text": "Your feedback is important to us. You can submit a complaint , give us positive feedback, or review an already submitted case.\n "
+      }
+    ],
+    "question": "what can I do next if I don't agree with what Federal Student Aid decided?",
+    "gold_answer": "You can follow our procedures for resolving disputes.  We encourage you to do this before you contact the Federal Student Aid Ombudsman Group",
+    "gold_docs": [
+      "Feedback Center#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Feedback Center#1_0",
+        "id_sp": "5",
+        "start": 300,
+        "end": 330,
+        "domain": "studentaid"
+      },
+      {
+        "doc_id": "Feedback Center#1_0",
+        "id_sp": "6",
+        "start": 330,
+        "end": 375,
+        "domain": "studentaid"
+      },
+      {
+        "doc_id": "Feedback Center#1_0",
+        "id_sp": "7",
+        "start": 375,
+        "end": 463,
+        "domain": "studentaid"
+      }
+    ],
+    "gold_tools": [
+      "search_studentaid"
+    ]
+  },
+  {
+    "id": "cb2580e29e89992409cc436654f9023c:6",
+    "dialogue_id": "cb2580e29e89992409cc436654f9023c",
+    "domain": "dmv",
+    "history": [
+      {
+        "role": "user",
+        "text": "Hi, I have a question. If I have a driver's license from another country and I have a New York State learner's permit, can I drive without a supervising driver?"
+      },
+      {
+        "role": "agent",
+        "text": "Yes. Your valid foreign driver's license allows you to drive without a supervising driver. You can drive on any street, highway, highway, bridge or tunnel, except in a DMV road test area."
+      },
+      {
+        "role": "agent",
+        "text": "What if my driver's license is printed in another language?"
+      },
+      {
+        "role": "user",
+        "text": "Yes"
+      },
+      {
+        "role": "agent",
+        "text": "You must present an International Driving Permit or a certified translation of your driver's license to the test drive. The translation must be certified by a consulate, the United States Department of State or another official agency"
+      }
+    ],
+    "question": "Very well. NOw for an International Driving Permit  . If I pass the exam",
+    "gold_answer": "the examiner will give you an interim license that allows you to drive. Keep the interim license with your photo learner permit until your new license arrives in the mail in about 2 weeks ",
+    "gold_docs": [
+      "Get a driver license#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Get a driver license#1_0",
+        "id_sp": "26",
+        "start": 1152,
+        "end": 1224,
+        "domain": "dmv"
+      },
+      {
+        "doc_id": "Get a driver license#1_0",
+        "id_sp": "27",
+        "start": 1224,
+        "end": 1341,
+        "domain": "dmv"
+      }
+    ],
+    "gold_tools": [
+      "search_dmv"
+    ]
+  },
+  {
+    "id": "cc6ea2af6dba189cd1d6661664752762:5",
+    "dialogue_id": "cc6ea2af6dba189cd1d6661664752762",
+    "domain": "studentaid",
+    "history": [
+      {
+        "role": "user",
+        "text": "Are there pros and cons when consolidating my federal education loans?"
+      },
+      {
+        "role": "agent",
+        "text": "Yes, there are pros and cons when you want to get a Direct Consolidation Loan."
+      },
+      {
+        "role": "user",
+        "text": "Do there happen to be different repayment plans available?"
+      },
+      {
+        "role": "agent",
+        "text": "Yes, there are several repayment plans including income-driven repayment plans and you will be able to select a plan when you apply for Direct Consolidation Loan."
+      }
+    ],
+    "question": "I have a question about the Loan Delinquency?",
+    "gold_answer": "is your loan still delinquent?\n",
+    "gold_docs": [
+      "Understanding Delinquency and Default | Federal Student Aid#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Understanding Delinquency and Default | Federal Student Aid#1_0",
+        "id_sp": "49",
+        "start": 2908,
+        "end": 2950,
+        "domain": "studentaid"
+      }
+    ],
+    "gold_tools": [
+      "search_studentaid"
+    ]
+  },
+  {
+    "id": "ce1d06df13b1732d9cda6c790157777e:8",
+    "dialogue_id": "ce1d06df13b1732d9cda6c790157777e",
+    "domain": "studentaid",
+    "history": [
+      {
+        "role": "user",
+        "text": "Hello there. Can you please tell me something about federal student loans? How exactly do they work?"
+      },
+      {
+        "role": "agent",
+        "text": "Of course. You should always remember, that you must repay your loan, so be sure you understand your options and responsibilities."
+      },
+      {
+        "role": "agent",
+        "text": "Are you applying for financial aid?"
+      },
+      {
+        "role": "user",
+        "text": "Yes, I am applying."
+      },
+      {
+        "role": "agent",
+        "text": "In that case you may be offered loans as part of your school's financial aid offer. A loan is money you borrow and must pay back with interest."
+      },
+      {
+        "role": "user",
+        "text": "That's great to hear! Another concern is who receives assistance. What factors could influence my financial aid eligibility?"
+      },
+      {
+        "role": "agent",
+        "text": "There are many factors that affect a student's financial aid eligibility, such as being a member of a military family."
+      }
+    ],
+    "question": "How much money can I borrow in federal student loans?",
+    "gold_answer": "The maximum amount you can borrow each year in Direct Subsidized Loans and Direct Unsubsidized Loans ranges from $ 5,500 to $ 12,500 per year, depending on what year you are in school and your dependency status.",
+    "gold_docs": [
+      "Loans | Federal Student Aid#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Loans | Federal Student Aid#1_0",
+        "id_sp": "28",
+        "start": 2276,
+        "end": 2486,
+        "domain": "studentaid"
+      }
+    ],
+    "gold_tools": [
+      "search_studentaid"
+    ]
+  },
+  {
+    "id": "d0cbcaf4a0bd0a2b52c288b2582a0e35:13",
+    "dialogue_id": "d0cbcaf4a0bd0a2b52c288b2582a0e35",
+    "domain": "va",
+    "history": [
+      {
+        "role": "user",
+        "text": "Hello. I need information about the work study program please."
+      },
+      {
+        "role": "agent",
+        "text": "Of course. You can find out how our Veterans work-study program can help you earn money while you re enrolled in a college, a vocational school, or professional training program."
+      },
+      {
+        "role": "user",
+        "text": "That sounds wonderful. How will I get paid?"
+      },
+      {
+        "role": "agent",
+        "text": "You may elect to be paid in advance for 40 % of the hours in your work-study agreement, or for 50 hours, whichever is fewer."
+      },
+      {
+        "role": "user",
+        "text": "I see. And what if I have questions about other sources of financial aid?"
+      },
+      {
+        "role": "agent",
+        "text": "In that case, you should contact your school's financial aid office."
+      },
+      {
+        "role": "user",
+        "text": "Do you have any knowledge of this - VA benefits and health care benefit records? Is it possible for me to view records?"
+      },
+      {
+        "role": "agent",
+        "text": "You can apply for a printed Veteran ID card, get your VA benefit letters and medical records."
+      },
+      {
+        "role": "user",
+        "text": "What other resources are available?"
+      },
+      {
+        "role": "agent",
+        "text": "VA has an official podcast.  Borne the Battle spotlights inspiring Veteran stories , important resources , offices , and VA benefits ."
+      },
+      {
+        "role": "user",
+        "text": "What about health care?"
+      },
+      {
+        "role": "agent",
+        "text": "you can refill and track prescriptions, send secure messages to your health care team and schedule and view your appointments."
+      }
+    ],
+    "question": "What else can I do?",
+    "gold_answer": "Apply for VA health care, find out how to access services and manage your health and benefits online",
+    "gold_docs": [
+      "VA.gov Home | Veterans Affairs#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "VA.gov Home | Veterans Affairs#1_0",
+        "id_sp": "49",
+        "start": 2305,
+        "end": 2408,
+        "domain": "va"
+      }
+    ],
+    "gold_tools": [
+      "search_va"
+    ]
+  },
+  {
+    "id": "d157d69d6ee78cabbc77dd57c4d41862:6",
+    "dialogue_id": "d157d69d6ee78cabbc77dd57c4d41862",
+    "domain": "dmv",
+    "history": [
+      {
+        "role": "user",
+        "text": "I'm enquiring about out of state insurance docs"
+      },
+      {
+        "role": "agent",
+        "text": "We will never accept out - of - state vehicle insurance coverage of any type "
+      },
+      {
+        "role": "agent",
+        "text": "Is your vehicle registered in New York?"
+      },
+      {
+        "role": "user",
+        "text": "Yes"
+      },
+      {
+        "role": "agent",
+        "text": "it must have New York State auto liability insurance coverage.\nYour motorcycle must have insurance coverage any time it is operated on a public road or highway. Unlike most other motor vehicles , motorcycles are registered for one year rather than two"
+      }
+    ],
+    "question": "Do I need insurance to register my vehicle?",
+    "gold_answer": "Yes the DMV requires auto liability insurance to register a vehicle in New York",
+    "gold_docs": [
+      "New York State Insurance Requirements#3_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "New York State Insurance Requirements#3_0",
+        "id_sp": "24",
+        "start": 1695,
+        "end": 1700,
+        "domain": "dmv"
+      },
+      {
+        "doc_id": "New York State Insurance Requirements#3_0",
+        "id_sp": "25",
+        "start": 1700,
+        "end": 1777,
+        "domain": "dmv"
+      }
+    ],
+    "gold_tools": [
+      "search_dmv"
+    ]
+  },
+  {
+    "id": "d79996f178afe8b10e2900c0eaa7da3c:14",
+    "dialogue_id": "d79996f178afe8b10e2900c0eaa7da3c",
+    "domain": "dmv",
+    "history": [
+      {
+        "role": "user",
+        "text": "Is there a listing of the TOS for a MyDMV account? "
+      },
+      {
+        "role": "agent",
+        "text": "There is a listing of 48 Terms of Service for a MyDMV account. "
+      },
+      {
+        "role": "agent",
+        "text": "Are you registering for an account on MyDMV? "
+      },
+      {
+        "role": "user",
+        "text": "I am trying to register for an account but I don't see where to enter a password. "
+      },
+      {
+        "role": "agent",
+        "text": "When you register for an account you will be sent a temporary password by e-mail.  You must use that temporary password to complete the rest of the registration process. "
+      },
+      {
+        "role": "user",
+        "text": "Who created MyDMV? "
+      },
+      {
+        "role": "agent",
+        "text": "It was created by the New York State Department of Motor Vehicles DMV in cooperation with the New York State Office of Information Technology Services. "
+      },
+      {
+        "role": "user",
+        "text": "Can I gain access to MyDMV using my passwords for other NYS agencies? "
+      },
+      {
+        "role": "agent",
+        "text": "If you have registered to gain access to use secure web applications at another NYS agency, you can simply sign in using the same Username and Password. "
+      },
+      {
+        "role": "user",
+        "text": "Why does MyDMV validate my identity? "
+      },
+      {
+        "role": "agent",
+        "text": "That process is designed to protect the security of your identifying personal information. "
+      },
+      {
+        "role": "user",
+        "text": "What happens if MyDMV is unable to verify my identity? "
+      },
+      {
+        "role": "agent",
+        "text": "If MyDMV is unable to verify your identity you account will be deactivated and thereafter access to applications and on-line services will be denied and the account will be locked. "
+      }
+    ],
+    "question": "What do I need to do to be permitted access to use DMV's secure web applications? ",
+    "gold_answer": "You will be permitted access upon validation of your identity. ",
+    "gold_docs": [
+      "MyDMV Account Terms of Service#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "MyDMV Account Terms of Service#1_0",
+        "id_sp": "14",
+        "start": 985,
+        "end": 1020,
+        "domain": "dmv"
+      },
+      {
+        "doc_id": "MyDMV Account Terms of Service#1_0",
+        "id_sp": "15",
+        "start": 1020,
+        "end": 1087,
+        "domain": "dmv"
+      },
+      {
+        "doc_id": "MyDMV Account Terms of Service#1_0",
+        "id_sp": "16",
+        "start": 1087,
+        "end": 1178,
+        "domain": "dmv"
+      }
+    ],
+    "gold_tools": [
+      "search_dmv"
+    ]
+  },
+  {
+    "id": "d7d36b3f4ce3dab9d9e4b5edf19eb35f:11",
+    "dialogue_id": "d7d36b3f4ce3dab9d9e4b5edf19eb35f",
+    "domain": "va",
+    "history": [
+      {
+        "role": "user",
+        "text": "What are employment benefits for dependent family members?"
+      },
+      {
+        "role": "agent",
+        "text": " Find out if you re eligible and how to apply to get career and educational counseling through VR&E as the dependent family member of a service member or Veteran with a service - connected disability ."
+      },
+      {
+        "role": "user",
+        "text": "Can I get Educational and Career Counseling services provided by VR&E (also called Chapter 36)?"
+      },
+      {
+        "role": "agent",
+        "text": "You may be eligible for Educational and Career Counseling if you meet both of the requirements "
+      },
+      {
+        "role": "user",
+        "text": "I'd also like to learn more about the VA MISSION Act. Are there any care requirements under the VA Mission Act?"
+      },
+      {
+        "role": "agent",
+        "text": "Yes there are requirements"
+      },
+      {
+        "role": "user",
+        "text": "What are requirements for pension?"
+      },
+      {
+        "role": "agent",
+        "text": "Apply for monthly payments for wartime Veterans and survivors with limited or no income who meet certain age and disability requirements "
+      },
+      {
+        "role": "user",
+        "text": "What burial help is available?"
+      },
+      {
+        "role": "agent",
+        "text": "Get help planning a burial in a VA national cemetery , order a headstone or other memorial item to honor a Veteran 's service , and apply for survivor and dependent benefits ."
+      }
+    ],
+    "question": "What health care information do you have?",
+    "gold_answer": "You can Apply for VA health care , find out how to access services , and manage your health and benefits online .",
+    "gold_docs": [
+      "VA.gov Home | Veterans Affairs#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "VA.gov Home | Veterans Affairs#1_0",
+        "id_sp": "49",
+        "start": 2305,
+        "end": 2408,
+        "domain": "va"
+      }
+    ],
+    "gold_tools": [
+      "search_va"
+    ]
+  },
+  {
+    "id": "d89ccd22a252e701356d22c1fdcaabe5:16",
+    "dialogue_id": "d89ccd22a252e701356d22c1fdcaabe5",
+    "domain": "va",
+    "history": [
+      {
+        "role": "user",
+        "text": "I am looking for more information about VA education."
+      },
+      {
+        "role": "agent",
+        "text": "Yes, I can help you learn about VA education benefits."
+      },
+      {
+        "role": "agent",
+        "text": "Are you interested in learning about any other VA benefits or services?"
+      },
+      {
+        "role": "user",
+        "text": "I guess I am."
+      },
+      {
+        "role": "agent",
+        "text": "I can help you learn about transferring out of active duty."
+      },
+      {
+        "role": "user",
+        "text": "What can i do with that managing?"
+      },
+      {
+        "role": "agent",
+        "text": "You have to view the VA chart to know that."
+      },
+      {
+        "role": "user",
+        "text": "Can I transfer my unused post 9/11 GI bill benefits to my spouse?"
+      },
+      {
+        "role": "agent",
+        "text": "Yes."
+      },
+      {
+        "role": "user",
+        "text": "Another question about Records? Would my benefits letter, which I require, be filed under benefits or records?"
+      },
+      {
+        "role": "agent",
+        "text": "You can download your benefit letters on the Records section."
+      },
+      {
+        "role": "user",
+        "text": "Thanks for the help. I'm already downloading the letter. Is there an online system to verify if I am registered?"
+      },
+      {
+        "role": "agent",
+        "text": "Yes, we have a system called WAVE."
+      },
+      {
+        "role": "user",
+        "text": "Ok, I was wondering if there is any help if I have trouble paying my mortgage?"
+      },
+      {
+        "role": "agent",
+        "text": "Yes, you can apply for a Certificate of Eligibility COE."
+      }
+    ],
+    "question": "Can I apply to have my GI Bill benefits restored?",
+    "gold_answer": "Yes, I can help you with that as well.",
+    "gold_docs": [
+      "VA Education Benefits | Veterans Affairs#2_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "VA Education Benefits | Veterans Affairs#2_0",
+        "id_sp": "26",
+        "start": 2535,
+        "end": 2670,
+        "domain": "va"
+      },
+      {
+        "doc_id": "VA Education Benefits | Veterans Affairs#2_0",
+        "id_sp": "27",
+        "start": 2670,
+        "end": 2716,
+        "domain": "va"
+      }
+    ],
+    "gold_tools": [
+      "search_va"
+    ]
+  },
+  {
+    "id": "d94e7057cd554b70e5390278ec062eff:7",
+    "dialogue_id": "d94e7057cd554b70e5390278ec062eff",
+    "domain": "ssa",
+    "history": [
+      {
+        "role": "user",
+        "text": "Hey there. I'm looking information related to the benefits that an adult with a disability can receive. if they can receive any from you."
+      },
+      {
+        "role": "agent",
+        "text": "If that person is disable, then you can file for the supplemental security income ssi only, but as long as you meet certain requirements."
+      },
+      {
+        "role": "user",
+        "text": "And which are this others requirements?"
+      },
+      {
+        "role": "agent",
+        "text": "For example the age requirements. If the person between the age of 18 and 65?"
+      },
+      {
+        "role": "user",
+        "text": "No, not really, is an older person."
+      },
+      {
+        "role": "agent",
+        "text": "Well, that could be a problem if you want to apply for the supplemental security income online."
+      }
+    ],
+    "question": "I'd like to ask you another question about Disability Benefits. Okay, and what documents do I need to submit?",
+    "gold_answer": "We may ask you to provide documents to prove that you are eligible for the field indicated on your application.",
+    "gold_docs": [
+      "Disability Benefits | Social Security Administration#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Disability Benefits | Social Security Administration#1_0",
+        "id_sp": "83",
+        "start": 5020,
+        "end": 5097,
+        "domain": "ssa"
+      }
+    ],
+    "gold_tools": [
+      "search_ssa"
+    ]
+  },
+  {
+    "id": "d957a776f34fed195618b656b6022bab:12",
+    "dialogue_id": "d957a776f34fed195618b656b6022bab",
+    "domain": "ssa",
+    "history": [
+      {
+        "role": "user",
+        "text": "it's not my case Social Security Credits\n"
+      },
+      {
+        "role": "agent",
+        "text": "You must earn at least 40 Social Security credits to qualify for Social Security benefits . You earn Social Security credits when you work and pay Social Security taxes ."
+      },
+      {
+        "role": "user",
+        "text": "If i are statutorily blind?"
+      },
+      {
+        "role": "agent",
+        "text": " you must only meet the duration of work test"
+      },
+      {
+        "role": "user",
+        "text": "Do you know anything about personal mySocial Security ? Can my wife open the account on my behalf ?"
+      },
+      {
+        "role": "agent",
+        "text": "No. Only you are authorized to create and use your personal account. This is a security measure that we take to protect your personal information."
+      },
+      {
+        "role": "agent",
+        "text": "Do you need more information about this security measure?"
+      },
+      {
+        "role": "user",
+        "text": "Yes, I'd like to know more."
+      },
+      {
+        "role": "agent",
+        "text": "We only allow you to create and use the account for your own use because it protects you from fraudulent activity."
+      },
+      {
+        "role": "user",
+        "text": "Once I request a temporary life of my credit freeze, what happens then?"
+      },
+      {
+        "role": "agent",
+        "text": "The freeze will be reinstated by your identity services provider after the temporary lift expires."
+      }
+    ],
+    "question": "What if I don't want to do a temporary lift?",
+    "gold_answer": "IIn this case, you can still open an account by visiting your local Social Security office.",
+    "gold_docs": [
+      "my Social Security | Create an Account | Social Security Administratio#2_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "my Social Security | Create an Account | Social Security Administratio#2_0",
+        "id_sp": "15",
+        "start": 1195,
+        "end": 1273,
+        "domain": "ssa"
+      }
+    ],
+    "gold_tools": [
+      "search_ssa"
+    ]
+  },
+  {
+    "id": "e0a50eea76d8e6f19f09fd33ccb65aef:7",
+    "dialogue_id": "e0a50eea76d8e6f19f09fd33ccb65aef",
+    "domain": "dmv",
+    "history": [
+      {
+        "role": "user",
+        "text": "what do i do if i receive a traffic ticket?"
+      },
+      {
+        "role": "agent",
+        "text": "introduction. does this apply to you?"
+      },
+      {
+        "role": "user",
+        "text": "yes"
+      },
+      {
+        "role": "agent",
+        "text": "if you are issues a ticket for a non criminal moving traffic violation in the five boroughs of new york city. does this apply to you?"
+      },
+      {
+        "role": "user",
+        "text": "No. "
+      },
+      {
+        "role": "agent",
+        "text": "Unfortunately, no relevant information is found."
+      }
+    ],
+    "question": "do i have to attend my hearing?",
+    "gold_answer": "hearings are open to the public. you may go to any tvb office to watch hearings so you know what to expect at yours.",
+    "gold_docs": [
+      "Traffic Violations Bureau#3_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Traffic Violations Bureau#3_0",
+        "id_sp": "35",
+        "start": 2483,
+        "end": 2516,
+        "domain": "dmv"
+      },
+      {
+        "doc_id": "Traffic Violations Bureau#3_0",
+        "id_sp": "36",
+        "start": 2516,
+        "end": 2600,
+        "domain": "dmv"
+      }
+    ],
+    "gold_tools": [
+      "search_dmv"
+    ]
+  },
+  {
+    "id": "e79231e38017c1bd854e9e56ae42a04c:3",
+    "dialogue_id": "e79231e38017c1bd854e9e56ae42a04c",
+    "domain": "va",
+    "history": [
+      {
+        "role": "user",
+        "text": "I was just wondering if you could tell me if there is some sort of assistance available for family members who care for a Veteran with disabilities?"
+      },
+      {
+        "role": "agent",
+        "text": "Yes there is a program of Comprehensive Assistance for family caregivers."
+      }
+    ],
+    "question": "How would one go about applying for assistance?",
+    "gold_answer": "VA would like to support you. We recognize that family caregivers enhance the health and well-being of Veterans they care for in their home. It is best for you to find out if you qualify for the Program of Comprehensive Assistance for Family Caregivers and how to apply.",
+    "gold_docs": [
+      "VA Family Caregiver Assistance Program | Veterans Affairs#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "VA Family Caregiver Assistance Program | Veterans Affairs#1_0",
+        "id_sp": "3",
+        "start": 132,
+        "end": 156,
+        "domain": "va"
+      },
+      {
+        "doc_id": "VA Family Caregiver Assistance Program | Veterans Affairs#1_0",
+        "id_sp": "4",
+        "start": 156,
+        "end": 269,
+        "domain": "va"
+      },
+      {
+        "doc_id": "VA Family Caregiver Assistance Program | Veterans Affairs#1_0",
+        "id_sp": "5",
+        "start": 269,
+        "end": 377,
+        "domain": "va"
+      }
+    ],
+    "gold_tools": [
+      "search_va"
+    ]
+  },
+  {
+    "id": "e8f71defa28a10db41f42486eec7edcd:13",
+    "dialogue_id": "e8f71defa28a10db41f42486eec7edcd",
+    "domain": "studentaid",
+    "history": [
+      {
+        "role": "user",
+        "text": "Hello, can you tell me what the FAFSA completion data consists of?"
+      },
+      {
+        "role": "agent",
+        "text": "It is noteworthy that each past year they are different from the numbers."
+      },
+      {
+        "role": "user",
+        "text": "Can you tell me more about it?"
+      },
+      {
+        "role": "agent",
+        "text": "It can happen due to several factors, also including the possibility that your institution appears more than once in the data."
+      },
+      {
+        "role": "user",
+        "text": "Maybe an unrelated question now from FAFSA completion, are these tips good at any college?"
+      },
+      {
+        "role": "agent",
+        "text": "You should go to the schools you are interested in to get additional information."
+      },
+      {
+        "role": "user",
+        "text": "why else should I take all the classes I can?"
+      },
+      {
+        "role": "agent",
+        "text": "Most schools charge a set price for a specific number of credits taken in a semester, so it helps you when you finish school faster."
+      },
+      {
+        "role": "user",
+        "text": "any savings for school?"
+      },
+      {
+        "role": "agent",
+        "text": "Are you the child of an alumnus or alumna?"
+      },
+      {
+        "role": "user",
+        "text": "yes, both my parents graduated from college"
+      },
+      {
+        "role": "agent",
+        "text": "Those colleges they attended may offer discounts on tuition"
+      }
+    ],
+    "question": "how can I save on living expenses?",
+    "gold_answer": "You can live with your parents or other family to save on housing costs.",
+    "gold_docs": [
+      "Understanding College Costs | Federal Student Aid#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Understanding College Costs | Federal Student Aid#1_0",
+        "id_sp": "44",
+        "start": 2783,
+        "end": 2834,
+        "domain": "studentaid"
+      }
+    ],
+    "gold_tools": [
+      "search_studentaid"
+    ]
+  },
+  {
+    "id": "e9947aceb02939b73b29bfb9e044250c:5",
+    "dialogue_id": "e9947aceb02939b73b29bfb9e044250c",
+    "domain": "va",
+    "history": [
+      {
+        "role": "user",
+        "text": "Hi. I am in the VA, and I need to get dental insurance."
+      },
+      {
+        "role": "agent",
+        "text": "I can help you with that."
+      },
+      {
+        "role": "user",
+        "text": "How do I know if I am eligible?"
+      },
+      {
+        "role": "agent",
+        "text": "I can review the criteria with you."
+      }
+    ],
+    "question": "if you would be so kind as to get if I am eligible. After applying, what should I do?",
+    "gold_answer": "Find out when to expect a decision on your application, and what to do next.",
+    "gold_docs": [
+      "VA Health Care | Veterans Affairs#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "VA Health Care | Veterans Affairs#1_0",
+        "id_sp": "33",
+        "start": 2046,
+        "end": 2067,
+        "domain": "va"
+      }
+    ],
+    "gold_tools": [
+      "search_va"
+    ]
+  },
+  {
+    "id": "eafb66f846d722983cbff8d12f600cf0:11",
+    "dialogue_id": "eafb66f846d722983cbff8d12f600cf0",
+    "domain": "va",
+    "history": [
+      {
+        "role": "user",
+        "text": "Hello, I would like to know what suicide prevention measures there are for veterans"
+      },
+      {
+        "role": "agent",
+        "text": "Are you a veteran in a mental health crisis and are you thinking about hurting yourself, or do you know a veteran who is considering this act now?"
+      },
+      {
+        "role": "user",
+        "text": "do not"
+      },
+      {
+        "role": "agent",
+        "text": "Unfortunately, no relevant information is found."
+      },
+      {
+        "role": "user",
+        "text": "but if there is help for them?"
+      },
+      {
+        "role": "agent",
+        "text": "of course You are not alone, and you can get help."
+      },
+      {
+        "role": "user",
+        "text": "OK thank you. I would also like to find out the Needs and conditions of these programs. Does the VA address the specific health needs of LGBT Veterans?"
+      },
+      {
+        "role": "agent",
+        "text": " We re committed to serving the health needs of Veterans with LGBT and related identities and providing care in a sensitive , safe environment at all VA health facilities"
+      },
+      {
+        "role": "user",
+        "text": "In addition, for such a critical subject as suicide, what do I say my child if there has been a family suicide attempt?"
+      },
+      {
+        "role": "agent",
+        "text": "Get tips for talking to children of different ages about suicide:\n   Preschool children\n   School-age children"
+      }
+    ],
+    "question": "I might not be able to pay my mortgage. What if I'm on the verge of becoming homeless? So, what happens next?",
+    "gold_answer": "Please visit our website to learn about VA programs for Veterans who are homeless and learn about our homelessness programs. Contact the National Call Center for Homeless Veterans at 877-424-3838 for help 24 hours a day, 7 days a week.",
+    "gold_docs": [
+      "Substance Use Treatment For Veterans | Veterans Affairs#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Substance Use Treatment For Veterans | Veterans Affairs#1_0",
+        "id_sp": "73",
+        "start": 3591,
+        "end": 3667,
+        "domain": "va"
+      },
+      {
+        "doc_id": "Substance Use Treatment For Veterans | Veterans Affairs#1_0",
+        "id_sp": "74",
+        "start": 3667,
+        "end": 3705,
+        "domain": "va"
+      },
+      {
+        "doc_id": "Substance Use Treatment For Veterans | Veterans Affairs#1_0",
+        "id_sp": "75",
+        "start": 3705,
+        "end": 3821,
+        "domain": "va"
+      }
+    ],
+    "gold_tools": [
+      "search_va"
+    ]
+  },
+  {
+    "id": "ed73b6fff1b8e49148402f5e721d339f:9",
+    "dialogue_id": "ed73b6fff1b8e49148402f5e721d339f",
+    "domain": "va",
+    "history": [
+      {
+        "role": "user",
+        "text": "VR&E Reemployment track"
+      },
+      {
+        "role": "agent",
+        "text": "are you a veteran?"
+      },
+      {
+        "role": "user",
+        "text": "yes"
+      },
+      {
+        "role": "agent",
+        "text": "you re protected under the Uniformed Services Employment and Reemployment Rights Act USERRA ."
+      },
+      {
+        "role": "user",
+        "text": "i am a veteran"
+      },
+      {
+        "role": "agent",
+        "text": "the Vocational Rehabilitation and Employment VR&E Reemployment track can help your employer accommodate your needs ."
+      },
+      {
+        "role": "user",
+        "text": "I see, regarding access and VA benefits and health care, as a caregiver and family member of a disabled veteran, can I be eligible for the program?"
+      },
+      {
+        "role": "agent",
+        "text": "Yes, you apply to the request."
+      }
+    ],
+    "question": "Can my wife enjoy the benefits?",
+    "gold_answer": "\nYes, definitely.",
+    "gold_docs": [
+      "VA.gov Home | Veterans Affairs#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "VA.gov Home | Veterans Affairs#1_0",
+        "id_sp": "29",
+        "start": 942,
+        "end": 1024,
+        "domain": "va"
+      },
+      {
+        "doc_id": "VA.gov Home | Veterans Affairs#1_0",
+        "id_sp": "30",
+        "start": 1024,
+        "end": 1121,
+        "domain": "va"
+      }
+    ],
+    "gold_tools": [
+      "search_va"
+    ]
+  },
+  {
+    "id": "f266708fe15830c119e30df5549b6a86:8",
+    "dialogue_id": "f266708fe15830c119e30df5549b6a86",
+    "domain": "va",
+    "history": [
+      {
+        "role": "user",
+        "text": "what is Military sexual trauma (MST)"
+      },
+      {
+        "role": "agent",
+        "text": "do you need support?"
+      },
+      {
+        "role": "agent",
+        "text": "do you need support?"
+      },
+      {
+        "role": "user",
+        "text": "no"
+      },
+      {
+        "role": "agent",
+        "text": "Unfortunately, no relevant information is found."
+      },
+      {
+        "role": "user",
+        "text": "what is MST "
+      },
+      {
+        "role": "agent",
+        "text": " Military sexual trauma MST refers to sexual assault or repeated , threatening sexual harassment that happened while a Veteran was in the military "
+      }
+    ],
+    "question": "How do I access VA services for MST?",
+    "gold_answer": " If you have a VA primary care provider , talk to that professional about what you ve been through ",
+    "gold_docs": [
+      "Military Sexual Trauma (MST) | Veterans Affairs#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Military Sexual Trauma (MST) | Veterans Affairs#1_0",
+        "id_sp": "45",
+        "start": 2478,
+        "end": 2536,
+        "domain": "va"
+      },
+      {
+        "doc_id": "Military Sexual Trauma (MST) | Veterans Affairs#1_0",
+        "id_sp": "46",
+        "start": 2536,
+        "end": 2667,
+        "domain": "va"
+      },
+      {
+        "doc_id": "Military Sexual Trauma (MST) | Veterans Affairs#1_0",
+        "id_sp": "47",
+        "start": 2667,
+        "end": 2725,
+        "domain": "va"
+      }
+    ],
+    "gold_tools": [
+      "search_va"
+    ]
+  },
+  {
+    "id": "f313a5dc5aa5245025877a081c9535df:3",
+    "dialogue_id": "f313a5dc5aa5245025877a081c9535df",
+    "domain": "va",
+    "history": [
+      {
+        "role": "user",
+        "text": "I need help with your site"
+      },
+      {
+        "role": "agent",
+        "text": "Are you looking for help on a particular area like health care?"
+      }
+    ],
+    "question": "Yes, health care",
+    "gold_answer": "On the site you can fill and track your prescriptions, Send a secure message to your health care team, Schedule and view your appointments , and other tasks.",
+    "gold_docs": [
+      "VA.gov Home | Veterans Affairs#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "VA.gov Home | Veterans Affairs#1_0",
+        "id_sp": "3",
+        "start": 69,
+        "end": 105,
+        "domain": "va"
+      },
+      {
+        "doc_id": "VA.gov Home | Veterans Affairs#1_0",
+        "id_sp": "4",
+        "start": 105,
+        "end": 152,
+        "domain": "va"
+      },
+      {
+        "doc_id": "VA.gov Home | Veterans Affairs#1_0",
+        "id_sp": "5",
+        "start": 152,
+        "end": 188,
+        "domain": "va"
+      }
+    ],
+    "gold_tools": [
+      "search_va"
+    ]
+  },
+  {
+    "id": "f92916349122c72847c2b6ca8ed647ff:13",
+    "dialogue_id": "f92916349122c72847c2b6ca8ed647ff",
+    "domain": "studentaid",
+    "history": [
+      {
+        "role": "user",
+        "text": "I need help since my TPD registration request is denied"
+      },
+      {
+        "role": "agent",
+        "text": "Did you determine that you do not qualify for a TPD download?"
+      },
+      {
+        "role": "user",
+        "text": "I haven't determined that yet."
+      },
+      {
+        "role": "agent",
+        "text": "Unfortunately, no relevant information is found."
+      },
+      {
+        "role": "user",
+        "text": "And where can I find more information about it?"
+      },
+      {
+        "role": "agent",
+        "text": "You can find all the necessary information by visiting the site irs.gov"
+      },
+      {
+        "role": "user",
+        "text": "Another concern about the benefits of Total Permanent Disability, in the Federal Perkins Loan Program, who would declare?"
+      },
+      {
+        "role": "agent",
+        "text": "The loan holder can declare that the loan is in default if they do not make their scheduled payment by the due date.\n"
+      },
+      {
+        "role": "user",
+        "text": "What do I do if I was discharged from a TPD based on a doctor's certification but my three-year post-discharge period has not yet ended?"
+      },
+      {
+        "role": "agent",
+        "text": "That happens you must either resume repayment of your previously discharged loans or acknowledge that you are once again responsible for meeting the terms and conditions of your TEACH Grant service obligation."
+      },
+      {
+        "role": "user",
+        "text": "Where can I get information for federal student loans if I want to change my repayment plan?"
+      },
+      {
+        "role": "agent",
+        "text": "Contact your loan servicer if you would like to discuss repayment plan options or change your repayment plan. You can get information about all of the federal student loans you have received and find the loan servicer for your loans by logging in to \"My Federal Student Aid\"."
+      }
+    ],
+    "question": "If I received a TPD download based on VA documentation, what should I do? Can I participate in any activity again?",
+    "gold_answer": "one of the things you should do is sign a statement acknowledging that you cannot get a TPD download of the new loan",
+    "gold_docs": [
+      "Total and Permanent Disability Discharge | Federal Student Aid#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Total and Permanent Disability Discharge | Federal Student Aid#1_0",
+        "id_sp": "120",
+        "start": 11362,
+        "end": 11620,
+        "domain": "studentaid"
+      }
+    ],
+    "gold_tools": [
+      "search_studentaid"
+    ]
+  },
+  {
+    "id": "f92ca2c6a334cdc200e8ff8659582f49:4",
+    "dialogue_id": "f92ca2c6a334cdc200e8ff8659582f49",
+    "domain": "va",
+    "history": [
+      {
+        "role": "user",
+        "text": "need info on whether or not I can use my GI Bill benefits for more classes after graduating"
+      },
+      {
+        "role": "agent",
+        "text": "Yes"
+      },
+      {
+        "role": "agent",
+        "text": "Do you want to earn a degree and then start classes on another degree?"
+      }
+    ],
+    "question": "exactly that",
+    "gold_answer": "Yes, you can use any left over GI Bill benefits to pay for classes on another degree.",
+    "gold_docs": [
+      "Undergraduate And Graduate Degrees | Veterans Affairs#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Undergraduate And Graduate Degrees | Veterans Affairs#1_0",
+        "id_sp": "28",
+        "start": 1539,
+        "end": 1630,
+        "domain": "va"
+      }
+    ],
+    "gold_tools": [
+      "search_va"
+    ]
+  },
+  {
+    "id": "f9fc913a1f1ac994dc2e643ffcd9b1a6:7",
+    "dialogue_id": "f9fc913a1f1ac994dc2e643ffcd9b1a6",
+    "domain": "dmv",
+    "history": [
+      {
+        "role": "user",
+        "text": "Hi, I'm not currently in New York City. How do I get an extension, I need it"
+      },
+      {
+        "role": "agent",
+        "text": "currently out of state?"
+      },
+      {
+        "role": "user",
+        "text": "do not"
+      },
+      {
+        "role": "agent",
+        "text": "Unfortunately, no relevant information is found."
+      },
+      {
+        "role": "user",
+        "text": "and all vehicles need inspection?"
+      },
+      {
+        "role": "agent",
+        "text": "Yes, all vehicles registered in New York State must obtain a safety inspection at a DMV - licensed from the inspection station every 12 months, when vehicle ownership is transferred."
+      }
+    ],
+    "question": "What if there is no inspection tag?",
+    "gold_answer": "If there is no inspection tag, the fine is between $ 50 and $ 100. A mandatory state surcharge of $ 88 $ 93 is added to the fine in city and town courts.",
+    "gold_docs": [
+      "About New York State Inspections#3_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "About New York State Inspections#3_0",
+        "id_sp": "86",
+        "start": 5517,
+        "end": 5551,
+        "domain": "dmv"
+      },
+      {
+        "doc_id": "About New York State Inspections#3_0",
+        "id_sp": "87",
+        "start": 5551,
+        "end": 5639,
+        "domain": "dmv"
+      },
+      {
+        "doc_id": "About New York State Inspections#3_0",
+        "id_sp": "88",
+        "start": 5639,
+        "end": 5753,
+        "domain": "dmv"
+      }
+    ],
+    "gold_tools": [
+      "search_dmv"
+    ]
+  },
+  {
+    "id": "fa55b79c8eb8bc3be96c81adbeeba269:13",
+    "dialogue_id": "fa55b79c8eb8bc3be96c81adbeeba269",
+    "domain": "va",
+    "history": [
+      {
+        "role": "user",
+        "text": "I need to know about VA benefits for service members"
+      },
+      {
+        "role": "agent",
+        "text": "ARe you on active duty?"
+      },
+      {
+        "role": "user",
+        "text": "No I am not"
+      },
+      {
+        "role": "agent",
+        "text": "ARe you a traditional or technical member of the National Guard and Reserve?"
+      },
+      {
+        "role": "user",
+        "text": "No I am not"
+      },
+      {
+        "role": "agent",
+        "text": "Unfortunately, no relevant information is found."
+      },
+      {
+        "role": "user",
+        "text": "How do I convert SGLI coverage to a Veterans Group Life or commercial policy?"
+      },
+      {
+        "role": "agent",
+        "text": "There are options. "
+      },
+      {
+        "role": "user",
+        "text": "Is there a way on where can I keep track regarding the status of my VA disability compensation?"
+      },
+      {
+        "role": "agent",
+        "text": " Check your VA claim or appeal statusTrack the status of your disability claim or appeal "
+      },
+      {
+        "role": "user",
+        "text": "Okay, that's fine. Now, let's talk about VA health-care eligibility. What if I'm hard of hearing?"
+      },
+      {
+        "role": "agent",
+        "text": "Call TTY 1-800-877-8339"
+      }
+    ],
+    "question": "Another query about the VA claim. What are the conditions for VA assistance and attendance benefits, as well as Housebound allocation?",
+    "gold_answer": "in that case we can find out if it qualifies",
+    "gold_docs": [
+      "Aid And Attendance Benefits And Housebound Allowance | VA.gov#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Aid And Attendance Benefits And Housebound Allowance | VA.gov#1_0",
+        "id_sp": "4",
+        "start": 274,
+        "end": 299,
+        "domain": "va"
+      }
+    ],
+    "gold_tools": [
+      "search_va"
+    ]
+  },
+  {
+    "id": "fae032352ab8b7c2df805bbd97d2b05f:13",
+    "dialogue_id": "fae032352ab8b7c2df805bbd97d2b05f",
+    "domain": "va",
+    "history": [
+      {
+        "role": "user",
+        "text": "What is the work study program?"
+      },
+      {
+        "role": "agent",
+        "text": "is a study and work program for veterans can help you earn money while enrolling in a university"
+      },
+      {
+        "role": "user",
+        "text": "What are the requirements to enter the program?"
+      },
+      {
+        "role": "agent",
+        "text": "Are you enrolled in at least three quarters of a college, vocational, or professional program?"
+      },
+      {
+        "role": "user",
+        "text": "if I am enrolled at least three quarters in a university program"
+      },
+      {
+        "role": "agent",
+        "text": "Have you found an open job at a nearby VA facility or in a VA related role at your school?"
+      },
+      {
+        "role": "user",
+        "text": "if I found an open job at a nearby VA facility"
+      },
+      {
+        "role": "agent",
+        "text": "Can you finish the job - study contract while still qualifying for education benefits?"
+      },
+      {
+        "role": "user",
+        "text": "if I can finish the job - study contract while I still qualify for education benefits"
+      },
+      {
+        "role": "agent",
+        "text": "Are you using a VA approved educational benefits program to pay for your education or training?"
+      },
+      {
+        "role": "user",
+        "text": "if I am using a VA approved educational benefits program to pay for my education"
+      },
+      {
+        "role": "agent",
+        "text": "ok according to your answers are you eligible for the study program"
+      }
+    ],
+    "question": "What benefits am I eligible for if I am the child or spouse of a veteran or service member who died, was kidnapped, or went missing?",
+    "gold_answer": "ok i inform you that you can get help to pay for school or job training through the DEA program",
+    "gold_docs": [
+      "Survivors’ And Dependents’ Educational Assistance | Veterans Affairs#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Survivors’ And Dependents’ Educational Assistance | Veterans Affairs#1_0",
+        "id_sp": "4",
+        "start": 249,
+        "end": 359,
+        "domain": "va"
+      },
+      {
+        "doc_id": "Survivors’ And Dependents’ Educational Assistance | Veterans Affairs#1_0",
+        "id_sp": "5",
+        "start": 359,
+        "end": 405,
+        "domain": "va"
+      }
+    ],
+    "gold_tools": [
+      "search_va"
+    ]
+  },
+  {
+    "id": "fc3a1f32406408addcff117b13932d1b:7",
+    "dialogue_id": "fc3a1f32406408addcff117b13932d1b",
+    "domain": "va",
+    "history": [
+      {
+        "role": "user",
+        "text": "Can you explain the Veterans Educational Assistance Program?"
+      },
+      {
+        "role": "agent",
+        "text": "Veterans Educational Assistance Program or VEAP offers a $2 to $1 government-match program for educational assistance if you use part of your military pay to cover cost of school."
+      },
+      {
+        "role": "user",
+        "text": "What must be true to be eligible for VEAP benefits?"
+      },
+      {
+        "role": "agent",
+        "text": "Did you enter service for the first time between January 1, 1977 and June 30, 1985?"
+      },
+      {
+        "role": "user",
+        "text": "Yes, I entered service between January 1, 1977 and June 30, 1985."
+      },
+      {
+        "role": "agent",
+        "text": "Did you open and put money into your VEAP account before April 1, 1987?"
+      }
+    ],
+    "question": "yes, I money into my VEAP account and opened it before April 1, 1987.",
+    "gold_answer": "Did you put in $2700 on your own?",
+    "gold_docs": [
+      "Veterans’ Educational Assistance Program (VEAP) | Veterans Affairs#1_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Veterans’ Educational Assistance Program (VEAP) | Veterans Affairs#1_0",
+        "id_sp": "11",
+        "start": 620,
+        "end": 652,
+        "domain": "va"
+      }
+    ],
+    "gold_tools": [
+      "search_va"
+    ]
+  },
+  {
+    "id": "ff588ad9fcacfd82e89d20f98a5810eb:7",
+    "dialogue_id": "ff588ad9fcacfd82e89d20f98a5810eb",
+    "domain": "dmv",
+    "history": [
+      {
+        "role": "user",
+        "text": "I'm here on an insurance matter"
+      },
+      {
+        "role": "agent",
+        "text": "Are you in a situation where you do not have insurance or it is about to expire and you don't plan to replace it?"
+      },
+      {
+        "role": "user",
+        "text": "no, I have it"
+      },
+      {
+        "role": "agent",
+        "text": "Unfortunately, no relevant information is found."
+      },
+      {
+        "role": "user",
+        "text": "what do I do if I have insurance but you tell me that I don't have it?"
+      },
+      {
+        "role": "agent",
+        "text": "You need to follow the instructions in the letter and contact your company or agent about the problem.  Ask your insurance company to file a notice of coverage with the DMV electronically.  "
+      }
+    ],
+    "question": "I also want to ask what if my plates are lost. Can I also return the registration and receive a new one?",
+    "gold_answer": "Were the plates lost/stolen or destroyed?",
+    "gold_docs": [
+      "Surrender (return or turn in) your plates to the DMV#3_0"
+    ],
+    "gold_spans": [
+      {
+        "doc_id": "Surrender (return or turn in) your plates to the DMV#3_0",
+        "id_sp": "60",
+        "start": 2882,
+        "end": 2887,
+        "domain": "dmv"
+      },
+      {
+        "doc_id": "Surrender (return or turn in) your plates to the DMV#3_0",
+        "id_sp": "61",
+        "start": 2887,
+        "end": 2984,
+        "domain": "dmv"
+      },
+      {
+        "doc_id": "Surrender (return or turn in) your plates to the DMV#3_0",
+        "id_sp": "62",
+        "start": 2984,
+        "end": 3052,
+        "domain": "dmv"
+      }
+    ],
+    "gold_tools": [
+      "search_dmv"
+    ]
+  }
+]

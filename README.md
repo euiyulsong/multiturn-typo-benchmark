@@ -1,0 +1,75 @@
+# Multi-turn typo correction × multi-tool router × hybrid retrieval × max-3-step ReAct
+
+**Status: dataset and 100-case sample prepared; model benchmark not yet executed.**
+
+Preparation was run on 2026-10-20 with seed `20261020`: 100 cases selected
+(25 per domain: `dmv`, `ssa`, `va`, `studentaid`). Offline synthetic harness
+checks passed. These checks validate code structure only and are **not model
+benchmark results**. The 1,200 model evaluations still require an API key and
+an API-accessible model ID; no model scores are claimed yet.
+
+## Design
+- Data: 100 distinct MultiDoc2Dial validation dialogues, 25 from each of `dmv`, `ssa`, `va`, `studentaid`, chosen with deterministic SHA256 ordering. For each dialogue, choose one user question that follows a prior user question and has an annotated agent response with grounding spans.
+- Two **paired inputs** per case: unmodified source conversation (`clean`; natural typos in the source remain) and synthetic typo injection (`typo`; exactly one adjacent-character transposition on each eligible user utterance, with unchanged agent turns). Corpus and labels are never corrupted.
+- Three correction arms: `raw` (no correction), `last` (LLM spell-corrects only last user utterance; context read-only), `full` (LLM corrects **all user utterances in dialogue**; agent turns untouched). No rewriting/answering allowed in the correction instruction. LLM outputs are audited in the detail file.
+- Initial multi-tool router selects up to 2 domain-specific retrieval functions and one query; all arms use the **same** four tools and indexes. Multi-tool **selection** is evaluated, but most ground truth cases have one gold domain/tool, so this dataset does not establish performance on inherently multi-tool tasks.
+- Search: per-domain **BM25** top-30 + `sentence-transformers/multi-qa-MiniLM-L6-cos-v1` dense top-30; **RRF** k=60 top-20; `cross-encoder/ms-marco-MiniLM-L6-v2` reranks; evidence top-5 to LLM. Fixed chunking 1,050 characters / 180 overlap, same document corpus across all arms. No gold/reference info is placed in model prompts or retrieval.
+- `direct`: first retrieval → final answer. `react`: first retrieval → inspect evidence → optional new query/tool → up to **three search steps total** → final answer. First retrieval is identical for direct and ReAct for a given correction arm. React additional search decisions cost LLM calls.
+- **Metrics:** initial exact tool-set EM and tool F1; document Recall@1/3/5/10, MRR@10 and span coverage by BM25/Dense/RRF/Cross-Encoder; final document/span Recall@1/3/5; **offline step checkpoint Answer EM/F1 after each observed ReAct search step**; next-agent-response normalized EM and token F1; cited evidence-doc set EM; LLM calls/tokens; wall-clock phase latency and p95. Paired bootstrap (2,000 draws) of per-case deltas to raw. Logged JSONL includes per-step search results and correction output.
+
+## Run
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+export OPENAI_API_KEY='...'
+export BENCH_MODEL='your-API-accessible-model-id'   # confirm model access; not a ChatGPT UI label
+python benchmark.py --out ./results --device cpu
+```
+
+The program downloads the official dataset from https://doc2dial.github.io/multidoc2dial/file/multidoc2dial.zip. If unavailable, download it yourself and use `--data-zip /path/to/multidoc2dial.zip`.
+
+Inspect selection before invoking the API:
+
+```bash
+python benchmark.py --out ./results --prepare-only
+```
+
+The selected sample and configuration from the preparation run are tracked at
+[`results/selected_cases.json`](results/selected_cases.json) and
+[`results/run_config.json`](results/run_config.json). The downloaded source
+archive under `results/data/` is intentionally ignored; the script downloads
+it again when needed, or you can pass `--data-zip`.
+
+Smoke test 2 scenarios first (one dialogue × 12 conditions, or domain sampling), then remove the limit:
+
+```bash
+python3 benchmark.py --out ./smoke --limit 1
+```
+
+Run the offline structural checks with `python3 test_harness.py`. The harness
+uses synthetic data and a mock model, so its output must never be presented as
+measured benchmark performance.
+
+A complete run writes `results/selected_cases.json`, `results/run_config.json`, `results/rows.csv`, `results/summary.csv`, `results/paired_deltas.csv`, `results/step_summary.csv`, `results/report.md`, `results/rows.jsonl`, `results/details.jsonl`, and `results/model_cache.jsonl`. Output files are written **only if the experiment was executed**. Never treat the template as a completed result.
+
+## Important limitations / fairness notes
+1. MultiDoc2Dial has **free-form agent replies**, so response EM will usually be harsh/low even for correct grounded paraphrases. Use token F1, cited doc EM and retrieval span coverage alongside EM. Corpus-grounded response evaluation is *not* a factoid-answer dataset.
+2. The four tool choices are domain-specific search. The dataset usually requires one domain per agent turn, so `router_em` is primarily domain routing, **not** BFCL-level multi-function argument accuracy. For true multi-function composition, use a separate BFCL-V4 evaluation with compatible tool environments and do not blend its scores into these 100 cases.
+3. This is a restricted four-domain document corpus, not web-scale QA. Retrieval scores do not transfer directly to production.
+4. Synthetic typo types (letter transpositions only) do not cover ASR, OCR, phonetic or Korean errors. Add stress sets separately for those and mark them distinctly.
+5. Full-history correction changes multiple user utterances at once. Do not conflate spelling correction with query rewrite/coreference resolution; the router alone creates the standalone retrieval query in every arm.
+6. Each correction/route/decision/answer request uses the same chosen Responses API model. Model IDs and entitlements differ; the user must supply a valid `BENCH_MODEL` to run. No inference has been performed here.
+7. Evaluation arm order is shuffled with a fixed seed and query embeddings are not cached, reducing order-driven latency bias. Model output caching persists for resumed runs and reuses original measured API duration.
+8. Intermediate checkpoint answers are offline probes: they are never fed into ReAct and are excluded from its production runtime, calls, and token usage. Their hypothetical EM is recorded in `details.jsonl` and per-case rows; absence of step 2/3 means the agent stopped earlier.
+9. Cached API *latency is the recorded original* response latency, even on replays; retrieval timing is local execution time. For rigorous deployment p95, run several repeats on target hardware with cache disabled, controlling warmup and concurrency.
+10. Token usage/cost and caching matter; do not choose a production arm based on EM alone. Production choice should be made on typo-specific paired deltas and end-to-end latency, with confidence intervals.
+
+## Recommended decision policy (conditional on observed results)
+- Prefer `raw` if typo-case final EM/recall is statistically similar to corrected arms and time/cost is lower.
+- Prefer `last` if it recovers typo-case routing/retrieval and downstream outcomes without substantial clean-case regressions.
+- Prefer `full` only if multi-turn historical errors measurably improve task outcomes beyond `last`, exceeding additional latency and input-drift risk.
+- Enable `react` selectively if 2nd/3rd search delivers meaningful final EM/grounded recall gains, and P95 remains acceptable.
+
+License: refer to original MultiDoc2Dial dataset terms and model licenses.

@@ -1,0 +1,722 @@
+#!/usr/bin/env python3
+"""MultiDoc2Dial paired typo × correction × direct/ReAct (<=3 search steps) benchmark.
+
+This is an experiment HARNESS, not a precomputed benchmark. No numbers are fabricated.
+Install requirements and provide OPENAI_API_KEY + BENCH_MODEL to run online.
+"""
+from __future__ import annotations
+
+import argparse
+import csv
+import hashlib
+import json
+import os
+import random
+import re
+import statistics
+import time
+import unicodedata
+import urllib.request
+import zipfile
+from collections import Counter, defaultdict
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Any
+
+DATASET_URL = "https://doc2dial.github.io/multidoc2dial/file/multidoc2dial.zip"
+DOMAINS = ("dmv", "ssa", "va", "studentaid")
+DOMAIN_EXPLAIN = {
+    "dmv": "driver's license, registration, state motor vehicles",
+    "ssa": "Social Security, retirement, benefits, disability",
+    "va": "US Veterans Affairs and veterans benefits",
+    "studentaid": "federal student aid, FAFSA, grants and loans",
+}
+STOPWORDS = set("about above after again all also any are because before being between can could does each from have into more most other over some such than that them then there these they this those through under until very were what when where which while will with would your please thanks thank hello hi need want tell help just like know".split())
+
+
+def stable_seed(value: str) -> int:
+    return int(hashlib.sha256(value.encode()).hexdigest()[:15], 16)
+
+
+def norm(text: str) -> str:
+    s = unicodedata.normalize("NFKC", text or "").lower()
+    s = re.sub(r"[^\w\s]", " ", s)
+    s = re.sub(r"\b(a|an|the)\b", " ", s)
+    return " ".join(s.split())
+
+
+def em(pred: str, gold: str) -> float:
+    return float(norm(pred) == norm(gold))
+
+
+def token_f1(pred: str, gold: str) -> float:
+    a, b = norm(pred).split(), norm(gold).split()
+    if not a or not b:
+        return float(a == b)
+    shared = sum((Counter(a) & Counter(b)).values())
+    return (2 * shared / (len(a) + len(b))) if shared else 0.0
+
+
+def set_f1(pred: list[str], gold: list[str]) -> float:
+    p, g = set(pred), set(gold)
+    if not p or not g:
+        return float(p == g)
+    return 2 * len(p & g) / (len(p) + len(g))
+
+
+def dump_json(p: Path, obj: Any) -> None:
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(json.dumps(obj, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+def get_data(data_dir: Path, zip_path: str | None) -> tuple[dict, dict]:
+    data_dir.mkdir(parents=True, exist_ok=True)
+    p = Path(zip_path) if zip_path else data_dir / "multidoc2dial.zip"
+    if not p.exists():
+        print("Downloading official MultiDoc2Dial dataset:", DATASET_URL, flush=True)
+        urllib.request.urlretrieve(DATASET_URL, p)
+    with zipfile.ZipFile(p) as z:
+        names = [n for n in z.namelist() if not n.startswith("__MACOSX/")]
+        def load(suffix: str) -> dict:
+            matches = [n for n in names if n.endswith(suffix)]
+            if len(matches) != 1:
+                raise RuntimeError(f"Expected one {suffix}, found {matches}. ZIP files: {names[:30]}")
+            return json.loads(z.read(matches[0]).decode("utf-8-sig"))
+        docs = load("multidoc2dial_doc.json")["doc_data"]
+        dial = load("multidoc2dial_dial_validation.json")["dial_data"]
+    return docs, dial
+
+
+def build_cases(doc_data: dict, dial_data: dict, seed: int, n_per_domain: int = 25) -> list[dict]:
+    cases = []
+    for domain in DOMAINS:
+        dialogs = dial_data.get(domain, [])
+        eligible = []
+        for dialog in dialogs:
+            turns = dialog.get("turns", [])
+            choices = []
+            for i, turn in enumerate(turns[:-1]):
+                if turn.get("role") != "user" or sum(t.get("role") == "user" for t in turns[:i]) < 1:
+                    continue
+                nxt = turns[i+1]
+                if nxt.get("role") != "agent":
+                    continue
+                references = [r for r in nxt.get("references", []) if r.get("label") in ("solution", "precondition")]
+                if not references:
+                    continue
+                gold_docs = sorted({str(r.get("doc_id", "")) for r in references if r.get("doc_id")})
+                if not gold_docs:
+                    continue
+                # Require all referenced documents and spans to exist in the raw corpus.
+                if any(docid not in doc_data.get(domain, {}) for docid in gold_docs):
+                    continue
+                valid_refs = []
+                for r in references:
+                    doc = doc_data[domain][r["doc_id"]]
+                    sp = doc.get("spans", {}).get(str(r["id_sp"]))
+                    if sp:
+                        valid_refs.append({"doc_id": r["doc_id"], "id_sp": str(r["id_sp"]),
+                                           "start": int(sp["start_sp"]), "end": int(sp["end_sp"]),
+                                           "domain": domain})
+                if len(valid_refs) != len(references):
+                    continue
+                history = [{"role": t["role"], "text": t["utterance"]} for t in turns[:i]]
+                choices.append({"id": f'{dialog["dial_id"]}:{turn["turn_id"]}',
+                                "dialogue_id": dialog["dial_id"], "domain": domain,
+                                "history": history, "question": turn["utterance"],
+                                "gold_answer": nxt["utterance"], "gold_docs": gold_docs,
+                                "gold_spans": valid_refs,
+                                "gold_tools": [f"search_{domain}"]})
+            if choices:
+                # One target turn per dialogue; fixed deterministic selection.
+                idx = stable_seed(f'{seed}|{dialog["dial_id"]}') % len(choices)
+                eligible.append(choices[idx])
+        eligible.sort(key=lambda x: stable_seed(f'{seed}|{x["id"]}'))
+        if len(eligible) < n_per_domain:
+            raise RuntimeError(f"Not enough qualified {domain} validation dialogues: {len(eligible)} < {n_per_domain}")
+        cases.extend(eligible[:n_per_domain])
+    cases.sort(key=lambda x: x["id"])
+    return cases
+
+
+def corrupt_one(text: str, rng: random.Random) -> tuple[str, dict | None]:
+    words = [(m.start(), m.end(), m.group()) for m in re.finditer(r"[A-Za-z]{5,}", text)
+             if m.group().lower() not in STOPWORDS]
+    if not words:
+        words = [(m.start(), m.end(), m.group()) for m in re.finditer(r"[A-Za-z]{4,}", text)]
+    if not words:
+        return text, None
+    start, end, word = rng.choice(words)
+    # One adjacent-character transposition; no label/answer/reference modification.
+    adjacent = [i for i in range(len(word)-1) if word[i].lower() != word[i+1].lower()]
+    if not adjacent:
+        return text, None
+    j = rng.choice(adjacent)
+    typo = word[:j] + word[j+1] + word[j] + word[j+2:]
+    return text[:start] + typo + text[end:], {"before": word, "after": typo, "position": start}
+
+
+def input_variant(case: dict, typo: bool, seed: int) -> tuple[list[dict], str, list[dict]]:
+    history = [dict(m) for m in case["history"]]
+    question = case["question"]
+    edits = []
+    if typo:
+        for i, message in enumerate(history):
+            if message["role"] == "user":
+                rng = random.Random(stable_seed(f'{seed}|{case["id"]}|{i}'))
+                message["text"], edit = corrupt_one(message["text"], rng)
+                if edit:
+                    edits.append({"turn": i, **edit})
+        question, edit = corrupt_one(question, random.Random(stable_seed(f'{seed}|{case["id"]}|target')))
+        if edit:
+            edits.append({"turn": "target", **edit})
+    return history, question, edits
+
+
+def schema_object(name: str, fields: dict) -> dict:
+    return {"type": "json_schema", "name": name, "strict": True, "schema": {
+        "type": "object", "properties": fields, "required": list(fields),
+        "additionalProperties": False}}
+
+
+def string_schema() -> dict:
+    return {"type": "string"}
+
+
+class JsonModel:
+    def __init__(self, model: str, cache_file: Path):
+        from openai import OpenAI
+        self.model = model
+        self.client = OpenAI(max_retries=2, timeout=120)
+        self.cache_file = cache_file
+        self.cache: dict[str, dict] = {}
+        cache_file.parent.mkdir(parents=True, exist_ok=True)
+        if cache_file.exists():
+            for line in cache_file.read_text(encoding="utf-8").splitlines():
+                if line.strip():
+                    row = json.loads(line)
+                    self.cache[row["cache_key"]] = row
+
+    def ask(self, system: str, prompt: str, schema: dict) -> tuple[dict, float, int]:
+        sig = json.dumps([self.model, system, prompt, schema], ensure_ascii=False, sort_keys=True)
+        key = hashlib.sha256(sig.encode()).hexdigest()
+        if key in self.cache:
+            row = self.cache[key]
+            return row["result"], row["latency_s"], row["tokens"]
+        st = time.perf_counter()
+        # Responses API with strict JSON schema; no unsupported temperature/seed parameter.
+        result = self.client.responses.create(
+            model=self.model,
+            instructions=system,
+            input=prompt,
+            text={"format": schema},
+        )
+        latency = time.perf_counter() - st
+        if not result.output_text:
+            raise RuntimeError(f"No text from {self.model}: {result.status}")
+        obj = json.loads(result.output_text)
+        tokens = int(getattr(getattr(result, "usage", None), "total_tokens", 0) or 0)
+        row = {"cache_key": key, "result": obj, "latency_s": latency, "tokens": tokens}
+        self.cache[key] = row
+        with self.cache_file.open("a", encoding="utf-8") as f:
+            f.write(json.dumps(row, ensure_ascii=False) + "\n")
+        return obj, latency, tokens
+
+
+def fix_input(llm: JsonModel, mode: str, history: list[dict], question: str) -> tuple[list[dict], str, dict]:
+    if mode == "raw":
+        return history, question, {"seconds": 0.0, "calls": 0, "tokens": 0}
+    system = ("You perform only minimal spelling/typo correction in English user utterances. "
+              "Preserve intent, entities, numbers, coreference, dialogue structure and wording. "
+              "Never answer the question, expand references, summarize or paraphrase. "
+              "Return a JSON object matching the required schema. Agent utterances are read-only.")
+    if mode == "last":
+        prompt = json.dumps({"history_context": history, "last_user_utterance_to_fix": question}, ensure_ascii=False)
+        result, sec, tokens = llm.ask(system + " Edit ONLY the last user utterance. Output one line.", prompt,
+            schema_object("fix_last", {"text": string_schema()}))
+        cleaned = " ".join(result["text"].splitlines())
+        return history, cleaned, {"seconds": sec, "calls": 1, "tokens": tokens}
+    if mode == "full":
+        user_indices = [i for i, msg in enumerate(history) if msg["role"] == "user"]
+        utterances = [history[i]["text"] for i in user_indices] + [question]
+        prompt = json.dumps({"dialogue_context": history,
+                             "user_utterances_to_fix_in_order": utterances}, ensure_ascii=False)
+        result, sec, tokens = llm.ask(system + " Output the same number of utterances in the same order.", prompt,
+            schema_object("fix_full", {"utterances": {"type": "array", "items": string_schema()}}))
+        out = result["utterances"]
+        if len(out) != len(utterances):
+            raise RuntimeError(f"Full correction returned {len(out)} utterances, expected {len(utterances)}")
+        corrected = [dict(msg) for msg in history]
+        for i, value in zip(user_indices, out[:-1]):
+            corrected[i]["text"] = " ".join(value.splitlines())
+        return corrected, " ".join(out[-1].splitlines()), {"seconds": sec, "calls": 1, "tokens": tokens}
+    raise ValueError(mode)
+
+
+@dataclass
+class Chunk:
+    id: str
+    doc_id: str
+    domain: str
+    text: str
+    start: int
+    end: int
+
+
+def build_chunks(doc_data: dict, size: int = 1050, overlap: int = 180) -> list[Chunk]:
+    chunks = []
+    for domain in DOMAINS:
+        for docid in sorted(doc_data[domain]):
+            doc = doc_data[domain][docid]
+            content = doc.get("doc_text", "")
+            title = doc.get("title", "")
+            begin = 0
+            i = 0
+            while begin < len(content):
+                end = min(begin + size, len(content))
+                if end < len(content):
+                    pos = content.rfind(" ", max(begin+size//2, end-120), end)
+                    if pos > begin:
+                        end = pos
+                passage = f"{title}\n{content[begin:end]}"
+                chunks.append(Chunk(f"{domain}:{hashlib.sha1(docid.encode()).hexdigest()[:10]}:{i}",
+                                    docid, domain, passage, begin, end))
+                if end >= len(content):
+                    break
+                begin = max(begin+1, end-overlap)
+                i += 1
+    return chunks
+
+
+class Retrieval:
+    def __init__(self, chunks: list[Chunk], dense_model: str, cross_model: str, device: str):
+        import numpy as np
+        from rank_bm25 import BM25Okapi
+        from sentence_transformers import SentenceTransformer, CrossEncoder
+        self.np = np
+        self.chunks = {c.id: c for c in chunks}
+        self.domains = {}
+        self.bm25 = {}
+        self.embs = {}
+        self.encoder = SentenceTransformer(dense_model, device=device)
+        self.cross = CrossEncoder(cross_model, device=device)
+        for domain in DOMAINS:
+            section = [c for c in chunks if c.domain == domain]
+            self.domains[domain] = section
+            self.bm25[domain] = BM25Okapi([self.tokenize(c.text) for c in section])
+            arr = self.encoder.encode([c.text for c in section], normalize_embeddings=True,
+                                      convert_to_numpy=True, show_progress_bar=True, batch_size=64)
+            self.embs[domain] = arr
+
+    @staticmethod
+    def tokenize(s: str) -> list[str]:
+        return re.findall(r"[a-z0-9]+", s.lower())
+
+    def search(self, domain: str, query: str, per_branch: int = 30, rerank_pool: int = 20,
+               output_k: int = 5) -> dict:
+        import numpy as np
+        sec = time.perf_counter()
+        docs = self.domains[domain]
+        toks = self.tokenize(query)
+        bm = np.asarray(self.bm25[domain].get_scores(toks))
+        bm_idx = np.argsort(-bm, kind="stable")[:per_branch].tolist()
+        # Do not cache query encodings: each query pays the same online embedding cost.
+        qvec = self.encoder.encode([query], normalize_embeddings=True,
+                                   convert_to_numpy=True)[0]
+        sim = self.embs[domain] @ qvec
+        dense_idx = np.argsort(-sim, kind="stable")[:per_branch].tolist()
+        fusion = defaultdict(float)
+        for ids in (bm_idx, dense_idx):
+            for rank, idx in enumerate(ids, 1):
+                fusion[idx] += 1.0/(60 + rank)
+        rrf_idx = sorted(fusion, key=lambda k: (-fusion[k], k))[:rerank_pool]
+        candidates = [(query, docs[i].text) for i in rrf_idx]
+        scores = self.cross.predict(candidates, show_progress_bar=False) if candidates else []
+        ce_idx = [idx for _,idx in sorted(zip(scores,rrf_idx),key=lambda z:-float(z[0]))]
+        ce_scores = {docs[i].id: float(score) for score,i in zip(scores,rrf_idx)}
+        duration = time.perf_counter()-sec
+        return {"domain": domain, "query": query,
+                "bm25_ids": [docs[i].id for i in bm_idx],
+                "dense_ids": [docs[i].id for i in dense_idx],
+                "rrf_ids": [docs[i].id for i in rrf_idx],
+                "ce_ids": [docs[i].id for i in ce_idx],
+                "top_ids": [docs[i].id for i in ce_idx[:output_k]],
+                "ce_scores": ce_scores, "seconds": duration}
+
+    def run_tools(self, tools: list[str], query: str) -> dict:
+        steps = []
+        for tool in tools:
+            domain = tool.removeprefix("search_")
+            if domain not in DOMAINS:
+                continue
+            steps.append(self.search(domain, query))
+        def aggregate(key: str) -> list[str]:
+            # Fuse ranked lists from distinct tools with RRF to avoid one tool dominating.
+            scores = defaultdict(float)
+            for s in steps:
+                for rank, chunk_id in enumerate(s[key], 1):
+                    scores[chunk_id] += 1/(60 + rank)
+            return sorted(scores, key=lambda x:(-scores[x], x))
+        return {"searches": steps,
+                "bm25_ids": aggregate("bm25_ids"),
+                "dense_ids": aggregate("dense_ids"),
+                "rrf_ids": aggregate("rrf_ids"),
+                "ce_ids": aggregate("ce_ids"),
+                "top_ids": aggregate("top_ids"),
+                "seconds": sum(s["seconds"] for s in steps)}
+
+
+def format_dialogue(history: list[dict], question: str) -> str:
+    messages = history + [{"role": "user", "text": question}]
+    return "\n".join(f'{m["role"].upper()}: {m["text"]}' for m in messages)
+
+
+def route(llm: JsonModel, history: list[dict], question: str) -> tuple[list[str], str, dict]:
+    tool_names = [f"search_{d}" for d in DOMAINS]
+    schema = schema_object("multi_tool_route", {
+        "tools": {"type": "array", "items": {"type": "string", "enum": tool_names}},
+        "query": string_schema()})
+    sys = ("You are a multi-tool search router. Pick one or more useful tools to answer the final user question. "
+           "Use full dialogue for context. Select no more than two, deduplicate, and order by importance. "
+           "Search tools: " + json.dumps(DOMAIN_EXPLAIN) + ". "
+           "Write a focused standalone retrieval query resolving references only as needed. "
+           "Return JSON with tools and query. Never use dataset labels.")
+    obj, latency, tokens = llm.ask(sys, format_dialogue(history, question), schema)
+    tools = list(dict.fromkeys(t for t in obj["tools"] if t in tool_names))[:2]
+    if not tools:
+        tools = ["search_dmv"]  # invalid/empty selection recorded separately as router failure
+    query = obj["query"].strip() or question
+    return tools, query, {"seconds": latency, "calls": 1, "tokens": tokens, "router_raw": obj}
+
+
+def evidence_block(ret: Retrieval, ids: list[str], n: int = 5) -> str:
+    parts = []
+    for i, cid in enumerate(ids[:n], 1):
+        c = ret.chunks[cid]
+        parts.append(f"[{i}] chunk_id={cid} | doc_id={c.doc_id} | tool=search_{c.domain}\n{c.text[:1200]}")
+    return "\n\n".join(parts)
+
+
+def decide_react(llm: JsonModel, history: list[dict], question: str, ret: Retrieval,
+                 all_ids: list[str], tool_history: list[dict]) -> tuple[dict, dict]:
+    schema = schema_object("react_decision", {
+        "action": {"type": "string", "enum": ["finish", "search"]},
+        "tool": {"type": "string", "enum": [f"search_{d}" for d in DOMAINS]},
+        "query": string_schema()})
+    system = ("You are a search agent. Decide if currently retrieved evidence is sufficient to answer "
+              "the final user question accurately. If not, choose ONE useful next search tool and a focused "
+              "query (a new facet or clearer query). Do not access gold labels. "
+              "Return JSON. Use action=finish if evidence is sufficient or nothing useful remains to search.")
+    obj, sec, tokens = llm.ask(system, json.dumps({"dialogue": format_dialogue(history, question),
+          "search_history": tool_history, "evidence": evidence_block(ret, all_ids, 6)},ensure_ascii=False),schema)
+    return obj, {"seconds": sec, "calls": 1, "tokens": tokens}
+
+
+def answer(llm: JsonModel, history: list[dict], question: str,
+           ret: Retrieval, ids: list[str]) -> tuple[dict, dict]:
+    schema = schema_object("answer_with_citations", {
+        "answer": string_schema(),
+        "evidence_doc_ids": {"type": "array", "items": string_schema()}})
+    system = ("Answer the final user query as the next support agent response grounded ONLY in retrieved snippets. "
+              "Be concise and faithful. If evidence is insufficient, state that. "
+              "Cite only exact doc_id values from snippets. Return JSON only. "
+              "Never use hidden gold/reference responses.")
+    obj, sec, tokens = llm.ask(system, json.dumps({"dialogue": format_dialogue(history, question),
+                        "retrieved_evidence": evidence_block(ret,ids,5)},ensure_ascii=False),schema)
+    citations = list(dict.fromkeys(obj["evidence_doc_ids"]))
+    allowed = {ret.chunks[x].doc_id for x in ids[:5]}
+    obj["valid_evidence_doc_ids"] = [x for x in citations if x in allowed]
+    obj["hallucinated_citations"] = [x for x in citations if x not in allowed]
+    return obj, {"seconds": sec, "calls": 1, "tokens": tokens}
+
+
+def relevance(chunks: dict[str, Chunk], ids: list[str], case: dict, k: int) -> dict:
+    subset = [chunks[x] for x in ids[:k]]
+    got_docs = {x.doc_id for x in subset}
+    gold_docs = set(case["gold_docs"])
+    hits = []
+    for span in case["gold_spans"]:
+        length = max(1, span["end"] - span["start"])
+        hits.append(any(c.doc_id == span["doc_id"] and
+                        max(0, min(c.end, span["end"]) - max(c.start, span["start"])) >= min(length, max(20, .5*length))
+                        for c in subset))
+    return {"doc_recall": len(got_docs & gold_docs)/len(gold_docs),
+            "all_docs": float(gold_docs <= got_docs),
+            "span_recall": sum(hits)/len(hits) if hits else 0.,
+            "all_spans": float(all(hits))}
+
+
+def mean_reciprocal_rank(chunks: dict[str, Chunk], ids: list[str], gold_docs: list[str], k: int) -> float:
+    gold = set(gold_docs)
+    return next((1.0 / rank for rank, cid in enumerate(ids[:k], 1)
+                 if chunks[cid].doc_id in gold), 0.0)
+
+
+def rrf_across_steps(step_results: list[dict], key: str) -> list[str]:
+    # Each call's final rankings are fused. This is more comparable across different queries
+    # than taking the maximum uncalibrated cross-encoder logit.
+    agg = defaultdict(float)
+    for r in step_results:
+        for i, cid in enumerate(r[key], 1):
+            agg[cid] += 1/(60+i)
+    return sorted(agg, key=lambda c:(-agg[c],c))
+
+
+def evaluate_one(case: dict, input_condition: str, strategy: str, agent: str,
+                 llm: JsonModel, ret: Retrieval, seed: int) -> tuple[dict, dict]:
+    history, question, edits = input_variant(case, input_condition == "typo", seed)
+    corrected_history, corrected_question, prep = fix_input(llm, strategy,history,question)
+    tools, query, router = route(llm, corrected_history, corrected_question)
+    # Fairness: every direct/ReAct experiment uses identical first search call.
+    first = ret.run_tools(tools,query)
+    searched = [{"tools": tools,"query": query}]
+    step_results = [first]
+    extra_llm_sec = 0.0
+    extra_llm_calls = 0
+    extra_tokens = 0
+    intermediate = []
+    for step in range(2,4):
+        if agent != "react":
+            break
+        available_ids = rrf_across_steps(step_results,"ce_ids")
+        decision, cost = decide_react(llm,corrected_history,corrected_question,ret,available_ids,searched)
+        extra_llm_sec += cost["seconds"]
+        extra_llm_calls += cost["calls"]
+        extra_tokens += cost["tokens"]
+        intermediate.append({"decision_after_step":step-1,"decision":decision})
+        if decision["action"] != "search":
+            break
+        next_tool = decision["tool"]
+        next_query = decision["query"].strip() or corrected_question
+        step_results.append(ret.run_tools([next_tool],next_query))
+        searched.append({"tools":[next_tool],"query":next_query})
+    final_ids = rrf_across_steps(step_results,"ce_ids")
+    generated, gen_cost = answer(llm,corrected_history,corrected_question,ret,final_ids[:5])
+    stages = {}
+    for stage in ("bm25", "dense", "rrf", "ce"):
+        # First-step ranking, to measure impacts before ReAct independently.
+        ids = first[stage+"_ids"]
+        stages[f"{stage}_mrr@10"] = mean_reciprocal_rank(ret.chunks, ids, case["gold_docs"], 10)
+        for k in (1,3,5,10):
+            m = relevance(ret.chunks,ids,case,k)
+            stages.update({f"{stage}_{name}@{k}":value for name,value in m.items()})
+    for k in (1,3,5):
+        m = relevance(ret.chunks,final_ids,case,k)
+        stages.update({f"final_{name}@{k}":v for name,v in m.items()})
+    # Offline checkpoint probes: answer quality after ReAct search step 1/2/3.
+    # NOT visible to agent and NOT counted in production API latency/calls.
+    # Only the last probe is typically cached from the actual final answer generation.
+    checkpoints = []
+    offline_probe_calls = 0
+    for step_count in range(1, len(step_results)+1):
+        step_ids = rrf_across_steps(step_results[:step_count], "ce_ids")
+        r = relevance(ret.chunks, step_ids, case, 5)
+        checkpoint = {f"checkpoint_{k}@5_step{step_count}":v for k,v in r.items()}
+        checkpoint[f"checkpoint_mrr@10_step{step_count}"] = mean_reciprocal_rank(ret.chunks,step_ids,case["gold_docs"],10)
+        if step_count == len(step_results):
+            a = generated
+        else:
+            a, _ = answer(llm,corrected_history,corrected_question,ret,step_ids[:5])
+            offline_probe_calls += 1
+        checkpoint[f"checkpoint_answer_em_step{step_count}"] = em(a["answer"],case["gold_answer"])
+        checkpoint[f"checkpoint_answer_f1_step{step_count}"] = token_f1(a["answer"],case["gold_answer"])
+        stages.update(checkpoint)
+        checkpoints.append({"step":step_count, "top5":step_ids[:5], "probe_answer":a["answer"], "scores":checkpoint})
+    initial_predicted = router["router_raw"]["tools"]
+    valid_predicted = list(dict.fromkeys(x for x in initial_predicted if x.startswith("search_") and x.removeprefix("search_") in DOMAINS))
+    gold_tools = case["gold_tools"]
+    cited = generated["valid_evidence_doc_ids"]
+    total_sec = prep["seconds"] + router["seconds"] + sum(s["seconds"] for s in step_results) + extra_llm_sec + gen_cost["seconds"]
+    row = {
+        "case_id": case["id"], "domain": case["domain"],
+        "condition":input_condition, "strategy":strategy,"agent":agent,
+        "typos_inserted":len(edits),
+        "router_em": float(set(initial_predicted) == set(gold_tools) and len(initial_predicted) == len(set(initial_predicted))),
+        "router_tool_f1":set_f1(valid_predicted,gold_tools),
+        "router_selected_n":len(initial_predicted),
+        "answer_em":em(generated["answer"],case["gold_answer"]),
+        "answer_token_f1":token_f1(generated["answer"],case["gold_answer"]),
+        "citation_doc_em":float(set(cited) == set(case["gold_docs"])),
+        "citation_doc_f1":set_f1(cited,case["gold_docs"]),
+        "hallucinated_citations_n":len(generated["hallucinated_citations"]),
+        "search_steps":len(step_results),
+        "offline_probe_calls":offline_probe_calls,
+        "llm_calls":prep["calls"]+router["calls"]+extra_llm_calls+gen_cost["calls"],
+        "llm_tokens":prep["tokens"]+router["tokens"]+extra_tokens+gen_cost["tokens"],
+        "latency_s":round(total_sec,4),
+        "preprocess_latency_s":round(prep["seconds"],4),
+        "route_latency_s":round(router["seconds"],4),
+        "retrieval_latency_s":round(sum(s["seconds"] for s in step_results),4),
+        "reasoning_latency_s":round(extra_llm_sec,4),
+        "generation_latency_s":round(gen_cost["seconds"],4),
+        **stages}
+    detail = {"case_id":case["id"], "condition":input_condition,"strategy":strategy,"agent":agent,
+              "edits":edits, "original_history":case["history"], "original_question":case["question"],
+              "variant_history":history,"variant_question":question,
+              "corrected_history":corrected_history,"corrected_question":corrected_question,
+              "gold_tools":gold_tools,"gold_docs":case["gold_docs"],"gold_spans":case["gold_spans"],
+              "gold_answer":case["gold_answer"], "predicted_tools":initial_predicted,
+              "router_query":query,"search_history":searched,"react_decisions":intermediate,
+              "search_results":[{k:v for k,v in s.items() if k != "searches"} for s in step_results],
+              "checkpoint_probes":checkpoints,
+              "pred_answer":generated,"final_chunk_ids":final_ids[:10],"metrics":row}
+    return row,detail
+
+
+def percentile(xs: list[float], p: float) -> float:
+    ys = sorted(xs)
+    if not ys: return float('nan')
+    n = (len(ys)-1)*p
+    low = int(n)
+    return ys[low]+(ys[min(low+1,len(ys)-1)]-ys[low])*(n-low)
+
+
+def summarize(rows: list[dict], out: Path) -> None:
+    metrics = ["router_em","router_tool_f1","bm25_doc_recall@5","dense_doc_recall@5",
+               "rrf_doc_recall@5","ce_doc_recall@5","ce_span_recall@5",
+               "bm25_mrr@10","dense_mrr@10","rrf_mrr@10","ce_mrr@10",
+               "final_doc_recall@5","final_span_recall@5","final_all_spans@5",
+               "answer_em","answer_token_f1","citation_doc_em","citation_doc_f1",
+               "llm_calls","llm_tokens","search_steps","latency_s", "preprocess_latency_s",
+               "route_latency_s", "retrieval_latency_s","reasoning_latency_s","generation_latency_s"]
+    groups = defaultdict(list)
+    for r in rows:
+        groups[(r["condition"],r["strategy"],r["agent"])].append(r)
+    summary = []
+    for (condition,strategy,agent),batch in sorted(groups.items()):
+        s = {"condition":condition,"strategy":strategy,"agent":agent,"n":len(batch)}
+        s.update({m: round(statistics.fmean(float(r[m]) for r in batch),4) for m in metrics})
+        s["latency_p50_s"] = round(percentile([float(r["latency_s"]) for r in batch],.5),4)
+        s["latency_p95_s"] = round(percentile([float(r["latency_s"]) for r in batch],.95),4)
+        summary.append(s)
+    with (out/"summary.csv").open("w",newline="",encoding="utf-8") as f:
+        wr=csv.DictWriter(f,fieldnames=list(summary[0]));wr.writeheader();wr.writerows(summary)
+    # Per-search-step traces; n_reached and reach_rate prevent conditional sample-size confusion.
+    step_summary = []
+    for (condition,strategy,agent),batch in sorted(groups.items()):
+        for step in (1,2,3):
+            part = [r for r in batch if r["search_steps"] >= step]
+            if not part: continue
+            entry = {"condition":condition,"strategy":strategy,"agent":agent,
+                     "step":step,"n_reached":len(part),"reach_rate":round(len(part)/len(batch),4)}
+            entry["doc_recall@5"] = round(statistics.fmean(r[f"checkpoint_doc_recall@5_step{step}"] for r in part),4) if f"checkpoint_doc_recall@5_step{step}" in part[0] else float('nan')
+            entry["span_recall@5"] = round(statistics.fmean(r[f"checkpoint_span_recall@5_step{step}"] for r in part),4) if f"checkpoint_span_recall@5_step{step}" in part[0] else float('nan')
+            entry["answer_em"] = round(statistics.fmean(r[f"checkpoint_answer_em_step{step}"] for r in part),4)
+            entry["answer_token_f1"] = round(statistics.fmean(r[f"checkpoint_answer_f1_step{step}"] for r in part),4)
+            entry["mrr@10"] = round(statistics.fmean(r[f"checkpoint_mrr@10_step{step}"] for r in part),4)
+            step_summary.append({k:entry[k] for k in ("condition","strategy","agent","step","n_reached","reach_rate","doc_recall@5","span_recall@5","mrr@10","answer_em","answer_token_f1")})
+    with (out/"step_summary.csv").open("w",newline="",encoding="utf-8") as f:
+        wr=csv.DictWriter(f,fieldnames=list(step_summary[0]));wr.writeheader();wr.writerows(step_summary)
+
+    # Paired bootstrap deltas, same case IDs (never an independent two-sample test).
+    rng = random.Random(48711)
+    comparisons=[]
+    for condition in ("clean","typo"):
+        for agent in ("direct","react"):
+            control={r["case_id"]:r for r in rows if r["condition"]==condition and r["agent"]==agent and r["strategy"]=="raw"}
+            for strategy,baseline in (("last","raw"),("full","raw"),("full","last")):
+                baseline_rows={r["case_id"]:r for r in rows if r["condition"]==condition and r["agent"]==agent and r["strategy"]==baseline}
+                treatment={r["case_id"]:r for r in rows if r["condition"]==condition and r["agent"]==agent and r["strategy"]==strategy}
+                ids=sorted(set(baseline_rows)&set(treatment))
+                for metric in ("router_em","ce_doc_recall@5","final_doc_recall@5","answer_em","answer_token_f1","latency_s"):
+                    deltas=[float(treatment[i][metric])-float(baseline_rows[i][metric]) for i in ids]
+                    boot=[statistics.fmean(rng.choices(deltas,k=len(deltas))) for _ in range(2000)] if deltas else []
+                    comparisons.append({"condition":condition,"agent":agent,"comparison":f"{strategy}_minus_{baseline}","metric":metric,"n":len(ids),
+                                        "mean_delta":round(statistics.fmean(deltas),4) if deltas else None,
+                                        "ci95_low":round(percentile(boot,.025),4) if boot else None,
+                                        "ci95_high":round(percentile(boot,.975),4) if boot else None})
+    # Matched ReAct - Direct effect for each typo × correction combination.
+    for condition in ("clean","typo"):
+        for strategy in ("raw","last","full"):
+            direct={r["case_id"]:r for r in rows if r["condition"]==condition and r["strategy"]==strategy and r["agent"]=="direct"}
+            react={r["case_id"]:r for r in rows if r["condition"]==condition and r["strategy"]==strategy and r["agent"]=="react"}
+            ids=sorted(set(direct)&set(react))
+            for metric in ("final_doc_recall@5","answer_em","answer_token_f1","latency_s","llm_calls"):
+                deltas=[float(react[i][metric])-float(direct[i][metric]) for i in ids]
+                boot=[statistics.fmean(rng.choices(deltas,k=len(deltas))) for _ in range(2000)] if deltas else []
+                comparisons.append({"condition":condition,"agent":"react_vs_direct","comparison":f"react_minus_direct__{strategy}",
+                                    "metric":metric,"n":len(ids),
+                                    "mean_delta":round(statistics.fmean(deltas),4) if deltas else None,
+                                    "ci95_low":round(percentile(boot,.025),4) if boot else None,
+                                    "ci95_high":round(percentile(boot,.975),4) if boot else None})
+    with (out/"paired_deltas.csv").open("w",newline="",encoding="utf-8") as f:
+        wr=csv.DictWriter(f,fieldnames=list(comparisons[0]));wr.writeheader();wr.writerows(comparisons)
+    report = ["# Measured benchmark results", "", "These metrics are generated from actual row-level execution.", "",
+              "| Condition | Correction | Agent | Router EM | CE Doc Recall@5 | Final Doc Recall@5 | Answer EM | Avg latency (s) |",
+              "|---|---|---|---:|---:|---:|---:|---:|"]
+    for r in summary:
+        report.append("| "+" | ".join(str(r[k]) for k in ("condition","strategy","agent","router_em","ce_doc_recall@5","final_doc_recall@5","answer_em","latency_s"))+" |")
+    report += ["", "## ReAct checkpoint metrics (only cases that reached the step)", "",
+               "| Condition | Correction | Agent | Search step | Cases reached | Answer EM | Doc Recall@5 |",
+               "|---|---|---|---:|---:|---:|---:|"]
+    for r in step_summary:
+        report.append("| "+" | ".join(str(r[k]) for k in ("condition","strategy","agent","step","n_reached","answer_em","doc_recall@5"))+" |")
+    (out/"report.md").write_text("\n".join(report)+"\n",encoding="utf-8")
+    print("\nCOMPLETED: n =", len(rows))
+    cols = ["condition","strategy","agent","router_em","ce_doc_recall@5","final_doc_recall@5","answer_em","latency_s"]
+    print("\t".join(cols))
+    for row in summary:
+        print("\t".join(str(row.get(c,"")) for c in cols))
+
+
+def main() -> None:
+    p=argparse.ArgumentParser(description=__doc__)
+    p.add_argument("--model",default=os.getenv("BENCH_MODEL"),help="API-accessible Responses model ID; REQUIRED")
+    p.add_argument("--data-zip",default=None,help="Path to official multidoc2dial.zip if already downloaded")
+    p.add_argument("--out",default="./results")
+    p.add_argument("--seed",type=int,default=20261020)
+    p.add_argument("--n-per-domain",type=int,default=25)
+    p.add_argument("--dense-model",default="sentence-transformers/multi-qa-MiniLM-L6-cos-v1")
+    p.add_argument("--cross-model",default="cross-encoder/ms-marco-MiniLM-L6-v2")
+    p.add_argument("--device",default="cpu")
+    p.add_argument("--prepare-only",action="store_true",help="Download & select cases, without API/model inference")
+    p.add_argument("--limit",type=int,default=None,help="Smoke-test a few cases; omit for full 100")
+    a=p.parse_args()
+    out=Path(a.out);out.mkdir(parents=True,exist_ok=True)
+    docs,dials=get_data(out/"data",a.data_zip)
+    cases=build_cases(docs,dials,a.seed,a.n_per_domain)
+    if a.limit: cases=cases[:a.limit]
+    dump_json(out/"selected_cases.json",cases)
+    dump_json(out/"run_config.json",{**vars(a),"dataset":DATASET_URL,"case_ids":[x["id"] for x in cases],
+                                            "comparisons_per_case":12,"total_target_evaluations":12*len(cases)})
+    print(f"Selected {len(cases)} cases; domains: {dict(Counter(c['domain'] for c in cases))}")
+    if a.prepare_only:
+        return
+    if not os.environ.get("OPENAI_API_KEY") or not a.model:
+        raise SystemExit("Set OPENAI_API_KEY and BENCH_MODEL=your API-accessible model ID; or use --prepare-only")
+    llm=JsonModel(a.model,out/"model_cache.jsonl")
+    chunks=build_chunks(docs)
+    ret=Retrieval(chunks,a.dense_model,a.cross_model,a.device)
+    print(f"Built {len(chunks)} domain-indexed document chunks")
+    manifest=out/"rows.jsonl";details=out/"details.jsonl"
+    existing={}
+    if manifest.exists():
+        for line in manifest.read_text(encoding="utf-8").splitlines():
+            if line.strip():
+                row=json.loads(line)
+                existing[(row["case_id"],row["condition"],row["strategy"],row["agent"])]=row
+    jobs = [(case, condition, strategy, agent) for case in cases
+            for condition in ("clean","typo") for strategy in ("raw","last","full")
+            for agent in ("direct","react")]
+    random.Random(a.seed + 91817).shuffle(jobs)  # avoid fixed arm-order/warmup bias
+    for case,condition,strategy,agent in jobs:
+        key=(case["id"],condition,strategy,agent)
+        if key in existing:
+            continue
+        # Fail loudly on API/data errors instead of inventing partial or zero scores.
+        row, detail=evaluate_one(case,condition,strategy,agent,llm,ret,a.seed)
+        with manifest.open("a",encoding="utf-8") as f:
+            f.write(json.dumps(row,ensure_ascii=False)+"\n")
+        with details.open("a",encoding="utf-8") as f:
+            f.write(json.dumps(detail,ensure_ascii=False)+"\n")
+        existing[key]=row
+        print(f"[{len(existing)}/{12*len(cases)}] {key} answer EM={row['answer_em']:.0f} route EM={row['router_em']:.0f}",flush=True)
+    all_rows=[existing[(c["id"],condition,strategy,agent)] for c in cases
+              for condition in ("clean","typo") for strategy in ("raw","last","full") for agent in ("direct","react")]
+    with (out/"rows.csv").open("w",newline="",encoding="utf-8") as f:
+        w=csv.DictWriter(f,fieldnames=list(all_rows[0]));w.writeheader();w.writerows(all_rows)
+    summarize(all_rows,out)
+
+
+if __name__=="__main__":
+    main()
