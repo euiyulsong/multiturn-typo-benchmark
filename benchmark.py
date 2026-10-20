@@ -424,6 +424,14 @@ class Retrieval:
                 "top_ids": aggregate("top_ids"),
                 "seconds": sum(s["seconds"] for s in steps)}
 
+    def search_gold_domain(self, domain: str, query: str) -> dict:
+        """Run retrieval against the annotated domain, without an LLM tool router."""
+        result=self.search(domain,query)
+        result["searches"]=[{k:v for k,v in result.items() if k!="searches"}]
+        for key in ("bm25_ids","dense_ids","rrf_ids","ce_ids","top_ids"):
+            result[key]=result[key]
+        return result
+
 
 def format_dialogue(history: list[dict], question: str) -> str:
     messages = history + [{"role": "user", "text": question}]
@@ -532,11 +540,19 @@ def evaluate_one(case: dict, input_condition: str, strategy: str, agent: str,
                  llm: JsonModel, ret: Retrieval, seed: int,
                  architecture: str = "staged", typo_aware: bool = False,
                  retrieval_only: bool = False,
-                 typo_types: tuple[str, ...] = ("transpose",)) -> tuple[dict, dict]:
+                 typo_types: tuple[str, ...] = ("transpose",),
+                 skip_router: bool = False) -> tuple[dict, dict]:
     history, question, edits = input_variant(case, input_condition == "typo", seed, typo_types)
     rewrite_history = [m for m in history if m["role"] == "user"]
     corrected_history, corrected_question, prep = fix_input(llm, strategy,history,question)
-    if architecture == "direct":
+    if skip_router:
+        corrected_history, corrected_question = history, question
+        prep = {"seconds":0.0,"calls":0,"tokens":0}
+        tools = [f"search_{case['domain']}"]
+        query = format_dialogue(rewrite_history, corrected_question)
+        router = {"seconds":0.0,"calls":0,"tokens":0,"router_raw":{"tools":tools},
+                  "selection_query":query}
+    elif architecture == "direct":
         # Joint tool-selection/query-writing call; no separate correction stage.
         corrected_history, corrected_question = history, question
         prep = {"seconds": 0.0, "calls": 0, "tokens": 0}
@@ -551,20 +567,25 @@ def evaluate_one(case: dict, input_condition: str, strategy: str, agent: str,
                 "tokens": prep["tokens"] + rewrite_cost["tokens"]}
     # Fairness: every direct/ReAct experiment uses identical first search call.
     search_query = router["selection_query"] if architecture == "direct" else query
-    first = ret.run_tools(tools,search_query)
+    first = (ret.search_gold_domain(case["domain"],search_query)
+             if skip_router else ret.run_tools(tools,search_query))
     if retrieval_only:
         initial_predicted = router["router_raw"]["tools"]
         valid_predicted = list(dict.fromkeys(
             x for x in initial_predicted
             if x.startswith("search_") and x.removeprefix("search_") in DOMAINS))
         gold_tools = case["gold_tools"]
+        if skip_router:
+            valid_predicted=[]
+            initial_predicted=[]
         metrics = {"case_id":case["id"], "domain":case["domain"],
                    "condition":input_condition, "strategy":strategy, "agent":agent,
                    "architecture":architecture, "typo_aware":typo_aware,
                    "typos_inserted":len(edits),
-                   "router_em":float(set(valid_predicted)==set(gold_tools) and len(valid_predicted)==len(set(valid_predicted))),
-                   "router_tool_f1":set_f1(valid_predicted,gold_tools),
-                   "router_selected_n":len(initial_predicted),
+                   "router_skipped":bool(skip_router),
+                   "router_em":None if skip_router else float(set(valid_predicted)==set(gold_tools) and len(valid_predicted)==len(set(valid_predicted))),
+                   "router_tool_f1":None if skip_router else set_f1(valid_predicted,gold_tools),
+                   "router_selected_n":None if skip_router else len(initial_predicted),
                    "search_steps":1, "llm_calls":prep["calls"]+router["calls"],
                    "llm_tokens":prep["tokens"]+router["tokens"],
                    "latency_s":round(prep["seconds"]+router["seconds"],4),
@@ -584,11 +605,11 @@ def evaluate_one(case: dict, input_condition: str, strategy: str, agent: str,
                 "variant_history":history,"variant_question":question,
                 "corrected_history":corrected_history,"corrected_question":corrected_question,
                 "gold_tools":gold_tools,"gold_docs":case["gold_docs"],"gold_spans":case["gold_spans"],
-                "predicted_tools":initial_predicted,"router_query":query,
+                "predicted_tools":None if skip_router else initial_predicted,"router_query":query,
                 "selection_and_search_query":search_query,
                 "search_history":[{"tools":tools,"query":search_query}],
                 "search_results":[{k:v for k,v in first.items() if k!="searches"}],
-                "metrics":metrics}
+                "router_skipped":bool(skip_router),"metrics":metrics}
         return metrics,detail
     searched = [{"tools": tools,"query": search_query}]
     step_results = [first]
@@ -721,7 +742,7 @@ def summarize(rows: list[dict], out: Path) -> None:
                 "answer_em","answer_subspan_em","answer_token_f1","citation_doc_em","citation_doc_f1",
                 "llm_calls","llm_tokens","search_steps","latency_s", "preprocess_latency_s",
                 "route_latency_s", "retrieval_latency_s","reasoning_latency_s","generation_latency_s"]
-    metrics = [m for m in metrics if all(m in r for r in rows)]
+    metrics = [m for m in metrics if all(m in r and r[m] is not None for r in rows)]
     groups = defaultdict(list)
     for r in rows:
         groups[(r["condition"],r["strategy"],r["agent"],r.get("architecture","staged"),r.get("typo_aware",False))].append(r)
@@ -798,12 +819,17 @@ def summarize(rows: list[dict], out: Path) -> None:
         wr=csv.DictWriter(f,fieldnames=comparison_fields);wr.writeheader();wr.writerows(comparisons)
     report = (["# Measured retrieval-only benchmark results", "", "Answer generation and ReAct follow-up were skipped; this report contains routing and retrieval metrics only.", "",
                 "| Condition | Correction | Architecture | Typo-aware | Agent | Router EM | CE Doc Recall@5 | CE Span Recall@5 | CE MRR@10 |",
+                "|---|---|---|---|---|---:|---:|---:|---:|"] if retrieval_only and not all(r.get("router_skipped",False) for r in rows) else
+              ["# Measured no-router retrieval diagnostic", "", "Router, query rewrite, answer generation, and ReAct were skipped. The gold domain index was used directly; routing metrics are not applicable.", "",
+                "| Condition | Correction | Architecture | Typo-aware | Agent | BM25 Doc Recall@5 | Dense Doc Recall@5 | BM25 MRR@10 | Dense MRR@10 |",
                 "|---|---|---|---|---|---:|---:|---:|---:|"] if retrieval_only else
               ["# Measured benchmark results", "", "These metrics are generated from actual row-level execution.", "",
                 "| Condition | Correction | Architecture | Typo-aware | Agent | Router EM | CE Doc Recall@5 | Final Doc Recall@5 | Retrieval Subspan EM@5 | Answer EM | Answer Subspan EM | Answer Token F1 | Avg latency (s) |",
                 "|---|---|---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|"])
     for r in summary:
-        if retrieval_only:
+        if retrieval_only and all(r.get("router_skipped",False) for r in rows):
+            report.append("| "+" | ".join(str(r[k]) for k in ("condition","strategy","architecture","typo_aware","agent","bm25_doc_recall@5","dense_doc_recall@5","bm25_mrr@10","dense_mrr@10"))+" |")
+        elif retrieval_only:
             report.append("| "+" | ".join(str(r[k]) for k in ("condition","strategy","architecture","typo_aware","agent","router_em","ce_doc_recall@5","ce_span_recall@5","ce_mrr@10"))+" |")
         elif "answer_em" in r:
             report.append("| "+" | ".join(str(r[k]) for k in ("condition","strategy","architecture","typo_aware","agent","router_em","ce_doc_recall@5","final_doc_recall@5","final_subspan_em@5","answer_em","answer_subspan_em","answer_token_f1","latency_s"))+" |")
@@ -853,6 +879,8 @@ def main() -> None:
                    help="Correction arm(s) to include")
     p.add_argument("--retrieval-only",action="store_true",
                    help="Stop after first retrieval; skip final answer generation and ReAct decisions")
+    p.add_argument("--skip-router",action="store_true",
+                   help="Skip LLM tool routing and retrieve directly from each case's gold domain (retrieval diagnostic only)")
     p.add_argument("--retrieval-only-summary",action="store_true",
                    help="Summarize an existing retrieval-only JSONL run without calling the API")
     a=p.parse_args()
@@ -902,6 +930,8 @@ def main() -> None:
         raise SystemExit("Fresh final run must record the explicitly requested gpt-6-luna model ID")
     if a.retrieval_only and (a.agent != "direct" or a.strategy == "all" or a.architecture == "both"):
         raise SystemExit("--retrieval-only requires a single correction strategy, one architecture, and --agent direct")
+    if a.skip_router and (not a.retrieval_only or a.strategy != "raw"):
+        raise SystemExit("--skip-router is a retrieval-only diagnostic and requires --strategy raw")
     cache_name="model_cache_fresh.jsonl" if a.fresh_run else "model_cache.jsonl"
     llm=JsonModel(a.model,out/cache_name)
     chunks=build_chunks(docs)
@@ -930,7 +960,8 @@ def main() -> None:
     def run_job(job):
         key,case,condition,strategy,agent,architecture,typo_aware=job
         result=evaluate_one(case,condition,strategy,agent,llm,ret,a.seed,architecture,typo_aware,
-                            retrieval_only=a.retrieval_only,typo_types=typo_types)
+                            retrieval_only=a.retrieval_only,typo_types=typo_types,
+                            skip_router=a.skip_router)
         return key,result
 
     def save_result(key,result):

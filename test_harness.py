@@ -39,6 +39,10 @@ class MockRetrieval:
         return {"searches":[],"bm25_ids":[self.first],"dense_ids":[self.first],
                 "rrf_ids":[self.first],"ce_ids":[self.first],"top_ids":[self.first],"seconds":.05}
 
+    def search_gold_domain(self, domain, query):
+        return {"searches":[],"bm25_ids":[self.first],"dense_ids":[self.first],
+                "rrf_ids":[self.first],"ce_ids":[self.first],"top_ids":[self.first],"seconds":.05}
+
 
 def run():
     corrupted, edit = b.corrupt_one("application",random.Random(1),
@@ -63,6 +67,14 @@ def run():
     c=next(c for c in cases if c['domain']=='dmv')
     llm=MockLLM();ret=MockRetrieval(docs)
     for condition in ['clean','typo']:
+        r,d=b.evaluate_one(c,condition,'raw','direct',llm,ret,seed=9,
+                           architecture='direct',typo_aware=False,retrieval_only=True,
+                           skip_router=True)
+        assert r['router_skipped'] is True
+        assert r['router_em'] is None
+        assert r['llm_calls']==0
+        assert 'answer_em' not in r
+        assert d['predicted_tools'] is None
         r,d=b.evaluate_one(c,condition,'raw','direct',llm,ret,seed=9,
                            architecture='direct',typo_aware=True,retrieval_only=True)
         assert r['router_em']==1.0

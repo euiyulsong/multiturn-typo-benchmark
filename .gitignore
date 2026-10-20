@@ -19,3 +19,5 @@ results-small-paired/
 results-paired-100/
 results-corrected-100/
 results-diverse-typos-100/
+results-no-router-diverse-100/
+results-diverse-typos-unaware-100/

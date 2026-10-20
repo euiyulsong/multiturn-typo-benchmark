@@ -85,6 +85,8 @@ An additional 100-pair retrieval-only stress run uses four balanced synthetic ty
 
 The initial tool-call routing comparison on those same diverse-typo outputs (clean vs. typo, exact tool-set match and F1) is summarized in [`results/tool_call_index_100_report.md`](results/tool_call_index_100_report.md). No extra model calls were needed.
 
+To isolate retrieval noise from routing, [`results/no_router_search_noise_100_report.md`](results/no_router_search_noise_100_report.md) reports a gold-domain diagnostic that skips the LLM router and searches the raw dialogue directly, comparing clean and diverse typo inputs over the same 100 cases. No LLM calls were used in this diagnostic; routing fields are recorded as not applicable.
+
 To run the primary 1,600-evaluation design, install dependencies and provide API access as above. Run raw-only, ReAct/no-ReAct, both architectures, and typo-awareness off/on:
 
 ```bash
