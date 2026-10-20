@@ -91,6 +91,27 @@ A stronger-noise variant applies three character edits to each selected user-tur
 
 The follow-up heavy-typo run with router tool selection and query rewriting before retrieval (same 100 cases, batch/concurrency 100) is documented in [`results/heavy_typo_router_rewrite_100_report.md`](results/heavy_typo_router_rewrite_100_report.md).
 
+### What the completed retrieval experiments suggest
+
+Across these experiments, a consistent practical conclusion is that **query formation matters at least as much as the character-level retriever**. The 100 fixed cases were paired between clean and typo inputs, and the stronger typo stress set applied three mixed character edits to one word in every eligible user turn. Results below are retrieval-only, use one `gpt-6-luna` output per condition/case, and are descriptive rather than statistically conclusive.
+
+| Setup | Clean → typo summary | Takeaway |
+|---|---|---|
+| Typo-aware direct router, one transposition per eligible user turn | Router EM 0.93 → 0.93; cross-encoder doc Recall@5 0.67 → 0.68 | Very small aggregate change under this typo-aware setup. |
+| Typo-aware direct router, mixed transpose/delete/insert/replace | Router EM 0.93 → 0.93; BM25 doc Recall@5 0.70 → 0.66; BM25 span Recall@5 0.558 → 0.503; cross-encoder span Recall@5 0.608 → 0.540 | Broader typo types expose more lexical and evidence-span sensitivity, though document-level retrieval remains mixed across rankers. |
+| No router, raw full dialogue sent to search in the gold domain | BM25 MRR@10 0.399 → 0.354; dense MRR@10 0.475 → 0.452; RRF span Recall@5 0.530 → 0.488 | Without query rewriting/correction, heavy typos lower ranking and span coverage in several retrievers. This is an oracle-domain diagnostic, not end-to-end routing. |
+| Router + typo-aware query rewrite, same heavy typo stress | Router EM 0.92 → 0.94; BM25 MRR@10 0.514 → 0.544; RRF MRR@10 0.519 → 0.569; cross-encoder span Recall@5 0.647 → 0.667 | The rewrite/router pipeline is robust on this sample and appears to buffer raw-input noise; slight dense MRR decline remains. |
+
+Additional observations:
+
+- **Routing was stable:** with the typo-aware prompt on, tool-set exact match was 0.93 on clean and typo for the diverse stress run; only 2 of the 100 paired cases changed exact-match status. This measures domain-tool selection, not query quality.
+- **Explicit correction is mixed by retrieval stage:** correcting only the last user turn before the staged router raised cross-encoder typo-case span Recall@5 from 0.538 to 0.663 and MRR@10 from 0.524 to 0.604 versus the direct typo-aware pipeline. BM25 document Recall@5 stayed 0.68, while dense document Recall@5 fell from 0.61 to 0.51. The comparison changes both the correction stage and routing architecture, so it does not isolate correction alone.
+- **The oracle-domain no-router test must not be read as the system score.** It uses the gold domain and raw full dialogue text, while router runs select tools and create a standalone query. Its role is to diagnose retriever sensitivity when routing is held out of the equation.
+- **Do not conclude that typos improve retrieval** from individual positive cells. The metric pattern is mixed, discrete Recall@5 has many ties, and no confidence intervals/significance tests were computed. These are stress-test observations on one frozen sample, not estimates of real-world typo prevalence.
+- None of these retrieval-only experiments measures answer correctness or grounding. The original planned 1,600-evaluation factorial remains unrun; correction, typo-awareness, architecture, and ReAct should be compared in that complete paired design before making a production choice.
+
+Full methods, exact prompts, typo definitions, and detailed metric tables are linked above in the individual reports.
+
 To run the primary 1,600-evaluation design, install dependencies and provide API access as above. Run raw-only, ReAct/no-ReAct, both architectures, and typo-awareness off/on:
 
 ```bash
