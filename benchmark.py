@@ -310,7 +310,7 @@ def fix_input(llm: JsonModel, mode: str, history: list[dict], question: str) -> 
 
 
 def rewrite_query(llm: JsonModel, history: list[dict], question: str,
-                  typo_aware: bool) -> tuple[str, dict]:
+                  typo_aware: bool, one_sentence: bool = False) -> tuple[str, dict]:
     """Rewrite the latest question before the separate tool-selection call."""
     system = ("Rewrite the latest user question into a concise standalone search query. "
               "Use dialogue context only to resolve references and ellipsis. Preserve intent and details. "
@@ -318,6 +318,8 @@ def rewrite_query(llm: JsonModel, history: list[dict], question: str,
     if typo_aware:
         system += (" The dialogue may contain spelling mistakes or typos. Infer intended words from context "
                    "and correct them in the standalone query without changing meaning.")
+    if one_sentence:
+        system += " Return exactly one concise sentence. Do not include a list, preamble, or multiple alternative queries."
     result, sec, tokens = llm.ask(system, format_dialogue(history, question),
                                   schema_object("rewrite_query", {"query": string_schema()}))
     return result["query"].strip() or question, {"seconds": sec, "calls": 1, "tokens": tokens}
@@ -555,7 +557,8 @@ def evaluate_one(case: dict, input_condition: str, strategy: str, agent: str,
                  retrieval_only: bool = False,
                  typo_types: tuple[str, ...] = ("transpose",),
                  skip_router: bool = False,
-                 edits_per_word: int = 1) -> tuple[dict, dict]:
+                 edits_per_word: int = 1,
+                 rewrite_only_search: bool = False) -> tuple[dict, dict]:
     history, question, edits = input_variant(case, input_condition == "typo", seed,
                                              typo_types,edits_per_word)
     rewrite_history = [m for m in history if m["role"] == "user"]
@@ -575,8 +578,13 @@ def evaluate_one(case: dict, input_condition: str, strategy: str, agent: str,
                                      typo_aware=typo_aware)
     else:
         query, rewrite_cost = rewrite_query(llm, rewrite_history, corrected_question,
-                                            typo_aware)
-        tools, _, router = route(llm, rewrite_history, query, typo_aware=typo_aware)
+                                            typo_aware, one_sentence=rewrite_only_search)
+        if rewrite_only_search:
+            tools, _, router = route(llm, rewrite_history, query, typo_aware=typo_aware)
+            router["selection_query"] = query
+            router["router_raw"]["query"] = query
+        else:
+            tools, _, router = route(llm, rewrite_history, query, typo_aware=typo_aware)
         prep = {"seconds": prep["seconds"] + rewrite_cost["seconds"],
                 "calls": prep["calls"] + rewrite_cost["calls"],
                 "tokens": prep["tokens"] + rewrite_cost["tokens"]}
@@ -598,6 +606,7 @@ def evaluate_one(case: dict, input_condition: str, strategy: str, agent: str,
                    "architecture":architecture, "typo_aware":typo_aware,
                    "typos_inserted":len(edits),
                    "router_skipped":bool(skip_router),
+                   "rewrite_only_search":bool(rewrite_only_search),
                    "router_em":None if skip_router else float(set(valid_predicted)==set(gold_tools) and len(valid_predicted)==len(set(valid_predicted))),
                    "router_tool_f1":None if skip_router else set_f1(valid_predicted,gold_tools),
                    "router_selected_n":None if skip_router else len(initial_predicted),
@@ -624,7 +633,8 @@ def evaluate_one(case: dict, input_condition: str, strategy: str, agent: str,
                 "selection_and_search_query":search_query,
                 "search_history":[{"tools":tools,"query":search_query}],
                 "search_results":[{k:v for k,v in first.items() if k!="searches"}],
-                "router_skipped":bool(skip_router),"metrics":metrics}
+                "router_skipped":bool(skip_router),"rewrite_only_search":bool(rewrite_only_search),
+                "metrics":metrics}
         return metrics,detail
     searched = [{"tools": tools,"query": search_query}]
     step_results = [first]
@@ -898,6 +908,8 @@ def main() -> None:
                    help="Stop after first retrieval; skip final answer generation and ReAct decisions")
     p.add_argument("--skip-router",action="store_true",
                    help="Skip LLM tool routing and retrieve directly from each case's gold domain (retrieval diagnostic only)")
+    p.add_argument("--rewrite-only-search",action="store_true",
+                   help="Use exactly one rewritten sentence as the search query; router selects tools only")
     p.add_argument("--retrieval-only-summary",action="store_true",
                    help="Summarize an existing retrieval-only JSONL run without calling the API")
     a=p.parse_args()
@@ -978,7 +990,8 @@ def main() -> None:
         key,case,condition,strategy,agent,architecture,typo_aware=job
         result=evaluate_one(case,condition,strategy,agent,llm,ret,a.seed,architecture,typo_aware,
                             retrieval_only=a.retrieval_only,typo_types=typo_types,
-                            skip_router=a.skip_router,edits_per_word=a.typo_edits_per_word)
+                            skip_router=a.skip_router,edits_per_word=a.typo_edits_per_word,
+                            rewrite_only_search=a.rewrite_only_search)
         return key,result
 
     def save_result(key,result):

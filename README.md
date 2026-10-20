@@ -91,6 +91,8 @@ A stronger-noise variant applies three character edits to each selected user-tur
 
 The follow-up heavy-typo run with router tool selection and query rewriting before retrieval (same 100 cases, batch/concurrency 100) is documented in [`results/heavy_typo_router_rewrite_100_report.md`](results/heavy_typo_router_rewrite_100_report.md).
 
+The one-sentence-only refined-query variant (router selects tools, but retrieval uses only the refiner's sentence) is compared with the standard router-query path in [`results/heavy_typo_one_sentence_rewrite_100_report.md`](results/heavy_typo_one_sentence_rewrite_100_report.md), using the same heavy-typo cases and batch/concurrency 100.
+
 ### What the completed retrieval experiments suggest
 
 Across these experiments, a consistent practical conclusion is that **query formation matters at least as much as the character-level retriever**. The 100 fixed cases were paired between clean and typo inputs, and the stronger typo stress set applied three mixed character edits to one word in every eligible user turn. Results below are retrieval-only, use one `gpt-6-luna` output per condition/case, and are descriptive rather than statistically conclusive.
