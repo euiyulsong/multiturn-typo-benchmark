@@ -89,6 +89,8 @@ To isolate retrieval noise from routing, [`results/no_router_search_noise_100_re
 
 A stronger-noise variant applies three character edits to each selected user-turn word and repeats the same router-free gold-domain retrieval comparison; see [`results/heavy_typo_search_noise_100_report.md`](results/heavy_typo_search_noise_100_report.md). It uses the same 100 cases and also makes no LLM calls.
 
+The follow-up heavy-typo run with router tool selection and query rewriting before retrieval (same 100 cases, batch/concurrency 100) is documented in [`results/heavy_typo_router_rewrite_100_report.md`](results/heavy_typo_router_rewrite_100_report.md).
+
 To run the primary 1,600-evaluation design, install dependencies and provide API access as above. Run raw-only, ReAct/no-ReAct, both architectures, and typo-awareness off/on:
 
 ```bash
