@@ -77,7 +77,7 @@ The frozen sample contains 100 MultiDoc2Dial validation dialogues (25 each in DM
 
 An exploratory write-up of the local legacy 973-row snapshot, including **best-subspan EM**, plain-language metric definitions, and a fairness audit, is in [`results/legacy_analysis.md`](results/legacy_analysis.md). The mixed, unbalanced, partly duplicated rows are not current benchmark results and must not be used to pick a winning strategy. Raw rows, details, and downloaded source archive remain local and are not published.
 
-A small, balanced 8-case/16-evaluation paired pilot comparing only clean vs. synthetic-typo inputs under one fixed system setup is summarized in [`results/paired_pilot_report.md`](results/paired_pilot_report.md). The run outputs are kept locally under the ignored `results-small-paired/` directory; the report contains aggregate scores and run metadata without dialogue text.
+A balanced retrieval-only comparison of clean vs. synthetic typos over all 100 frozen cases (200 evaluations) is summarized in [`results/paired_search_100_report.md`](results/paired_search_100_report.md). Answer generation and ReAct were skipped to reduce calls. The initial 8-case smoke pilot is retained in [`results/paired_pilot_report.md`](results/paired_pilot_report.md); both sets of raw outputs remain local and ignored by Git.
 
 To run the primary 1,600-evaluation design, install dependencies and provide API access as above. Run raw-only, ReAct/no-ReAct, both architectures, and typo-awareness off/on:
 

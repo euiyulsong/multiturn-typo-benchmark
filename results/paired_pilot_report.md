@@ -1,5 +1,7 @@
 # Small paired pilot: clean versus synthetic typos
 
+> Superseded for sample size by [`paired_search_100_report.md`](paired_search_100_report.md), which evaluates all 100 frozen cases with retrieval-only scoring. This pilot remains as the initial 8-case smoke comparison.
+
 ## At a glance
 
 We completed **16 evaluations**: the same 8 dialogue cases were each run once with the original input (`clean`) and once with synthetic adjacent-letter transpositions (`typo`). There were 2 cases per domain (DMV, SSA, VA, StudentAid). All runs used `gpt-6-luna`, the same local retrieval models/index, `raw` correction (no separate spell-correction call), direct architecture, direct/no-ReAct agent, and a typo-aware router prompt. Thus this is a **paired pilot of typo input under one fixed system configuration**, not a comparison of correction strategies or agents. The table and interpretation below were calculated from the 8 matched clean/typo pairs.

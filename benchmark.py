@@ -509,7 +509,8 @@ def rrf_across_steps(step_results: list[dict], key: str) -> list[str]:
 
 def evaluate_one(case: dict, input_condition: str, strategy: str, agent: str,
                  llm: JsonModel, ret: Retrieval, seed: int,
-                 architecture: str = "staged", typo_aware: bool = False) -> tuple[dict, dict]:
+                 architecture: str = "staged", typo_aware: bool = False,
+                 retrieval_only: bool = False) -> tuple[dict, dict]:
     history, question, edits = input_variant(case, input_condition == "typo", seed)
     rewrite_history = [m for m in history if m["role"] == "user"]
     corrected_history, corrected_question, prep = fix_input(llm, strategy,history,question)
@@ -529,6 +530,44 @@ def evaluate_one(case: dict, input_condition: str, strategy: str, agent: str,
     # Fairness: every direct/ReAct experiment uses identical first search call.
     search_query = router["selection_query"] if architecture == "direct" else query
     first = ret.run_tools(tools,search_query)
+    if retrieval_only:
+        initial_predicted = router["router_raw"]["tools"]
+        valid_predicted = list(dict.fromkeys(
+            x for x in initial_predicted
+            if x.startswith("search_") and x.removeprefix("search_") in DOMAINS))
+        gold_tools = case["gold_tools"]
+        metrics = {"case_id":case["id"], "domain":case["domain"],
+                   "condition":input_condition, "strategy":strategy, "agent":agent,
+                   "architecture":architecture, "typo_aware":typo_aware,
+                   "typos_inserted":len(edits),
+                   "router_em":float(set(valid_predicted)==set(gold_tools) and len(valid_predicted)==len(set(valid_predicted))),
+                   "router_tool_f1":set_f1(valid_predicted,gold_tools),
+                   "router_selected_n":len(initial_predicted),
+                   "search_steps":1, "llm_calls":prep["calls"]+router["calls"],
+                   "llm_tokens":prep["tokens"]+router["tokens"],
+                   "latency_s":round(prep["seconds"]+router["seconds"],4),
+                   "preprocess_latency_s":round(prep["seconds"],4),
+                   "route_latency_s":round(router["seconds"],4),
+                   "retrieval_latency_s":round(first["seconds"],4),
+                   "reasoning_latency_s":0.0, "generation_latency_s":0.0}
+        for stage in ("bm25", "dense", "rrf", "ce"):
+            ids=first[stage+"_ids"]
+            metrics[f"{stage}_mrr@10"]=mean_reciprocal_rank(ret.chunks,ids,case["gold_docs"],10)
+            for k in (1,3,5,10):
+                for name,value in relevance(ret.chunks,ids,case,k).items():
+                    metrics[f"{stage}_{name}@{k}"]=value
+        detail={"case_id":case["id"],"condition":input_condition,"strategy":strategy,
+                "agent":agent,"architecture":architecture,"typo_aware":typo_aware,
+                "edits":edits,"original_history":case["history"],"original_question":case["question"],
+                "variant_history":history,"variant_question":question,
+                "corrected_history":corrected_history,"corrected_question":corrected_question,
+                "gold_tools":gold_tools,"gold_docs":case["gold_docs"],"gold_spans":case["gold_spans"],
+                "predicted_tools":initial_predicted,"router_query":query,
+                "selection_and_search_query":search_query,
+                "search_history":[{"tools":tools,"query":search_query}],
+                "search_results":[{k:v for k,v in first.items() if k!="searches"}],
+                "metrics":metrics}
+        return metrics,detail
     searched = [{"tools": tools,"query": search_query}]
     step_results = [first]
     extra_llm_sec = 0.0
@@ -651,14 +690,16 @@ def percentile(xs: list[float], p: float) -> float:
 
 def summarize(rows: list[dict], out: Path) -> None:
     out.mkdir(parents=True, exist_ok=True)
+    retrieval_only = not all("answer_em" in r for r in rows)
     metrics = ["router_em","router_tool_f1","bm25_doc_recall@5","dense_doc_recall@5",
                "rrf_doc_recall@5","ce_doc_recall@5","ce_span_recall@5",
                "bm25_mrr@10","dense_mrr@10","rrf_mrr@10","ce_mrr@10",
                 "final_doc_recall@5","final_span_recall@5","final_all_spans@5",
                "final_subspan_em@5","final_all_subspan_em@5",
                 "answer_em","answer_subspan_em","answer_token_f1","citation_doc_em","citation_doc_f1",
-               "llm_calls","llm_tokens","search_steps","latency_s", "preprocess_latency_s",
-               "route_latency_s", "retrieval_latency_s","reasoning_latency_s","generation_latency_s"]
+                "llm_calls","llm_tokens","search_steps","latency_s", "preprocess_latency_s",
+                "route_latency_s", "retrieval_latency_s","reasoning_latency_s","generation_latency_s"]
+    metrics = [m for m in metrics if all(m in r for r in rows)]
     groups = defaultdict(list)
     for r in rows:
         groups[(r["condition"],r["strategy"],r["agent"],r.get("architecture","staged"),r.get("typo_aware",False))].append(r)
@@ -683,34 +724,39 @@ def summarize(rows: list[dict], out: Path) -> None:
                      "step":step,"n_reached":len(part),"reach_rate":round(len(part)/len(batch),4)}
             entry["doc_recall@5"] = round(statistics.fmean(r[f"checkpoint_doc_recall@5_step{step}"] for r in part),4) if f"checkpoint_doc_recall@5_step{step}" in part[0] else float('nan')
             entry["span_recall@5"] = round(statistics.fmean(r[f"checkpoint_span_recall@5_step{step}"] for r in part),4) if f"checkpoint_span_recall@5_step{step}" in part[0] else float('nan')
-            entry["answer_em"] = round(statistics.fmean(r[f"checkpoint_answer_em_step{step}"] for r in part),4)
-            entry["answer_subspan_em"] = round(statistics.fmean(r[f"checkpoint_answer_subspan_em_step{step}"] for r in part),4)
-            entry["answer_token_f1"] = round(statistics.fmean(r[f"checkpoint_answer_f1_step{step}"] for r in part),4)
-            entry["mrr@10"] = round(statistics.fmean(r[f"checkpoint_mrr@10_step{step}"] for r in part),4)
-            step_summary.append({k:entry[k] for k in ("condition","strategy","agent","architecture","typo_aware","step","n_reached","reach_rate","doc_recall@5","span_recall@5","mrr@10","answer_em","answer_subspan_em","answer_token_f1")})
+            if f"checkpoint_answer_em_step{step}" in part[0]:
+                entry["answer_em"] = round(statistics.fmean(r[f"checkpoint_answer_em_step{step}"] for r in part),4)
+                entry["answer_subspan_em"] = round(statistics.fmean(r[f"checkpoint_answer_subspan_em_step{step}"] for r in part),4)
+                entry["answer_token_f1"] = round(statistics.fmean(r[f"checkpoint_answer_f1_step{step}"] for r in part),4)
+            if f"checkpoint_mrr@10_step{step}" in part[0]:
+                entry["mrr@10"] = round(statistics.fmean(r[f"checkpoint_mrr@10_step{step}"] for r in part),4)
+            keys=("condition","strategy","agent","architecture","typo_aware","step","n_reached","reach_rate","doc_recall@5","span_recall@5","mrr@10","answer_em","answer_subspan_em","answer_token_f1")
+            step_summary.append({k:entry[k] for k in keys if k in entry})
     with (out/"step_summary.csv").open("w",newline="",encoding="utf-8") as f:
         wr=csv.DictWriter(f,fieldnames=list(step_summary[0]));wr.writeheader();wr.writerows(step_summary)
 
     # Paired bootstrap deltas, same case IDs (never an independent two-sample test).
     rng = random.Random(48711)
     comparisons=[]
-    for condition in ("clean","typo"):
-        for agent in ("direct","react"):
-          for architecture in sorted({r.get("architecture","staged") for r in rows}):
-           for typo_aware in sorted({r.get("typo_aware",False) for r in rows}):
-            for strategy,baseline in (("last","raw"),("full","raw"),("full","last")):
-                baseline_rows={r["case_id"]:r for r in rows if r["condition"]==condition and r["agent"]==agent and r["strategy"]==baseline and r.get("architecture","staged")==architecture and r.get("typo_aware",False)==typo_aware}
-                treatment={r["case_id"]:r for r in rows if r["condition"]==condition and r["agent"]==agent and r["strategy"]==strategy and r.get("architecture","staged")==architecture and r.get("typo_aware",False)==typo_aware}
-                ids=sorted(set(baseline_rows)&set(treatment))
-                for metric in ("router_em","ce_doc_recall@5","final_doc_recall@5","final_subspan_em@5","answer_em","answer_token_f1","answer_subspan_em","latency_s"):
-                    deltas=[float(treatment[i][metric])-float(baseline_rows[i][metric]) for i in ids]
-                    boot=[statistics.fmean(rng.choices(deltas,k=len(deltas))) for _ in range(2000)] if deltas else []
-                    comparisons.append({"condition":condition,"agent":agent,"architecture":architecture,"typo_aware":typo_aware,"comparison":f"{strategy}_minus_{baseline}","metric":metric,"n":len(ids),
-                                        "mean_delta":round(statistics.fmean(deltas),4) if deltas else None,
-                                        "ci95_low":round(percentile(boot,.025),4) if boot else None,
-                                        "ci95_high":round(percentile(boot,.975),4) if boot else None})
+    if all("answer_em" in r for r in rows):
+        for condition in ("clean","typo"):
+            for agent in ("direct","react"):
+              for architecture in sorted({r.get("architecture","staged") for r in rows}):
+               for typo_aware in sorted({r.get("typo_aware",False) for r in rows}):
+                for strategy,baseline in (("last","raw"),("full","raw"),("full","last")):
+                    baseline_rows={r["case_id"]:r for r in rows if r["condition"]==condition and r["agent"]==agent and r["strategy"]==baseline and r.get("architecture","staged")==architecture and r.get("typo_aware",False)==typo_aware}
+                    treatment={r["case_id"]:r for r in rows if r["condition"]==condition and r["agent"]==agent and r["strategy"]==strategy and r.get("architecture","staged")==architecture and r.get("typo_aware",False)==typo_aware}
+                    ids=sorted(set(baseline_rows)&set(treatment))
+                    for metric in ("router_em","ce_doc_recall@5","final_doc_recall@5","final_subspan_em@5","answer_em","answer_token_f1","answer_subspan_em","latency_s"):
+                        deltas=[float(treatment[i][metric])-float(baseline_rows[i][metric]) for i in ids]
+                        boot=[statistics.fmean(rng.choices(deltas,k=len(deltas))) for _ in range(2000)] if deltas else []
+                        comparisons.append({"condition":condition,"agent":agent,"architecture":architecture,"typo_aware":typo_aware,"comparison":f"{strategy}_minus_{baseline}","metric":metric,"n":len(ids),
+                                            "mean_delta":round(statistics.fmean(deltas),4) if deltas else None,
+                                            "ci95_low":round(percentile(boot,.025),4) if boot else None,
+                                            "ci95_high":round(percentile(boot,.975),4) if boot else None})
     # Matched ReAct - Direct effect for each typo × correction combination.
-    for condition in ("clean","typo"):
+    if all("answer_em" in r for r in rows):
+      for condition in ("clean","typo"):
         for strategy in ("raw","last","full"):
          for architecture in sorted({r.get("architecture","staged") for r in rows}):
           for typo_aware in sorted({r.get("typo_aware",False) for r in rows}):
@@ -726,17 +772,27 @@ def summarize(rows: list[dict], out: Path) -> None:
                                     "ci95_low":round(percentile(boot,.025),4) if boot else None,
                                     "ci95_high":round(percentile(boot,.975),4) if boot else None})
     with (out/"paired_deltas.csv").open("w",newline="",encoding="utf-8") as f:
-        wr=csv.DictWriter(f,fieldnames=list(comparisons[0]));wr.writeheader();wr.writerows(comparisons)
-    report = ["# Measured benchmark results", "", "These metrics are generated from actual row-level execution.", "",
+        comparison_fields=list(comparisons[0]) if comparisons else ["condition","agent","architecture","typo_aware","comparison","metric","n","mean_delta","ci95_low","ci95_high"]
+        wr=csv.DictWriter(f,fieldnames=comparison_fields);wr.writeheader();wr.writerows(comparisons)
+    report = (["# Measured retrieval-only benchmark results", "", "Answer generation and ReAct follow-up were skipped; this report contains routing and retrieval metrics only.", "",
+                "| Condition | Correction | Architecture | Typo-aware | Agent | Router EM | CE Doc Recall@5 | CE Span Recall@5 | CE MRR@10 |",
+                "|---|---|---|---|---|---:|---:|---:|---:|"] if retrieval_only else
+              ["# Measured benchmark results", "", "These metrics are generated from actual row-level execution.", "",
                 "| Condition | Correction | Architecture | Typo-aware | Agent | Router EM | CE Doc Recall@5 | Final Doc Recall@5 | Retrieval Subspan EM@5 | Answer EM | Answer Subspan EM | Answer Token F1 | Avg latency (s) |",
-                "|---|---|---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|"]
+                "|---|---|---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|"])
     for r in summary:
-        report.append("| "+" | ".join(str(r[k]) for k in ("condition","strategy","architecture","typo_aware","agent","router_em","ce_doc_recall@5","final_doc_recall@5","final_subspan_em@5","answer_em","answer_subspan_em","answer_token_f1","latency_s"))+" |")
-    report += ["", "## ReAct checkpoint metrics (only cases that reached the step)", "",
-                "| Condition | Correction | Architecture | Typo-aware | Agent | Search step | Cases reached | Answer EM | Answer Subspan EM | Doc Recall@5 |",
-                "|---|---|---|---|---|---:|---:|---:|---:|---:|"]
-    for r in step_summary:
-        report.append("| "+" | ".join(str(r[k]) for k in ("condition","strategy","architecture","typo_aware","agent","step","n_reached","answer_em","answer_subspan_em","doc_recall@5"))+" |")
+        if retrieval_only:
+            report.append("| "+" | ".join(str(r[k]) for k in ("condition","strategy","architecture","typo_aware","agent","router_em","ce_doc_recall@5","ce_span_recall@5","ce_mrr@10"))+" |")
+        elif "answer_em" in r:
+            report.append("| "+" | ".join(str(r[k]) for k in ("condition","strategy","architecture","typo_aware","agent","router_em","ce_doc_recall@5","final_doc_recall@5","final_subspan_em@5","answer_em","answer_subspan_em","answer_token_f1","latency_s"))+" |")
+    if not retrieval_only:
+        report += ["", "## ReAct checkpoint metrics (only cases that reached the step)", "",
+                    "| Condition | Correction | Architecture | Typo-aware | Agent | Search step | Cases reached | Answer EM | Answer Subspan EM | Doc Recall@5 |",
+                    "|---|---|---|---|---|---:|---:|---:|---:|---:|"]
+        for r in step_summary:
+            if "answer_em" not in r:
+                continue
+            report.append("| "+" | ".join(str(r[k]) for k in ("condition","strategy","architecture","typo_aware","agent","step","n_reached","answer_em","answer_subspan_em","doc_recall@5"))+" |")
     (out/"report.md").write_text("\n".join(report)+"\n",encoding="utf-8")
     print("\nCOMPLETED: n =", len(rows))
     cols = ["condition","strategy","agent","router_em","ce_doc_recall@5","final_doc_recall@5","answer_em","answer_subspan_em","latency_s"]
@@ -767,6 +823,10 @@ def main() -> None:
                    help="Run direct/no-loop, ReAct, or both")
     p.add_argument("--strategy",choices=("raw","last","full","all"),default="all",
                    help="Correction arm(s) to include")
+    p.add_argument("--retrieval-only",action="store_true",
+                   help="Stop after first retrieval; skip final answer generation and ReAct decisions")
+    p.add_argument("--retrieval-only-summary",action="store_true",
+                   help="Summarize an existing retrieval-only JSONL run without calling the API")
     a=p.parse_args()
     out=Path(a.out);out.mkdir(parents=True,exist_ok=True)
     docs,dials=get_data(out/"data",a.data_zip)
@@ -780,16 +840,36 @@ def main() -> None:
     comparisons_per_case=2*len(strategies)*len(architectures)*len(typo_awareness)*len(agents)
     config_path=out/("run_config_fresh.json" if a.fresh_run else "run_config.json")
     dump_json(config_path,{**vars(a),"dataset":DATASET_URL,"case_ids":[x["id"] for x in cases],
-                                            "architectures":architectures,"typo_aware_conditions":typo_awareness,
-                                            "comparisons_per_case":comparisons_per_case,
-                                            "total_target_evaluations":comparisons_per_case*len(cases)})
+                                             "architectures":architectures,"typo_aware_conditions":typo_awareness,
+                                             "comparisons_per_case":comparisons_per_case,
+                                             "total_target_evaluations":comparisons_per_case*len(cases)})
     print(f"Selected {len(cases)} cases; domains: {dict(Counter(c['domain'] for c in cases))}")
+    if a.retrieval_only_summary:
+        manifest=out/("rows_fresh.jsonl" if a.fresh_run else "rows.jsonl")
+        if not manifest.exists():
+            raise SystemExit(f"No row manifest to summarize: {manifest}")
+        rows=[json.loads(line) for line in manifest.read_text(encoding="utf-8").splitlines() if line.strip()]
+        expected={(c["id"],condition,strategy,agent,architecture,typo_aware)
+                  for c in cases for condition in ("clean","typo") for strategy in strategies
+                  for agent in agents for architecture in architectures for typo_aware in typo_awareness}
+        keyed={(r["case_id"],r["condition"],r["strategy"],r["agent"],r.get("architecture","staged"),r.get("typo_aware",False)):r for r in rows}
+        missing=expected-set(keyed)
+        if missing:
+            raise SystemExit(f"Cannot summarize incomplete run; missing {len(missing)} expected rows")
+        all_rows=[keyed[k] for k in sorted(expected)]
+        with (out/"rows_fresh.csv").open("w",newline="",encoding="utf-8") as f:
+            fields=list(dict.fromkeys(k for row in all_rows for k in row))
+            w=csv.DictWriter(f,fieldnames=fields);w.writeheader();w.writerows(all_rows)
+        summarize(all_rows,out/"fresh_summary")
+        return
     if a.prepare_only:
         return
     if not os.environ.get("OPENAI_API_KEY") or not a.model:
         raise SystemExit("Set OPENAI_API_KEY and BENCH_MODEL=your API-accessible model ID; or use --prepare-only")
     if a.fresh_run and not a.model.endswith("-luna"):
         raise SystemExit("Fresh final run must record the explicitly requested gpt-6-luna model ID")
+    if a.retrieval_only and (a.agent != "direct" or a.strategy != "raw" or a.architecture != "direct"):
+        raise SystemExit("--retrieval-only requires --agent direct --strategy raw")
     cache_name="model_cache_fresh.jsonl" if a.fresh_run else "model_cache.jsonl"
     llm=JsonModel(a.model,out/cache_name)
     chunks=build_chunks(docs)
@@ -814,19 +894,24 @@ def main() -> None:
         if key in existing:
             continue
         # Fail loudly on API/data errors instead of inventing partial or zero scores.
-        row, detail=evaluate_one(case,condition,strategy,agent,llm,ret,a.seed,architecture,typo_aware)
+        row, detail=evaluate_one(case,condition,strategy,agent,llm,ret,a.seed,architecture,typo_aware,
+                                 retrieval_only=a.retrieval_only)
         with manifest.open("a",encoding="utf-8") as f:
             f.write(json.dumps(row,ensure_ascii=False)+"\n")
         with details.open("a",encoding="utf-8") as f:
             f.write(json.dumps(detail,ensure_ascii=False)+"\n")
         existing[key]=row
-        print(f"[{len(existing)}/{comparisons_per_case*len(cases)}] {key} answer EM={row['answer_em']:.0f} subspan EM={row['answer_subspan_em']:.2f} route EM={row['router_em']:.0f}",flush=True)
+        progress=f"route EM={row['router_em']:.0f}"
+        if "answer_em" in row:
+            progress+=f" answer EM={row['answer_em']:.0f} subspan EM={row['answer_subspan_em']:.2f}"
+        print(f"[{len(existing)}/{comparisons_per_case*len(cases)}] {key} {progress}",flush=True)
     all_rows=[existing[(c["id"],condition,strategy,agent,architecture,typo_aware)] for c in cases
               for condition in ("clean","typo") for strategy in strategies for agent in agents
               for architecture in architectures for typo_aware in typo_awareness]
     rows_csv=out/("rows_fresh.csv" if a.fresh_run else "rows.csv")
     with rows_csv.open("w",newline="",encoding="utf-8") as f:
-        w=csv.DictWriter(f,fieldnames=list(all_rows[0]));w.writeheader();w.writerows(all_rows)
+        fieldnames=list(dict.fromkeys(k for row in all_rows for k in row))
+        w=csv.DictWriter(f,fieldnames=fieldnames);w.writeheader();w.writerows(all_rows)
     if a.fresh_run:
         # Direct results go to a separate subdirectory so stale legacy results
         # and unrelated partial configurations cannot be mixed in summaries.
