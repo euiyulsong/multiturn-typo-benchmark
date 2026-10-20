@@ -87,6 +87,8 @@ The initial tool-call routing comparison on those same diverse-typo outputs (cle
 
 To isolate retrieval noise from routing, [`results/no_router_search_noise_100_report.md`](results/no_router_search_noise_100_report.md) reports a gold-domain diagnostic that skips the LLM router and searches the raw dialogue directly, comparing clean and diverse typo inputs over the same 100 cases. No LLM calls were used in this diagnostic; routing fields are recorded as not applicable.
 
+A stronger-noise variant applies three character edits to each selected user-turn word and repeats the same router-free gold-domain retrieval comparison; see [`results/heavy_typo_search_noise_100_report.md`](results/heavy_typo_search_noise_100_report.md). It uses the same 100 cases and also makes no LLM calls.
+
 To run the primary 1,600-evaluation design, install dependencies and provide API access as above. Run raw-only, ReAct/no-ReAct, both architectures, and typo-awareness off/on:
 
 ```bash

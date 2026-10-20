@@ -49,6 +49,10 @@ def run():
                                    ("transpose","delete","insert","replace"))
     assert corrupted != "application"
     assert edit["type"] in {"transpose","delete","insert","replace"}
+    more_corrupted, more_edit = b.corrupt_one("application",random.Random(1),
+                                              ("transpose","delete","insert","replace"),3)
+    assert more_corrupted != "application"
+    assert len(more_edit["operations"])==3
     docs={domain:{} for domain in b.DOMAINS}
     dialogs={domain:[] for domain in b.DOMAINS}
     for domain in b.DOMAINS:

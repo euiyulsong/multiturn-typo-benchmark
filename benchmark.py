@@ -155,7 +155,8 @@ def build_cases(doc_data: dict, dial_data: dict, seed: int, n_per_domain: int = 
     return cases
 
 
-def corrupt_one(text: str, rng: random.Random, typo_types: tuple[str, ...] = ("transpose",)) -> tuple[str, dict | None]:
+def corrupt_one(text: str, rng: random.Random, typo_types: tuple[str, ...] = ("transpose",),
+                edits_per_word: int = 1) -> tuple[str, dict | None]:
     words = [(m.start(), m.end(), m.group()) for m in re.finditer(r"[A-Za-z]{5,}", text)
              if m.group().lower() not in STOPWORDS]
     if not words:
@@ -167,32 +168,43 @@ def corrupt_one(text: str, rng: random.Random, typo_types: tuple[str, ...] = ("t
     available = [kind for kind in typo_types if kind in {"transpose", "delete", "insert", "replace"}]
     if not available:
         raise ValueError(f"No supported typo types in {typo_types}")
-    kind = rng.choice(available)
-    if kind == "transpose":
-        positions = [i for i in range(len(word)-1) if word[i].lower() != word[i+1].lower()]
-        if not positions:
-            return text, None
-        j = rng.choice(positions)
-        typo = word[:j] + word[j+1] + word[j] + word[j+2:]
-    elif kind == "delete":
-        j = rng.randrange(len(word))
-        typo = word[:j] + word[j+1:]
-    elif kind == "insert":
-        j = rng.randrange(len(word)+1)
-        letter = rng.choice("abcdefghijklmnopqrstuvwxyz")
-        typo = word[:j] + letter + word[j:]
-    else:  # replace
-        j = rng.randrange(len(word))
-        choices = [c for c in "abcdefghijklmnopqrstuvwxyz" if c != word[j].lower()]
-        letter = rng.choice(choices)
-        if word[j].isupper():
-            letter = letter.upper()
-        typo = word[:j] + letter + word[j+1:]
-    return text[:start] + typo + text[end:], {"before": word, "after": typo, "position": start, "type": kind}
+    typo = word
+    applied=[]
+    for _ in range(max(1,edits_per_word)):
+        kind = rng.choice(available)
+        if kind == "transpose":
+            positions = [i for i in range(len(typo)-1) if typo[i].lower() != typo[i+1].lower()]
+            if not positions:
+                continue
+            j = rng.choice(positions)
+            typo = typo[:j] + typo[j+1] + typo[j] + typo[j+2:]
+        elif kind == "delete":
+            if len(typo) <= 2:
+                continue
+            j = rng.randrange(len(typo))
+            typo = typo[:j] + typo[j+1:]
+        elif kind == "insert":
+            j = rng.randrange(len(typo)+1)
+            letter = rng.choice("abcdefghijklmnopqrstuvwxyz")
+            typo = typo[:j] + letter + typo[j:]
+        else:  # replace
+            j = rng.randrange(len(typo))
+            choices = [c for c in "abcdefghijklmnopqrstuvwxyz" if c != typo[j].lower()]
+            letter = rng.choice(choices)
+            if typo[j].isupper():
+                letter = letter.upper()
+            typo = typo[:j] + letter + typo[j+1:]
+        applied.append(kind)
+    if typo == word:
+        return text, None
+    return text[:start] + typo + text[end:], {"before": word, "after": typo, "position": start,
+                                               "type": applied[0] if len(applied)==1 else "multi",
+                                               "operations": applied}
 
 
 def input_variant(case: dict, typo: bool, seed: int,
-                  typo_types: tuple[str, ...] = ("transpose",)) -> tuple[list[dict], str, list[dict]]:
+                  typo_types: tuple[str, ...] = ("transpose",),
+                  edits_per_word: int = 1) -> tuple[list[dict], str, list[dict]]:
     history = [dict(m) for m in case["history"]]
     question = case["question"]
     edits = []
@@ -200,10 +212,11 @@ def input_variant(case: dict, typo: bool, seed: int,
         for i, message in enumerate(history):
             if message["role"] == "user":
                 rng = random.Random(stable_seed(f'{seed}|{case["id"]}|{i}'))
-                message["text"], edit = corrupt_one(message["text"], rng, typo_types)
+                message["text"], edit = corrupt_one(message["text"], rng, typo_types, edits_per_word)
                 if edit:
                     edits.append({"turn": i, **edit})
-        question, edit = corrupt_one(question, random.Random(stable_seed(f'{seed}|{case["id"]}|target')), typo_types)
+        question, edit = corrupt_one(question, random.Random(stable_seed(f'{seed}|{case["id"]}|target')),
+                                     typo_types, edits_per_word)
         if edit:
             edits.append({"turn": "target", **edit})
     return history, question, edits
@@ -541,8 +554,10 @@ def evaluate_one(case: dict, input_condition: str, strategy: str, agent: str,
                  architecture: str = "staged", typo_aware: bool = False,
                  retrieval_only: bool = False,
                  typo_types: tuple[str, ...] = ("transpose",),
-                 skip_router: bool = False) -> tuple[dict, dict]:
-    history, question, edits = input_variant(case, input_condition == "typo", seed, typo_types)
+                 skip_router: bool = False,
+                 edits_per_word: int = 1) -> tuple[dict, dict]:
+    history, question, edits = input_variant(case, input_condition == "typo", seed,
+                                             typo_types,edits_per_word)
     rewrite_history = [m for m in history if m["role"] == "user"]
     corrected_history, corrected_question, prep = fix_input(llm, strategy,history,question)
     if skip_router:
@@ -865,6 +880,8 @@ def main() -> None:
                    help="Maximum simultaneous independent case evaluations")
     p.add_argument("--typo-types",default="transpose",
                    help="Comma-separated synthetic typo types: transpose,delete,insert,replace")
+    p.add_argument("--typo-edits-per-word",type=int,default=1,
+                   help="Number of sequential synthetic edits applied to each selected word in typo input")
     p.add_argument("--prepare-only",action="store_true",help="Download & select cases, without API/model inference")
     p.add_argument("--limit",type=int,default=None,help="Smoke-test a few cases; omit for full 100")
     p.add_argument("--architecture",choices=("staged","direct","both"),default="both",
@@ -961,7 +978,7 @@ def main() -> None:
         key,case,condition,strategy,agent,architecture,typo_aware=job
         result=evaluate_one(case,condition,strategy,agent,llm,ret,a.seed,architecture,typo_aware,
                             retrieval_only=a.retrieval_only,typo_types=typo_types,
-                            skip_router=a.skip_router)
+                            skip_router=a.skip_router,edits_per_word=a.typo_edits_per_word)
         return key,result
 
     def save_result(key,result):
@@ -971,7 +988,8 @@ def main() -> None:
         with details.open("a",encoding="utf-8") as f:
             f.write(json.dumps(detail,ensure_ascii=False)+"\n")
         existing[key]=row
-        progress=f"route EM={row['router_em']:.0f}"
+        progress=("router skipped" if row.get("router_skipped",False)
+                  else f"route EM={row['router_em']:.0f}")
         if "answer_em" in row:
             progress+=f" answer EM={row['answer_em']:.0f} subspan EM={row['answer_subspan_em']:.2f}"
         print(f"[{len(existing)}/{comparisons_per_case*len(cases)}] {key} {progress}",flush=True)
