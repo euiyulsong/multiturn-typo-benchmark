@@ -24,3 +24,5 @@ results-diverse-typos-unaware-100/
 results-heavy-typos-no-router-100/
 results-heavy-typos-router-rewrite-100/
 results-heavy-typos-one-sentence-100/
+results-heavy-typos-controlled-refine-100/
+results-heavy-typos-controlled-refine-fullctx-100/

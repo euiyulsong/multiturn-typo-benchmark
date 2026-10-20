@@ -93,6 +93,8 @@ The follow-up heavy-typo run with router tool selection and query rewriting befo
 
 The one-sentence-only refined-query variant (router selects tools, but retrieval uses only the refiner's sentence) is compared with the standard router-query path in [`results/heavy_typo_one_sentence_rewrite_100_report.md`](results/heavy_typo_one_sentence_rewrite_100_report.md), using the same heavy-typo cases and batch/concurrency 100.
 
+The controlled refinement ablation compares rewriting the final question without history vs. giving the rewriter full dialogue context; both then use the same router-selected-tool/router-query retrieval path. Its paired results are in [`results/heavy_typo_controlled_refinement_100_report.md`](results/heavy_typo_controlled_refinement_100_report.md).
+
 ### What the completed retrieval experiments suggest
 
 Across these experiments, a consistent practical conclusion is that **query formation matters at least as much as the character-level retriever**. The 100 fixed cases were paired between clean and typo inputs, and the stronger typo stress set applied three mixed character edits to one word in every eligible user turn. Results below are retrieval-only, use one `gpt-6-luna` output per condition/case, and are descriptive rather than statistically conclusive.

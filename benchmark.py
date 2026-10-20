@@ -454,7 +454,7 @@ def format_dialogue(history: list[dict], question: str) -> str:
 
 
 def route(llm: JsonModel, history: list[dict], question: str,
-          typo_aware: bool = False) -> tuple[list[str], str, dict]:
+          typo_aware: bool = False, refinement_input: str | None = None) -> tuple[list[str], str, dict]:
     tool_names = [f"search_{d}" for d in DOMAINS]
     schema = schema_object("multi_tool_route", {
         "tools": {"type": "array", "items": {"type": "string", "enum": tool_names}},
@@ -467,7 +467,12 @@ def route(llm: JsonModel, history: list[dict], question: str,
            "Search tools: " + json.dumps(DOMAIN_EXPLAIN) + ". "
            "Write a focused standalone retrieval query resolving references only as needed. "
            "Return JSON with tools and query. Never use dataset labels." + typo_instruction)
-    obj, latency, tokens = llm.ask(sys, format_dialogue(history, question), schema)
+    route_question = refinement_input if refinement_input is not None else question
+    obj, latency, tokens = llm.ask(sys, format_dialogue(history, route_question), schema)
+    if refinement_input is not None:
+        # Controlled query-refinement arm: identical tool-selection prompt and
+        # search path; only the final user query presented to route() is refined.
+        obj["query"] = refinement_input
     tools = list(dict.fromkeys(t for t in obj["tools"] if t in tool_names))[:2]
     if not tools:
         tools = ["search_dmv"]  # invalid/empty selection recorded separately as router failure
@@ -555,10 +560,11 @@ def evaluate_one(case: dict, input_condition: str, strategy: str, agent: str,
                  llm: JsonModel, ret: Retrieval, seed: int,
                  architecture: str = "staged", typo_aware: bool = False,
                  retrieval_only: bool = False,
-                 typo_types: tuple[str, ...] = ("transpose",),
-                 skip_router: bool = False,
-                 edits_per_word: int = 1,
-                 rewrite_only_search: bool = False) -> tuple[dict, dict]:
+                  typo_types: tuple[str, ...] = ("transpose",),
+                  skip_router: bool = False,
+                  edits_per_word: int = 1,
+                  rewrite_only_search: bool = False,
+                  refine_router_input: bool = False) -> tuple[dict, dict]:
     history, question, edits = input_variant(case, input_condition == "typo", seed,
                                              typo_types,edits_per_word)
     rewrite_history = [m for m in history if m["role"] == "user"]
@@ -576,6 +582,15 @@ def evaluate_one(case: dict, input_condition: str, strategy: str, agent: str,
         prep = {"seconds": 0.0, "calls": 0, "tokens": 0}
         tools, query, router = route(llm, rewrite_history, corrected_question,
                                      typo_aware=typo_aware)
+    elif refine_router_input:
+        refined_question, rewrite_cost = rewrite_query(llm,history,corrected_question,
+                                                        typo_aware,one_sentence=True)
+        tools,_,router=route(llm,history,corrected_question,
+                             typo_aware=typo_aware,refinement_input=refined_question)
+        query=router["selection_query"]
+        prep={"seconds":prep["seconds"]+rewrite_cost["seconds"],
+              "calls":prep["calls"]+rewrite_cost["calls"],
+              "tokens":prep["tokens"]+rewrite_cost["tokens"]}
     else:
         query, rewrite_cost = rewrite_query(llm, rewrite_history, corrected_question,
                                             typo_aware, one_sentence=rewrite_only_search)
@@ -607,6 +622,7 @@ def evaluate_one(case: dict, input_condition: str, strategy: str, agent: str,
                    "typos_inserted":len(edits),
                    "router_skipped":bool(skip_router),
                    "rewrite_only_search":bool(rewrite_only_search),
+                   "refine_router_input":bool(refine_router_input),
                    "router_em":None if skip_router else float(set(valid_predicted)==set(gold_tools) and len(valid_predicted)==len(set(valid_predicted))),
                    "router_tool_f1":None if skip_router else set_f1(valid_predicted,gold_tools),
                    "router_selected_n":None if skip_router else len(initial_predicted),
@@ -634,6 +650,7 @@ def evaluate_one(case: dict, input_condition: str, strategy: str, agent: str,
                 "search_history":[{"tools":tools,"query":search_query}],
                 "search_results":[{k:v for k,v in first.items() if k!="searches"}],
                 "router_skipped":bool(skip_router),"rewrite_only_search":bool(rewrite_only_search),
+                "refine_router_input":bool(refine_router_input),
                 "metrics":metrics}
         return metrics,detail
     searched = [{"tools": tools,"query": search_query}]
@@ -910,6 +927,8 @@ def main() -> None:
                    help="Skip LLM tool routing and retrieve directly from each case's gold domain (retrieval diagnostic only)")
     p.add_argument("--rewrite-only-search",action="store_true",
                    help="Use exactly one rewritten sentence as the search query; router selects tools only")
+    p.add_argument("--refine-router-input",action="store_true",
+                   help="Refine the final question using dialogue context, then pass it to the unchanged router/search pipeline")
     p.add_argument("--retrieval-only-summary",action="store_true",
                    help="Summarize an existing retrieval-only JSONL run without calling the API")
     a=p.parse_args()
@@ -991,7 +1010,8 @@ def main() -> None:
         result=evaluate_one(case,condition,strategy,agent,llm,ret,a.seed,architecture,typo_aware,
                             retrieval_only=a.retrieval_only,typo_types=typo_types,
                             skip_router=a.skip_router,edits_per_word=a.typo_edits_per_word,
-                            rewrite_only_search=a.rewrite_only_search)
+                            rewrite_only_search=a.rewrite_only_search,
+                            refine_router_input=a.refine_router_input)
         return key,result
 
     def save_result(key,result):
