@@ -1,21 +1,26 @@
 # Multi-turn typo correction × multi-tool router × hybrid retrieval × max-3-step ReAct
 
-**Status: dataset and 100-case sample prepared; model benchmark not yet executed.**
+**Status: frozen 100-case sample; full benchmark blocked by exhausted model API credits.**
 
 Preparation was run on 2026-10-20 with seed `20261020`: 100 cases selected
 (25 per domain: `dmv`, `ssa`, `va`, `studentaid`). Offline synthetic harness
-checks passed. These checks validate code structure only and are **not model
-benchmark results**. The 1,200 model evaluations still require an API key and
-an API-accessible model ID; no model scores are claimed yet.
+checks passed. The gpt-6-luna API returned `429 insufficient_quota` before the
+fresh main evaluation produced any rows. A previous legacy run contains 973
+rows (771 with no architecture/prompt-factor metadata, plus partial rows from
+the old factorial attempt); these rows are not a complete or valid result for
+the current design. Do not use them to draw conclusions. The final script now
+supports `--fresh-run` to prevent mixing previous rows into future outputs.
 
 ## Design
 - Data: 100 distinct MultiDoc2Dial validation dialogues, 25 from each of `dmv`, `ssa`, `va`, `studentaid`, chosen with deterministic SHA256 ordering. For each dialogue, choose one user question that follows a prior user question and has an annotated agent response with grounding spans.
 - Two **paired inputs** per case: unmodified source conversation (`clean`; natural typos in the source remain) and synthetic typo injection (`typo`; exactly one adjacent-character transposition on each eligible user utterance, with unchanged agent turns). Corpus and labels are never corrupted.
-- Three correction arms: `raw` (no correction), `last` (LLM spell-corrects only last user utterance; context read-only), `full` (LLM corrects **all user utterances in dialogue**; agent turns untouched). No rewriting/answering allowed in the correction instruction. LLM outputs are audited in the detail file.
+- Correction arms: `raw` (no separate correction), `last` (LLM spell-corrects only the last user utterance), `full` (LLM corrects all user utterances). `--strategy raw` runs the primary hypothesis design; default `--strategy all` runs each correction arm. In the direct architecture the correction arms are intentionally bypassed, so these are redundant controls there.
+- Factorial extension: `typo_aware=false/true` adds/removes an explicit typo-interpretation instruction. The `staged` architecture applies the selected correction arm, then makes a separate query-rewrite call and a separate tool-selection call. The `direct` architecture bypasses those preprocessing/rewrite calls and makes one structured call jointly select tools and produce a typo-robust standalone query. For a clean ablation of the prompt instruction, compare `strategy=raw` with typo-aware off vs on; `last/full` estimate whether an extra correction call still adds value.
+- Full design including optional correction ablations is 100 paired cases × clean/typo × raw/last/full × ReAct on/off × staged/direct architecture × typo-aware off/on = **4,800 evaluations**. The primary hypothesis design uses the `raw` arm only and is **1,600 evaluations**. ReAct includes the initial search and up to two additional tool searches (three total); direct means no ReAct loop and is retained as a separate baseline. If a run is interrupted, `--fresh-run` saves independently scoped fresh rows and summary; legacy rows are not mixed into that output.
 - Initial multi-tool router selects up to 2 domain-specific retrieval functions and one query; all arms use the **same** four tools and indexes. Multi-tool **selection** is evaluated, but most ground truth cases have one gold domain/tool, so this dataset does not establish performance on inherently multi-tool tasks.
 - Search: per-domain **BM25** top-30 + `sentence-transformers/multi-qa-MiniLM-L6-cos-v1` dense top-30; **RRF** k=60 top-20; `cross-encoder/ms-marco-MiniLM-L6-v2` reranks; evidence top-5 to LLM. Fixed chunking 1,050 characters / 180 overlap, same document corpus across all arms. No gold/reference info is placed in model prompts or retrieval.
 - `direct`: first retrieval → final answer. `react`: first retrieval → inspect evidence → optional new query/tool → up to **three search steps total** → final answer. First retrieval is identical for direct and ReAct for a given correction arm. React additional search decisions cost LLM calls.
-- **Metrics:** initial exact tool-set EM and tool F1; document Recall@1/3/5/10, MRR@10 and span coverage by BM25/Dense/RRF/Cross-Encoder; final document/span Recall@1/3/5; **offline step checkpoint Answer EM/F1 after each observed ReAct search step**; next-agent-response normalized EM and token F1; cited evidence-doc set EM; LLM calls/tokens; wall-clock phase latency and p95. Paired bootstrap (2,000 draws) of per-case deltas to raw. Logged JSONL includes per-step search results and correction output.
+- **Metrics:** initial exact tool-set EM and tool F1; document Recall@1/3/5/10, MRR@10 and span coverage by BM25/Dense/RRF/Cross-Encoder; final document/span Recall@1/3/5 plus retrieval `final_subspan_em@5` (fraction of annotated source spans present in the top-five evidence); **offline step checkpoint Answer EM/F1 after each observed ReAct search step**; next-agent-response normalized EM, answer subspan EM (best token F1 against annotated supporting spans), and token F1; cited evidence-doc set EM; LLM calls/tokens; wall-clock phase latency and p95. Paired bootstrap (2,000 draws) of per-case deltas to raw. Logged JSONL includes per-step search results and correction output.
 
 ## Run
 
@@ -60,11 +65,33 @@ A complete run writes `results/selected_cases.json`, `results/run_config.json`, 
 3. This is a restricted four-domain document corpus, not web-scale QA. Retrieval scores do not transfer directly to production.
 4. Synthetic typo types (letter transpositions only) do not cover ASR, OCR, phonetic or Korean errors. Add stress sets separately for those and mark them distinctly.
 5. Full-history correction changes multiple user utterances at once. Do not conflate spelling correction with query rewrite/coreference resolution; the router alone creates the standalone retrieval query in every arm.
-6. Each correction/route/decision/answer request uses the same chosen Responses API model. Model IDs and entitlements differ; the user must supply a valid `BENCH_MODEL` to run. No inference has been performed here.
+6. Each correction/route/decision/answer request uses the same chosen Responses API model. Model IDs and entitlements differ; the user must supply a valid `BENCH_MODEL` to run. The current full run was blocked by API credit exhaustion; see `results/RUN_STATUS.md`.
 7. Evaluation arm order is shuffled with a fixed seed and query embeddings are not cached, reducing order-driven latency bias. Model output caching persists for resumed runs and reuses original measured API duration.
 8. Intermediate checkpoint answers are offline probes: they are never fed into ReAct and are excluded from its production runtime, calls, and token usage. Their hypothetical EM is recorded in `details.jsonl` and per-case rows; absence of step 2/3 means the agent stopped earlier.
 9. Cached API *latency is the recorded original* response latency, even on replays; retrieval timing is local execution time. For rigorous deployment p95, run several repeats on target hardware with cache disabled, controlling warmup and concurrency.
 10. Token usage/cost and caching matter; do not choose a production arm based on EM alone. Production choice should be made on typo-specific paired deltas and end-to-end latency, with confidence intervals.
+
+## Experiment status (2026-10-20)
+
+The frozen sample contains 100 MultiDoc2Dial validation dialogues (25 each in DMV, SSA, VA, and StudentAid); all have multi-turn history. Their IDs are recorded in `results/case_ids.txt`; `results/experiment_manifest.json` records seed, run factors, model and status without publishing source dialogue text. The harness ran against gpt-6-luna, but the account has no remaining API credits and returned `429 insufficient_quota`, leaving the **current main run with 0/1,600 completed evaluations**. Existing local row-level logs are an older mixed partial run and are excluded from version control. The extended harness compiles and `python3 test_harness.py` passes synthetic structural checks; those checks are not model scores. See [`results/RUN_STATUS.md`](results/RUN_STATUS.md) for the run record.
+
+To run the primary 1,600-evaluation design, install dependencies and provide API access as above. Run raw-only, ReAct/no-ReAct, both architectures, and typo-awareness off/on:
+
+```bash
+python3 benchmark.py --out ./results --architecture both --typo-awareness both --agent both --fresh-run --strategy raw
+```
+
+This raw-only factorial is exactly 1,600 evaluations: 100 cases × 2 input types × 2 architectures × 2 typo instructions × 2 agent modes.
+
+To run the extended correction ablations too (4,800 evaluations), omit `--strategy raw`.
+
+```bash
+python3 benchmark.py --out ./results --architecture both --typo-awareness both --agent both --fresh-run
+```
+
+This compares typo-aware prompt off/on, typo-free/typo input, staged/direct architecture, and ReAct/no-ReAct. Add API credits before running; it resumes/skips completed rows in fresh-run files.
+
+The first query/selection call is shared between no-ReAct and ReAct within every condition; ReAct can then make up to two additional searches. The primary hypothesis test is the paired typo-only effect `typo_aware=true` vs `false` for `strategy=raw`, using router tool-set EM/F1, CE/final document and span recall, answer token F1, and latency/calls. Compare typo-aware raw with staged `last`/`full` to determine whether explicit typo awareness removes the incremental value of separate query correction. Report clean-input deltas as a regression check and paired bootstrap CIs. Since each dialogue has one annotated gold domain/tool, tool-set exact match measures routing, not genuinely compositional multi-tool ground truth; interpret multi-tool selection results accordingly.
 
 ## Recommended decision policy (conditional on observed results)
 - Prefer `raw` if typo-case final EM/recall is statistically similar to corrected arms and time/cost is lower.

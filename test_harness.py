@@ -16,6 +16,8 @@ class MockLLM:
             result = {"utterances":json.loads(prompt)["user_utterances_to_fix_in_order"]}
         elif name == "multi_tool_route":
             result = {"tools":["search_dmv"],"query":"what application documents are needed"}
+        elif name == "rewrite_query":
+            result = {"query":"what application documents are needed"}
         elif name == "react_decision":
             result = {"action":"search","tool":"search_dmv","query":"additional requirements details"}
         elif name == "answer_with_citations":
@@ -29,6 +31,7 @@ class MockRetrieval:
     def __init__(self, docs):
         ch=b.build_chunks(docs)
         self.chunks={x.id:x for x in ch}
+        self.source_docs=docs
         self.first=ch[0].id
 
     def run_tools(self, tools, query):
@@ -42,7 +45,7 @@ def run():
     for domain in b.DOMAINS:
         did=f'{domain}_doc'
         docs[domain][did]={"title":"Application Process", "doc_text":"Documents are required for the application process.",
-                           "spans":{"1":{"start_sp":0,"end_sp":22}}}
+                            "spans":{"1":{"start_sp":0,"end_sp":22}}}
         dialogs[domain].append({"dial_id":f'{domain}_conversation',"turns":[
             {"role":"user","turn_id":1,"utterance":"Can I apply?"},
             {"role":"agent","turn_id":2,"utterance":"Yes, you can.","references":[]},
@@ -58,15 +61,19 @@ def run():
     for condition in ['clean','typo']:
         for strategy in ['raw','last','full']:
             for agent in ['direct','react']:
-                r,d=b.evaluate_one(c,condition,strategy,agent,llm,ret,seed=9)
-                assert r['answer_em']==1.0
-                assert r['router_em']==1.0
-                assert r['ce_doc_recall@5']==1.0
-                assert r['checkpoint_answer_em_step1']==1.0
-                assert r['search_steps']==(3 if agent=='react' else 1)
-                if agent=='react':
-                    assert r['checkpoint_answer_em_step3']==1.0
-                rows.append(r)
+                for arch in ['direct','staged']:
+                    r,d=b.evaluate_one(c,condition,strategy,agent,llm,ret,seed=9,
+                                       architecture=arch,typo_aware=True)
+                    assert r['answer_em']==1.0
+                    assert 0.0 <= r['answer_subspan_em'] <= 1.0
+                    assert r['router_em']==1.0
+                    assert r['ce_doc_recall@5']==1.0
+                    assert r['checkpoint_answer_em_step1']==1.0
+                    assert 0.0 <= r['checkpoint_answer_subspan_em_step1'] <= 1.0
+                    assert r['search_steps']==(3 if agent=='react' else 1)
+                    if agent=='react':
+                        assert r['checkpoint_answer_em_step3']==1.0
+                    rows.append(r)
     with tempfile.TemporaryDirectory() as tmp:
         b.summarize(rows,Path(tmp))
         assert (Path(tmp)/'summary.csv').exists()

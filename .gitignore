@@ -4,3 +4,14 @@ __pycache__/
 .env
 results/data/
 results/model_cache.jsonl
+results/api_cache/
+results/rows.jsonl
+results/details.jsonl
+results/rows.csv
+results/model_cache*.jsonl
+results/rows_fresh.jsonl
+results/rows_fresh.csv
+results/details_fresh.jsonl
+results/model_cache_fresh.jsonl
+results/fresh_summary/
+results-smoke*/
